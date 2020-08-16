@@ -33,5 +33,3 @@ class Charting:
 
         for key, _ in self.indicator.items():
             self.indicator_dict[key].plot(date_name, key, data=series)
-
-        print("Stop mother fucker")

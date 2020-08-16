@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fe030828-6de6-45a5-b81c-707dd181e9a3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/charting.py" beforeDir="false" afterPath="$PROJECT_DIR$/charting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/indicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/indicator.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/data_manip/input_dataframe.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/indicator.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/indicators/regression/mann_kendall.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/charting.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/indicators/regression/linear_regression.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectId" id="1bxLN99rzW39mROqeO4yp8EE5Q8" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
+    <property name="deletionFromPopupRequiresConfirmation" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data_manip" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="Test" is-module-sdk="true">
+        <envs>
+          <env key="ALPHAVANTAGE_API_KEY" value="LH73HGZGW450E7DZ" />
+        </envs>
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="Test" />
+        <option name="myEnvs">
+          <map>
+            <entry key="ALPHAVANTAGE_API_KEY" value="LH73HGZGW450E7DZ" />
+          </map>
+        </option>
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data_manip" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/indicators/regression" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/indicators" />
+      <recent name="$PROJECT_DIR$/data_manip" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.indicator">
+    <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Trading" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="csv_manip" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Trading" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/csv_manip.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="indicator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Trading" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/indicator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="input_dataframe" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Trading" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_manip/input_dataframe.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="linear_regression" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Trading" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/indicators/regression/linear_regression.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.csv_manip" />
+      <item itemvalue="Python.input_dataframe" />
+      <item itemvalue="Python.linear_regression" />
+      <item itemvalue="Python.indicator" />
+      <item itemvalue="Python.Test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.indicator" />
+        <item itemvalue="Python.Test" />
+        <item itemvalue="Python.csv_manip" />
+        <item itemvalue="Python.linear_regression" />
+        <item itemvalue="Python.input_dataframe" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fe030828-6de6-45a5-b81c-707dd181e9a3" name="Default Changelist" comment="" />
+      <created>1589568754801</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589568754801</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="546" y="262" key="#Inspections" timestamp="1597593521652">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="546" y="262" key="#Inspections/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593521652" />
+    <state x="655" y="158" key="#Test" timestamp="1597593551859">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="158" key="#Test/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593551859" />
+    <state x="257" y="224" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597593379749">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="257" y="224" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593379749" />
+    <state x="568" y="269" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1592066342562">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="568" y="269" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1592066342562" />
+    <state x="522" y="277" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1595684156236">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="522" y="277" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1595684156236" />
+    <state x="522" y="258" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589743883914" />
+    <state x="655" y="158" key="#csv_manip" timestamp="1597593576648">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="158" key="#csv_manip/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593576648" />
+    <state x="655" y="158" key="#indicator" timestamp="1597593366699">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="158" key="#indicator/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593366699" />
+    <state x="655" y="158" key="#input_dataframe" timestamp="1597593570622">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="158" key="#input_dataframe/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593570622" />
+    <state x="655" y="158" key="#linear_regression" timestamp="1597593561443">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="158" key="#linear_regression/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593561443" />
+    <state x="1094" y="157" key="#xdebugger.evaluate" timestamp="1591473329391">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="1094" y="157" key="#xdebugger.evaluate/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1591473329391" />
+    <state x="686" y="389" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1591123406687">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="686" y="389" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1591123406687" />
+    <state width="1132" height="466" key="DebuggerActiveHint" timestamp="1597244069814">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1132" height="466" key="DebuggerActiveHint/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597244069814" />
+    <state x="911" y="209" width="621" height="615" key="EnvironmentVariablesDialog" timestamp="1592156344558">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="911" y="209" width="621" height="615" key="EnvironmentVariablesDialog/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1592156344558" />
+    <state x="873" y="326" key="FileChooserDialogImpl" timestamp="1595850150067">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="873" y="326" key="FileChooserDialogImpl/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1595850150067" />
+    <state width="1802" height="319" key="GridCell.Tab.0.bottom" timestamp="1597595730511">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.0.bottom/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468327" />
+    <state width="1802" height="319" key="GridCell.Tab.0.bottom/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595730511" />
+    <state width="1608" height="241" key="GridCell.Tab.0.bottom/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825705727" />
+    <state width="1608" height="299" key="GridCell.Tab.0.bottom/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591121881104" />
+    <state width="1802" height="319" key="GridCell.Tab.0.center" timestamp="1597595730511">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254644" />
+    <state width="1802" height="255" key="GridCell.Tab.0.center/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468327" />
+    <state width="1802" height="319" key="GridCell.Tab.0.center/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595730511" />
+    <state width="1608" height="241" key="GridCell.Tab.0.center/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825705726" />
+    <state width="1608" height="299" key="GridCell.Tab.0.center/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591121881104" />
+    <state width="1802" height="319" key="GridCell.Tab.0.left" timestamp="1597595730510">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254644" />
+    <state width="1802" height="255" key="GridCell.Tab.0.left/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468326" />
+    <state width="1802" height="319" key="GridCell.Tab.0.left/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595730510" />
+    <state width="1608" height="241" key="GridCell.Tab.0.left/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825705726" />
+    <state width="1608" height="299" key="GridCell.Tab.0.left/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591121881103" />
+    <state width="1802" height="319" key="GridCell.Tab.0.right" timestamp="1597595730511">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.0.right/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468327" />
+    <state width="1802" height="319" key="GridCell.Tab.0.right/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595730511" />
+    <state width="1608" height="241" key="GridCell.Tab.0.right/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825705726" />
+    <state width="1608" height="299" key="GridCell.Tab.0.right/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591121881104" />
+    <state width="1802" height="319" key="GridCell.Tab.1.bottom" timestamp="1597595732476">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.1.bottom/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.1.bottom/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468328" />
+    <state width="1802" height="319" key="GridCell.Tab.1.bottom/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595732476" />
+    <state width="1608" height="397" key="GridCell.Tab.1.bottom/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825454614" />
+    <state width="1608" height="293" key="GridCell.Tab.1.bottom/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591051594171" />
+    <state width="1802" height="319" key="GridCell.Tab.1.center" timestamp="1597595732476">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.1.center/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.1.center/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468327" />
+    <state width="1802" height="319" key="GridCell.Tab.1.center/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595732476" />
+    <state width="1608" height="397" key="GridCell.Tab.1.center/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825454614" />
+    <state width="1608" height="293" key="GridCell.Tab.1.center/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591051594170" />
+    <state width="1802" height="319" key="GridCell.Tab.1.left" timestamp="1597595732475">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.1.left/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.1.left/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468327" />
+    <state width="1802" height="319" key="GridCell.Tab.1.left/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595732475" />
+    <state width="1608" height="397" key="GridCell.Tab.1.left/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825454613" />
+    <state width="1608" height="293" key="GridCell.Tab.1.left/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591051594170" />
+    <state width="1802" height="319" key="GridCell.Tab.1.right" timestamp="1597595732476">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1608" height="288" key="GridCell.Tab.1.right/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591365254645" />
+    <state width="1802" height="255" key="GridCell.Tab.1.right/0.23.1920.1057@0.23.1920.1057" timestamp="1596807468328" />
+    <state width="1802" height="319" key="GridCell.Tab.1.right/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597595732476" />
+    <state width="1608" height="397" key="GridCell.Tab.1.right/1920.23.1920.1057/0.23.1920.979@0.23.1920.979" timestamp="1589825454614" />
+    <state width="1608" height="293" key="GridCell.Tab.1.right/1920.23.1920.979/0.23.1920.1057@0.23.1920.1057" timestamp="1591051594171" />
+    <state x="616" y="203" key="SettingsEditor" timestamp="1597593486556">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="616" y="203" key="SettingsEditor/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597593486556" />
+    <state width="752" height="471" key="XDebugger.FullValuePopup" timestamp="1597238963945">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="752" height="471" key="XDebugger.FullValuePopup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597238963945" />
+    <state x="357" y="290" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1589664468976">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="357" y="290" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1589664468976" />
+    <state x="655" y="47" width="598" height="822" key="find.popup" timestamp="1595850196803">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="655" y="47" width="598" height="822" key="find.popup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1595850196803" />
+    <state width="1058" height="524" key="javadoc.popup" timestamp="1597235573285">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1058" height="524" key="javadoc.popup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597235573285" />
+    <state x="2234" y="285" width="670" height="676" key="search.everywhere.popup" timestamp="1597241075326">
+      <screen x="1920" y="23" width="1920" height="1057" />
+    </state>
+    <state x="-871" y="181" width="670" height="676" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1920.1057@-1920.23.1920.1057" timestamp="1591137082718" />
+    <state x="2234" y="285" width="670" height="676" key="search.everywhere.popup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1597241075326" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/manip_dataframe.py</url>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/indicator.py</url>
+          <line>53</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

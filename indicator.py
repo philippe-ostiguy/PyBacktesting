@@ -51,6 +51,7 @@ class OutputDataframe(idf.InputDataframe):
                 value_ = getattr(value,key)()
 
         chart_= cht.Charting(**self.Indicator).chart(series=self.series)
+        fin=0
 
 rg=lr.RegressionSlopeStrenght(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
 mk_=mk.MannKendall(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
