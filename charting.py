@@ -27,9 +27,15 @@ class Charting:
         """
 
     def chart(self, series, column_date=0, column_price='Close'):
+
         date_name = series.columns[column_date]
 
-        self.candle.plot(date_name, column_price, data=series)
+        first_index = series.first_valid_index()
+        tempo_mark=[]
+        tempo_mark= series.loc[series['r2']>.8].index.tolist()
+        mark_= [i - first_index for i in tempo_mark]
+
+        self.candle.plot(date_name, column_price, markevery =mark_, marker = "o",data = series)
 
         for key, _ in self.indicator.items():
             self.indicator_dict[key].plot(date_name, key, data=series)

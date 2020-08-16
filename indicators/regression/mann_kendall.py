@@ -17,7 +17,7 @@ class MannKendall(idfm.InputDataframe):
 
     """
 
-    def __init__(self,alpha=0.00001,iteration=True,nb_data=100,date_debut='2006-10-20',
+    def __init__(self,alpha=0.00000000001,iteration=True,nb_data=200,date_debut='2006-10-20',
                  date_fin='2007-10-20',asset="MSFT"):
         self.alpha=alpha
         super().__init__()

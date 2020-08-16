@@ -10,13 +10,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import charting as cht
 
-nb_data=50
-date_debut='2006-10-20'
-date_fin='2007-04-20'
+nb_data=100
+date_debut='2007-01-20'
+date_fin='2010-04-20'
 asset="MSFT"
 
 class OutputDataframe(idf.InputDataframe):
-
 
     def __init__(self,**Indicator):
 
