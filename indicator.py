@@ -12,7 +12,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import charting as cht
 
-
 nb_data=50
 date_debut='2006-10-20'
 date_fin='2007-04-20'
