@@ -15,6 +15,7 @@ class Charting:
         fig.set_size_inches((40, 32))
         self.candle = fig.add_axes((0, self.height_chart, 1, 0.25))
 
+
         count2 = 1
         for key, _ in self.indicator.items():
             self.indicator_dict[key]=fig.add_axes((0, self.height_chart-self.divider*count2, 1, 0.2), sharex=self.candle)
