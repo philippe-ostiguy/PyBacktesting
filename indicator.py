@@ -52,6 +52,6 @@ class OutputDataframe(idf.InputDataframe):
 
 rg=lr.RegressionSlopeStrenght(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
 mk_=mk.MannKendall(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
-indicators={'slope':rg,'r2':rg,'mk':mk_}
+indicators={'slope':rg,'r_square':rg,'mk':mk_}
 odf= OutputDataframe(**indicators)
 odf.next()

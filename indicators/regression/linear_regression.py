@@ -39,7 +39,7 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
 
         return self.store_stat()[0]
 
-    def r2(self):
+    def r_square(self):
 
         """
         La corrélation est la 3ième valeur retournée dans cette stats.linregress, d'où le [2]

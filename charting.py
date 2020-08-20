@@ -27,16 +27,17 @@ class Charting:
             ax_mk = fig.add_axes((0, 0, 1, 0.2), sharex=ax_candle)
         """
 
-    def chart(self, series, column_date=0, column_price='Close'):
+    def chart(self, series, column_date=0, column_price='Close',show_entry=False):
 
         date_name = series.columns[column_date]
 
-        first_index = series.first_valid_index()
-        tempo_mark=[]
-        tempo_mark= series.loc[series['r2']>.8].index.tolist()
-        mark_= [i - first_index for i in tempo_mark]
+        if show_entry:
+            first_index = series.first_valid_index()
+            tempo_mark=[]
+            tempo_mark= series.loc[series['r_square']>.8].index.tolist()
+            mark_= [i - first_index for i in tempo_mark]
 
-        self.candle.plot(date_name, column_price, markevery =mark_, marker = "o",data = series)
+            self.candle.plot(date_name, column_price, markevery =mark_, marker = "o",data = series)
 
         for key, _ in self.indicator.items():
             self.indicator_dict[key].plot(date_name, key, data=series)
