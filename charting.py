@@ -27,7 +27,7 @@ class Charting:
             ax_mk = fig.add_axes((0, 0, 1, 0.2), sharex=ax_candle)
         """
 
-    def chart(self, series, column_date=0, column_price='Close'):
+    def _chart(self, series, column_date=0, column_price='Close'):
 
         date_name = series.columns[column_date]
 

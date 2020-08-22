@@ -8,6 +8,7 @@ asset="MSFT"
 class TradingRules(ind.Indicator):
 
     def __int__(self,**Indicator):
+
         super().__init__()
         self.nb_data=nb_data
         self.date_debut=date_debut
@@ -15,7 +16,6 @@ class TradingRules(ind.Indicator):
         self.asset=asset
         self.series=self.ordinal_date()
         self.Indicator = Indicator
-
 
     def next(self):
         print(self.point_data)

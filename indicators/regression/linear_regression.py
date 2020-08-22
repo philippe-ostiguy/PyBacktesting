@@ -22,7 +22,7 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         self.series=super().ordinal_date()
         self.sous_series=super().sous_series_()
 
-    def store_stat(self):
+    def __store_stat(self):
 
         """
         Function to return stat in a list
@@ -36,7 +36,7 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         La pente est la 1ième valeur retournée dans cette stats.linregress, d'où le [0]
         """
 
-        return self.store_stat()[0]
+        return self._store_stat()[0]
 
     def r_square(self):
 
@@ -44,8 +44,4 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         La corrélation est la 3ième valeur retournée dans cette stats.linregress, d'où le [2]
         """
 
-        return (self.store_stat()[2])**2
-
-    def plot_(self):
-        self.series.plot(x=super().date_name, y=super().close_name)
-        plt.show()
+        return (self._store_stat()[2])**2

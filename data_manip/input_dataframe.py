@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 import datetime as dt
-
+from typing import final
 
 class InputDataframe():
     """
@@ -46,15 +46,17 @@ class InputDataframe():
 
     def data_frame(self):
         """
-         fonction pour retourner le csv sous forme de data frame selon le range désiré avec une colonne numérique pour les
-         dates
+         fonction pour retourner le csv sous forme de data frame selon le range désiré avec une colonne
+         numérique pour les dates
          Le csv est un format standard Date,Open,High,Low,Close,Adj Close,Volume
-         par défaut retourne le close seulement, mais on pourrait changer la possibilité avec usecols (4 est pour le close)
+         par défaut retourne le close seulement, mais on pourrait changer la possibilité avec usecols
+         (4 est pour le close)
         """
 
-        self.series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/' +self.asset + '.csv',
-                             usecols=[0,4],names=[self.date_name,self.close_name],header=0)
-        self.series=self.series.loc[(self.series[self.date_name] >= self.date_debut) & (self.series[self.date_name] <= self.date_fin)]
+        self.series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
+                                  +self.asset + '.csv', usecols=[0,4],names=[self.date_name,self.close_name],header=0)
+        self.series=self.series.loc[(self.series[self.date_name] >= self.date_debut) & (self.series[self.date_name]
+                                                                                        <= self.date_fin)]
         return self.series
 
     def ordinal_date(self):

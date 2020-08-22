@@ -14,16 +14,15 @@ from abc import abstractmethod,ABCMeta
 
 class Indicator(idf.InputDataframe):
 
-    #__metaclass__ = ABCMeta
 
-    #@abstractmethod
-    def __init__(self,**Indicator):
-        #super().__init__()
+    def __init__(self):
+
+        super().__init__()
 
         #self.series=self.ordinal_date()
         #self.Indicator = Indicator
 
-    def next(self):
+    def _next(self):
 
         """
         Function that iterate to get the value of the indicator through the desired period.
