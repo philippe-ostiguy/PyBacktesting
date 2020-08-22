@@ -16,7 +16,7 @@ class InputDataframe():
     close_name = 'Close'
     date_ordinal_name = 'date_ordinal'
     #nb_data=0 #nb données pour tester l'indicateur
-    #point_data=0 #rendu où dans les données
+    point_data=0 #rendu où dans les données
 
     def __init__(self):
 
@@ -30,7 +30,7 @@ class InputDataframe():
         #self.nb_data=self.nb_data
         self.series=[]
         self.sous_series=[]
-
+        self.point_data=self.point_data
 
     def reverse_csv(self):
         """

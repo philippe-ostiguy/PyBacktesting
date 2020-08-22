@@ -13,7 +13,6 @@ class TradingRules(ind.Indicator):
         self.date_debut=date_debut
         self.date_fin=date_fin
         self.asset=asset
-        self.point_data=self.point_data
         self.series=self.ordinal_date()
         self.Indicator = Indicator
 

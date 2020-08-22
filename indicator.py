@@ -11,10 +11,6 @@ import matplotlib.pyplot as plt
 import charting as cht
 from abc import abstractmethod,ABCMeta
 
-nb_data=100
-date_debut='2007-01-20'
-date_fin='2010-04-20'
-asset="MSFT"
 
 class Indicator(idf.InputDataframe):
 
@@ -22,7 +18,7 @@ class Indicator(idf.InputDataframe):
 
     #@abstractmethod
     def __init__(self,**Indicator):
-        super().__init__()
+        #super().__init__()
 
         #self.series=self.ordinal_date()
         #self.Indicator = Indicator
