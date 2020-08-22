@@ -21,7 +21,6 @@ class MannKendall(idfm.InputDataframe):
                  date_fin='2007-10-20',asset="MSFT"):
         self.alpha=alpha
         super().__init__()
-        self.point_data=self.point_data
         self.nb_data=nb_data #Nombre de données pour évaluer la trend (ou pas trend selon le cas)
         self.date_debut = date_debut  # date debut in_sample
         self.date_fin = date_fin  # date fin in sample

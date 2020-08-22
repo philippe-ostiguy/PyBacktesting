@@ -15,7 +15,6 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
     def __init__(self,null_hypothesis = 0,nb_data=300,date_debut='2006-10-20', date_fin='2009-04-20',asset="MSFT"):
         super().__init__()
         self.null_hypothesis = null_hypothesis
-        self.point_data=self.point_data
         self.nb_data=nb_data #Nombre de données pour évaluer la trend (ou pas trend selon le cas)
         self.date_debut = date_debut  # date debut in_sample
         self.date_fin = date_fin  # date fin in sample

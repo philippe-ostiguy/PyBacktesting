@@ -1,5 +1,5 @@
 """
-Module to write the output from the indicators into a Dataframe data structure
+Return the values of indicator of our choice through the desired timeframe, lenght test
 """
 
 import indicators.regression.linear_regression as lr
@@ -9,24 +9,23 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import charting as cht
+from abc import abstractmethod,ABCMeta
 
 nb_data=100
 date_debut='2007-01-20'
 date_fin='2010-04-20'
 asset="MSFT"
 
-class OutputDataframe(idf.InputDataframe):
+class Indicator(idf.InputDataframe):
 
+    #__metaclass__ = ABCMeta
+
+    #@abstractmethod
     def __init__(self,**Indicator):
-
         super().__init__()
-        self.nb_data=nb_data
-        self.point_data=self.point_data
-        self.date_debut=date_debut
-        self.date_fin=date_fin
-        self.asset=asset
-        self.series=self.ordinal_date()
-        self.Indicator = Indicator
+
+        #self.series=self.ordinal_date()
+        #self.Indicator = Indicator
 
     def next(self):
 
@@ -49,9 +48,10 @@ class OutputDataframe(idf.InputDataframe):
 
         cht.Charting(**self.Indicator).chart(series=self.series)
         fin=0
-
-rg=lr.RegressionSlopeStrenght(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
-mk_=mk.MannKendall(nb_data=nb_data,asset=asset,date_debut=date_debut,date_fin=date_fin)
+""" 
+rg=lr.RegressionSlopeStrenght(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
+mk_=mk.MannKendall(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
 indicators={'slope':rg,'r_square':rg,'mk':mk_}
-odf= OutputDataframe(**indicators)
+odf= Indicator(**indicators)
 odf.next()
+"""

@@ -9,25 +9,25 @@ class InputDataframe():
     """
 
     name_tempo = "_tempo"
-    date_debut = '' # date debut in_sample
-    date_fin = ''  # date fin in sample
-    asset = ""  # De type csv et dans le répertoires (scope) du projet
+    #date_debut = '' # date debut in_sample
+    #date_fin = ''  # date fin in sample
+    #asset = ""  # De type csv et dans le répertoires (scope) du projet
     date_name = 'Date'
     close_name = 'Close'
     date_ordinal_name = 'date_ordinal'
-    nb_data=0 #nb données pour tester l'indicateur
-    point_data=0 #rendu où dans les données
+    #nb_data=0 #nb données pour tester l'indicateur
+    #point_data=0 #rendu où dans les données
 
     def __init__(self):
 
         self.name_tempor = self.name_tempo
-        self.date_debut = self.date_debut
-        self.date_fin = self.date_fin
-        self.asset = self.asset
+        #self.date_debut = self.date_debut
+        #self.date_fin = self.date_fin
+        #self.asset = self.asset
         self.date_name=self.date_name
         self.close_name=self.close_name
         self.date_ordinal_name=self.date_ordinal_name
-        self.nb_data=self.nb_data
+        #self.nb_data=self.nb_data
         self.series=[]
         self.sous_series=[]
 
