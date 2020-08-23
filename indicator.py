@@ -40,6 +40,7 @@ class Indicator(idf.InputDataframe):
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
 
+        return self.series
 
 
 """ 
