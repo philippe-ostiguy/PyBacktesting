@@ -12,10 +12,10 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
     """
 
 
-    def __init__(self,null_hypothesis = 0,nb_data=300,date_debut='2006-10-20', date_fin='2009-04-20',asset="MSFT"):
-        super().__init__()
-        self.null_hypothesis = null_hypothesis
+    def __init__(self,nb_data, asset, date_debut, date_fin):
+        super().__init__(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
         self.sous_series=super().sous_series_()
+
 
     def __store_stat(self):
 

@@ -1,36 +1,23 @@
 import indicator as ind
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
-
-nb_data=100
-date_debut='2007-01-20'
-date_fin='2010-04-20'
-asset="MSFT"
+import data_manip.input_dataframe as idf
+import charting as cht
 
 #ind.Indicator
 class TradingRules(ind.Indicator):
 
-    def __init__(self):
+    def __init__(self,nb_data,date_debut,date_fin,asset):
 
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
 
+    def indicator_signal(self):
         """
-        self.nb_data=nb_data
-        self.date_debut=date_debut
-        self.date_fin=date_fin
-        self.asset=asset
+            Tell us if we should entry market
         """
-
-        #self.Indicator = Indicator
-
-    def _next(self):
-
-        rg = lr.RegressionSlopeStrenght(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
-        mk_ = mk.MannKendall(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
-        indicators = {'slope': rg, 'r_square': rg, 'mk': mk_}
-        odf = ind.Indicator(**indicators)
-        odf.calcul_indicator()
+        pass
 
 
-TradingRules()._next()
+
+TradingRules().indicator_signal()
 

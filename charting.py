@@ -21,12 +21,6 @@ class Charting():
             self.indicator_dict[key]=fig.add_axes((0, self.height_chart-self.divider*count2, 1, 0.2), sharex=self.candle)
             count2 += 1
 
-        """ 
-            ax_slope = fig.add_axes((0, 0.48, 1, 0.2), sharex=ax_candle)
-            ax_r2 = fig.add_axes((0, 0.24, 1, 0.2), sharex=ax_candle)
-            ax_mk = fig.add_axes((0, 0, 1, 0.2), sharex=ax_candle)
-        """
-
     def chart(self, series, column_date=0, column_price='Close'):
 
         date_name = series.columns[column_date]

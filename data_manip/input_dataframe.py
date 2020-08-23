@@ -13,21 +13,19 @@ class InputDataframe():
     date_ordinal_name = 'date_ordinal'
     point_data=0 #rendu où dans les données
 
-    def __init__(self,nb_data=200,date_debut='2006-10-20',
-                 date_fin='2007-10-20',asset_name="MSFT"):
+    def __init__(self,nb_data,date_debut,
+                 date_fin,asset):
 
         self.name_tempor = self.name_tempo
         self.date_name=self.date_name
         self.close_name=self.close_name
         self.date_ordinal_name=self.date_ordinal_name
-        self.asset=asset_name
+        self.asset=asset
         self.date_debut=date_debut
         self.date_fin=date_fin
         self.nb_data=nb_data
         self.point_data=self.point_data
         self.series=self.ordinal_date()
-
-
 
     def reverse_csv(self):
         """

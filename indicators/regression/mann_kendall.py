@@ -17,11 +17,11 @@ class MannKendall(idfm.InputDataframe):
 
     """
 
-    def __init__(self,alpha=0.00000000001,iteration=True):
+    def __init__(self,nb_data,date_debut,date_fin,asset,alpha=0.00000000001,iteration=True):
+        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
         self.alpha=alpha
-        super().__init__()
         self.sous_series=super().sous_series_()
-        self.first_iteration=True
+        self.first_iteration=iteration
         self.nb_sign=0
 
     def mk(self):
