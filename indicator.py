@@ -9,23 +9,22 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import charting as cht
-from abc import abstractmethod,ABCMeta
-
 
 class Indicator(idf.InputDataframe):
 
 
-    def __init__(self):
+    def __init__(self,**indicator_):
 
-        super().__init__()
+        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
 
         #self.series=self.ordinal_date()
-        #self.Indicator = Indicator
+        self.Indicator = indicator_
 
-    def _next(self):
+    def calcul_indicator(self):
 
         """
-        Function that iterate to get the value of the indicator through the desired period.
+        Function that return the value of an indicator through desired period, lenght calculation of the
+        indicator
         """
         nb_columns=len(self.series.columns)
 
@@ -43,10 +42,11 @@ class Indicator(idf.InputDataframe):
 
         cht.Charting(**self.Indicator).chart(series=self.series)
         fin=0
+
 """ 
 rg=lr.RegressionSlopeStrenght(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
 mk_=mk.MannKendall(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
 indicators={'slope':rg,'r_square':rg,'mk':mk_}
 odf= Indicator(**indicators)
-odf.next()
+odf.return_indicator()
 """

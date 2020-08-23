@@ -15,11 +15,6 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
     def __init__(self,null_hypothesis = 0,nb_data=300,date_debut='2006-10-20', date_fin='2009-04-20',asset="MSFT"):
         super().__init__()
         self.null_hypothesis = null_hypothesis
-        self.nb_data=nb_data #Nombre de données pour évaluer la trend (ou pas trend selon le cas)
-        self.date_debut = date_debut  # date debut in_sample
-        self.date_fin = date_fin  # date fin in sample
-        self.asset = asset # De type csv et dans le répertoires (scope) du projet
-        self.series=super().ordinal_date()
         self.sous_series=super().sous_series_()
 
     def __store_stat(self):
@@ -36,7 +31,7 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         La pente est la 1ième valeur retournée dans cette stats.linregress, d'où le [0]
         """
 
-        return self._store_stat()[0]
+        return self.__store_stat()[0]
 
     def r_square(self):
 
@@ -44,4 +39,4 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         La corrélation est la 3ième valeur retournée dans cette stats.linregress, d'où le [2]
         """
 
-        return (self._store_stat()[2])**2
+        return (self.__store_stat()[2])**2

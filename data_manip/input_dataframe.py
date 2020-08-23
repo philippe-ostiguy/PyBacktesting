@@ -1,7 +1,6 @@
 import csv
 import pandas as pd
 import datetime as dt
-from typing import final
 
 class InputDataframe():
     """
@@ -9,28 +8,26 @@ class InputDataframe():
     """
 
     name_tempo = "_tempo"
-    #date_debut = '' # date debut in_sample
-    #date_fin = ''  # date fin in sample
-    #asset = ""  # De type csv et dans le répertoires (scope) du projet
     date_name = 'Date'
     close_name = 'Close'
     date_ordinal_name = 'date_ordinal'
-    #nb_data=0 #nb données pour tester l'indicateur
     point_data=0 #rendu où dans les données
 
-    def __init__(self):
+    def __init__(self,nb_data=200,date_debut='2006-10-20',
+                 date_fin='2007-10-20',asset_name="MSFT"):
 
         self.name_tempor = self.name_tempo
-        #self.date_debut = self.date_debut
-        #self.date_fin = self.date_fin
-        #self.asset = self.asset
         self.date_name=self.date_name
         self.close_name=self.close_name
         self.date_ordinal_name=self.date_ordinal_name
-        #self.nb_data=self.nb_data
-        self.series=[]
-        self.sous_series=[]
+        self.asset=asset_name
+        self.date_debut=date_debut
+        self.date_fin=date_fin
+        self.nb_data=nb_data
         self.point_data=self.point_data
+        self.series=self.ordinal_date()
+
+
 
     def reverse_csv(self):
         """
@@ -69,6 +66,7 @@ class InputDataframe():
         self.series.Date=pd.to_datetime(self.series.Date)
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
         return self.series
+
 
     def sous_series_(self,point_data=0):
         """

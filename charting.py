@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-class Charting:
+class Charting():
 
     def __init__(self, **indicator):
 
@@ -27,7 +27,7 @@ class Charting:
             ax_mk = fig.add_axes((0, 0, 1, 0.2), sharex=ax_candle)
         """
 
-    def _chart(self, series, column_date=0, column_price='Close'):
+    def chart(self, series, column_date=0, column_price='Close'):
 
         date_name = series.columns[column_date]
 

@@ -17,15 +17,9 @@ class MannKendall(idfm.InputDataframe):
 
     """
 
-    def __init__(self,alpha=0.00000000001,iteration=True,nb_data=200,date_debut='2006-10-20',
-                 date_fin='2007-10-20',asset="MSFT"):
+    def __init__(self,alpha=0.00000000001,iteration=True):
         self.alpha=alpha
         super().__init__()
-        self.nb_data=nb_data #Nombre de données pour évaluer la trend (ou pas trend selon le cas)
-        self.date_debut = date_debut  # date debut in_sample
-        self.date_fin = date_fin  # date fin in sample
-        self.asset = asset # De type csv et dans le répertoires (scope) du projet
-        self.series=super().ordinal_date()
         self.sous_series=super().sous_series_()
         self.first_iteration=True
         self.nb_sign=0
