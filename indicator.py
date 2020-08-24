@@ -13,14 +13,12 @@ import charting as cht
 class Indicator(idf.InputDataframe):
 
 
-    def __init__(self,nb_data,date_debut,date_fin,asset):
+    def __init__(self,**indicator,nb_data,date_debut,date_fin,asset):
 
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
+        self.indicator=indicator
 
-        #self.series=self.ordinal_date()
-
-
-    def calcul_indicator(self,**indicator):
+    def calcul_indicator(self):
 
         """
         Function that return the value of an indicator through desired period, lenght calculation of the
