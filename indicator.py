@@ -13,7 +13,7 @@ import charting as cht
 class Indicator(idf.InputDataframe):
 
 
-    def __init__(self,**indicator,nb_data,date_debut,date_fin,asset):
+    def __init__(self,nb_data,date_debut,date_fin,asset,**indicator):
 
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
         self.indicator=indicator
@@ -26,7 +26,7 @@ class Indicator(idf.InputDataframe):
         """
         nb_columns=len(self.series.columns)
 
-        for key,value in indicator.items():
+        for key,value in self.indicator.items():
             self.series[key] = np.nan
             value.point_data = 0
             value.sous_series = self.sous_series_()
@@ -37,14 +37,3 @@ class Indicator(idf.InputDataframe):
                 value.point_data+=1
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
-
-        return self.series
-
-
-""" 
-rg=lr.RegressionSlopeStrenght(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
-mk_=mk.MannKendall(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin)
-indicators={'slope':rg,'r_square':rg,'mk':mk_}
-odf= Indicator(**indicators)
-odf.return_indicator()
-"""

@@ -11,16 +11,15 @@ is negative or positive, it tries to enter in the market.
 
 class TradingRules(ind.Indicator):
 
-    def __init__(self,nb_data,date_debut,date_fin,asset,r_square_level):
-        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
+    def __init__(self,nb_data,date_debut,date_fin,asset,r_square_level,**indicator):
+        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset,**indicator)
+        super().calcul_indicator()
         self.r_square_level=r_square_level
         self.buy_signal=False
         self.sell_signal=False
 
     def indicator_signal(self):
-        for len(range(series)):
 
-
-
-        pass
+        for curr_data in len(range(self.series)):
+            pass
 
