@@ -15,20 +15,15 @@ class RSquareTr(ind.Indicator):
 
     def __init__(self,nb_data,date_debut,date_fin,asset):
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
-        self._signal=False #no signal entry
+        self.__signal=False #Tells if there is a signal entry. No signal entry by default
 
     def indicator_signal(self,**kwargs):
         """
         Take 2 key-word args : r2 level to triger a signal + minimum nb of data between each signal before
         trigerring a new signal
         """
-        self._r_square_level=list(kwargs.values())[0]
-        self._min_data=list(kwargs.values())[1]
+        self.__r_square_level=list(kwargs.values())[0]
+        self.__min_data=list(kwargs.values())[1]
 
-        for (curr_data + self.nb_data) in range(len(self.series)):
+        for curr_data in range(len(self.series)-self.nb_data):
             pass
-
-
-
-
-

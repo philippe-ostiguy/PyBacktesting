@@ -7,24 +7,18 @@ class InputDataframe():
     Class to treat dataframe before manipulate them in indicators
     """
 
-    name_tempo = "_tempo"
-    date_name = 'Date'
-    close_name = 'Close'
-    date_ordinal_name = 'date_ordinal'
-    point_data=0 #rendu où dans les données
-
     def __init__(self,nb_data,date_debut,
                  date_fin,asset):
 
-        self.name_tempor = self.name_tempo
-        self.date_name=self.date_name
-        self.close_name=self.close_name
-        self.date_ordinal_name=self.date_ordinal_name
+        self.name_tempor = "_tempo"
+        self.date_name='Date'
+        self.close_name='Close'
+        self.date_ordinal_name='date_ordinal'
+        self.point_data=0
         self.asset=asset
         self.date_debut=date_debut
         self.date_fin=date_fin
         self.nb_data=nb_data
-        self.point_data=self.point_data
         self.series=self.ordinal_date()
 
     def reverse_csv(self):
@@ -39,7 +33,7 @@ class InputDataframe():
             cw.writerow(next(cr))  # write title as-is
             cw.writerows(reversed(list(cr)))
 
-    def data_frame(self):
+    def __data_frame(self):
         """
          fonction pour retourner le csv sous forme de data frame selon le range désiré avec une colonne
          numérique pour les dates
@@ -60,7 +54,7 @@ class InputDataframe():
         le calcul des indicateurs
         """
         
-        self.series=self.data_frame()
+        self.series=self.__data_frame()
         self.series.Date=pd.to_datetime(self.series.Date)
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
         return self.series
