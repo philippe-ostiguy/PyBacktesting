@@ -13,12 +13,11 @@ import charting as cht
 class Indicator(idf.InputDataframe):
 
 
-    def __init__(self,nb_data,date_debut,date_fin,asset,**indicator):
+    def __init__(self,nb_data,date_debut,date_fin,asset):
 
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
-        self.indicator=indicator
 
-    def calcul_indicator(self):
+    def calcul_indicator(self,**indicator):
 
         """
         Function that return the value of an indicator through desired period, lenght calculation of the
@@ -26,7 +25,7 @@ class Indicator(idf.InputDataframe):
         """
         nb_columns=len(self.series.columns)
 
-        for key,value in self.indicator.items():
+        for key,value in indicator.items():
             self.series[key] = np.nan
             value.point_data = 0
             value.sous_series = self.sous_series_()
@@ -37,3 +36,5 @@ class Indicator(idf.InputDataframe):
                 value.point_data+=1
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
+
+        t=5

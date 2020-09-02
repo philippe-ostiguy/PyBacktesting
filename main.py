@@ -1,7 +1,5 @@
-import indicator as ind
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
-import data_manip.input_dataframe as idf
 import charting as cht
 import trading_rules as tr
 
@@ -12,20 +10,22 @@ asset="MSFT"
 r_square_level=.8
 
 
-class Main(tr.TradingRules):
+class Main(tr.RSquareTr):
 
     def __init__(self):
         rg = lr.RegressionSlopeStrenght(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
         mk_ = mk.MannKendall(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
+
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,
-                         asset=asset,r_square_level=r_square_level,**self.indicator)
+                         asset=asset)
+        super().calcul_indicator(**self.indicator)
 
     def next_main(self):
 
         cht.Charting(**self.indicator).chart(r_square_level=r_square_level,series=self.series)
 
-        t=5
+
 
 if __name__ == '__main__':
     Main().next_main()
