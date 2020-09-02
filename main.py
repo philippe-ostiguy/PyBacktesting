@@ -23,14 +23,14 @@ class Main(tr.RSquareTr):
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
 
         super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,
-                         asset=asset)
-        super().calcul_indicator(**self.indicator)
+                         asset=asset,**self.indicator)
+        super().calcul_indicator()
         super().indicator_signal(**ParamsIndicators.value)
 
 
     def next_main(self):
-
-        cht.Charting(**self.indicator).chart(r_square_level=r_square_level,series=self.series)
+        test=list(ParamsIndicators.value.values())[0]
+        cht.Charting(**self.indicator).chart(r_square_level=.8,series=self.series)
         t=5
 
 

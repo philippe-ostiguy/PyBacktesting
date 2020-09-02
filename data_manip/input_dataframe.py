@@ -42,10 +42,12 @@ class InputDataframe():
          (4 est pour le close)
         """
 
-        self.series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
+        __series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
                                   +self.asset + '.csv', usecols=[0,4],names=[self.date_name,self.close_name],header=0)
-        self.series=self.series.loc[(self.series[self.date_name] >= self.date_debut) & (self.series[self.date_name]
+        self.series=__series.loc[(__series[self.date_name] >= self.date_debut) & (__series[self.date_name]
                                                                                         <= self.date_fin)]
+
+        self.series=self.series.reset_index(drop=True)
         return self.series
 
     def ordinal_date(self):
@@ -57,6 +59,7 @@ class InputDataframe():
         self.series=self.__data_frame()
         self.series.Date=pd.to_datetime(self.series.Date)
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
+
         return self.series
 
 

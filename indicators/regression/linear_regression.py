@@ -23,8 +23,8 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
         Function to return stat in a list
         """
 
-        return stats.linregress(self.sous_series[super().date_ordinal_name],
-                         self.sous_series[super().close_name])
+        return stats.linregress(self.sous_series[self.date_ordinal_name],
+                         self.sous_series[self.close_name])
 
     def slope(self):
         """
