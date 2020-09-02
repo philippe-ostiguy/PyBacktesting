@@ -36,5 +36,3 @@ class Indicator(idf.InputDataframe):
                 value.point_data+=1
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
-
-        t=5
