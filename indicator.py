@@ -13,10 +13,9 @@ import charting as cht
 class Indicator(idf.InputDataframe):
 
 
-    def __init__(self,nb_data,date_debut,date_fin,asset,**kwargs):
+    def __init__(self):
 
-        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
-        self.indicator=kwargs
+        super().__init__()
 
     def calcul_indicator(self):
 

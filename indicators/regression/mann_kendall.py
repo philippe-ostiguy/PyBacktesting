@@ -11,14 +11,14 @@ import numpy as np
 from scipy.stats import norm
 import data_manip.input_dataframe as idfm
 
-class MannKendall(idfm.InputDataframe):
+class MannKendall():
     """
     Mann-Kendall is a non-parametric test to determine if a trend is present over time (using monotonic function)
 
     """
 
-    def __init__(self,nb_data,date_debut,date_fin,asset,alpha=0.00000000001,iteration=True):
-        super().__init__(nb_data=nb_data,date_debut=date_debut,date_fin=date_fin,asset=asset)
+    def __init__(self,alpha=0.00000000001,iteration=True):
+        super().__init__()
         self.alpha=alpha
         self.sous_series=super().sous_series_()
         self.first_iteration=iteration

@@ -2,7 +2,7 @@ from scipy import stats
 import data_manip.input_dataframe as idfm
 import matplotlib.pyplot as plt
 
-class RegressionSlopeStrenght(idfm.InputDataframe):
+class RegressionSlopeStrenght():
     """
     Indicateur qui évalue si la "slope" est différente de 0 pour une régression linéaire
     Valeurs retournées sont 1 (pente positive), -1 (pente négative) et 0 (neutre)
@@ -12,8 +12,8 @@ class RegressionSlopeStrenght(idfm.InputDataframe):
     """
 
 
-    def __init__(self,nb_data, asset, date_debut, date_fin):
-        super().__init__(nb_data=nb_data, asset=asset, date_debut=date_debut, date_fin=date_fin)
+    def __init__(self):
+        super().__init__()
         self.sous_series=super().sous_series_()
 
 

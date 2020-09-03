@@ -1,24 +1,20 @@
 import csv
 import pandas as pd
 import datetime as dt
+import initialize as init
 
-class InputDataframe():
+class InputDataframe(init.Initialize):
     """
     Class to treat dataframe before manipulate them in indicators
     """
 
-    def __init__(self,nb_data,date_debut,
-                 date_fin,asset):
+    def __init__(self):
 
-        self.name_tempor = "_tempo"
-        self.date_name='Date'
-        self.close_name='Close'
-        self.date_ordinal_name='date_ordinal'
-        self.point_data=0
-        self.asset=asset
-        self.date_debut=date_debut
-        self.date_fin=date_fin
-        self.nb_data=nb_data
+        super().__init__()
+
+        #No need to change them here
+        self.__name_tempor = "_tempo"
+
         self.series=self.ordinal_date()
 
     def reverse_csv(self):
@@ -27,7 +23,7 @@ class InputDataframe():
         la première ligne qui contient le nom des colonnes n'est pas touchée
         """
 
-        with open(self.asset + ".csv") as fr, open(self.asset + self.name_tempor + ".csv","w") as fw:
+        with open(self.asset + ".csv") as fr, open(self.asset + __name_tempor + ".csv","w") as fw:
             cr = csv.reader(fr,delimiter=",")
             cw = csv.writer(fw,delimiter=",")
             cw.writerow(next(cr))  # write title as-is
@@ -43,9 +39,9 @@ class InputDataframe():
         """
 
         __series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-                                  +self.asset + '.csv', usecols=[0,4],names=[self.date_name,self.close_name],header=0)
-        self.series=__series.loc[(__series[self.date_name] >= self.date_debut) & (__series[self.date_name]
-                                                                                        <= self.date_fin)]
+                                  + self.asset + '.csv', usecols=[0,4],names=[__date_name,__close_name],header=0)
+        self.series=__series.loc[(__series[__date_name] >= self.__date_debut) & (__series[date_name]
+                                                                                        <= self.__date_fin)]
 
         self.series=self.series.reset_index(drop=True)
         return self.series
@@ -58,14 +54,13 @@ class InputDataframe():
         
         self.series=self.__data_frame()
         self.series.Date=pd.to_datetime(self.series.Date)
-        self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
+        self.series[__date_ordinal_name] = pd.to_datetime(self.series[self.__date_name]).map(dt.datetime.toordinal)
 
         return self.series
 
-
     def sous_series_(self,point_data=0):
         """
-        Retourne la serie selon la qté de données nécessaires pour la calcul de l'indicateur
+        Retourne la serie selon la qté de données nécessaires pour la calcul de l'indicateur (itération)
         """
 
         self.sous_series=self.series.iloc[point_data:point_data+self.nb_data,:]
