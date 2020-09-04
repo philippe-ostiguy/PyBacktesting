@@ -4,22 +4,20 @@ import charting as cht
 import trading_rules as tr
 
 
-
 class Main(tr.RSquareTr):
 
     def __init__(self):
 
         super().__init__()
         super().calcul_indicator()
-        super().indicator_signal()
-
+        super().signal_trig()
 
     def next_main(self):
 
-        cht.Charting(**self.indicator).chart(r_square_level=self.r_square_level,series=self.series)
+        cht.Charting(**self.indicator).chart(r_square_name=list(self.indicator.keys())[1],
+                                             column_price=self.adj_close_name,series=self.series,
+                                             r_square_level=self.r_square_level )
 
 
 if __name__ == '__main__':
     Main().next_main()
-
-

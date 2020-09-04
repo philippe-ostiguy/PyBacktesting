@@ -14,7 +14,6 @@ class InputDataframe(init.Initialize):
 
         #No need to change them here
         self.__name_tempor = "_tempo"
-
         self.series=self.ordinal_date()
 
     def reverse_csv(self):
@@ -39,9 +38,9 @@ class InputDataframe(init.Initialize):
         """
 
         __series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-                                  + self.asset + '.csv', usecols=[0,4],names=[__date_name,__close_name],header=0)
-        self.series=__series.loc[(__series[__date_name] >= self.__date_debut) & (__series[date_name]
-                                                                                        <= self.__date_fin)]
+                               + self.asset + '.csv', usecols=[0,5], names=[self.date_name, self.adj_close_name], header=0)
+        self.series=__series.loc[(__series[self.date_name] >= self.date_debut) & (__series[self.date_name]
+                                                                                        <= self.date_fin)]
 
         self.series=self.series.reset_index(drop=True)
         return self.series
@@ -54,7 +53,7 @@ class InputDataframe(init.Initialize):
         
         self.series=self.__data_frame()
         self.series.Date=pd.to_datetime(self.series.Date)
-        self.series[__date_ordinal_name] = pd.to_datetime(self.series[self.__date_name]).map(dt.datetime.toordinal)
+        self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
 
         return self.series
 

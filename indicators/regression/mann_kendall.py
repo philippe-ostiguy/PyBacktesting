@@ -9,9 +9,10 @@ by : Philippe Ostiguy
 from __future__ import division
 import numpy as np
 from scipy.stats import norm
-import data_manip.input_dataframe as idfm
+import data_manip.input_dataframe as idf
+import initialize as init
 
-class MannKendall():
+class MannKendall(init.Initialize):
     """
     Mann-Kendall is a non-parametric test to determine if a trend is present over time (using monotonic function)
 
@@ -20,9 +21,11 @@ class MannKendall():
     def __init__(self,alpha=0.00000000001,iteration=True):
         super().__init__()
         self.alpha=alpha
-        self.sous_series=super().sous_series_()
         self.first_iteration=iteration
         self.nb_sign=0
+
+        self.sous_series=getattr(idf.InputDataframe(),'sous_series_')()
+
 
     def mk(self):
 
@@ -65,7 +68,7 @@ class MannKendall():
                             +1 if there is positive trend (at the significance level)
 
         """
-        sous_series_ = self.sous_series.loc[:,"Close"]
+        sous_series_ = self.sous_series.loc[:,self.adj_close_name]
         n = len(sous_series_)
 
         # calculate positive and negative sign
@@ -79,8 +82,10 @@ class MannKendall():
             for k in range(n-1):
                 self.nb_sign += np.sign(sous_series_.values[n-1] - sous_series_.values[k])
 
-            self.sous_series=self.sous_series_(point_data=self.point_data-1)
-            sous_series_=self.sous_series.loc[:,"Close"]
+            self.sous_series= getattr(idf.InputDataframe(), 'sous_series_')(point_data=self.point_data-1)
+
+            #self.sous_series=idf_.sous_series_(point_data=self.point_data-1)
+            sous_series_= self.sous_series.loc[:,self.adj_close_name]
             n = len(sous_series_)
             for k in range(n-1):
                 self.nb_sign -= np.sign(sous_series_.values[k+1] - sous_series_.values[0])

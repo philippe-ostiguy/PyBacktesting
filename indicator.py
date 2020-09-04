@@ -17,6 +17,14 @@ class Indicator(idf.InputDataframe):
 
         super().__init__()
 
+        rg = lr.RegressionSlopeStrenght()
+        mk_ = mk.MannKendall()
+        self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
+
+        self.slope_key=list(self.indicator.keys())[0]
+        self.r_square_key=list(self.indicator.keys())[1]
+
+
     def calcul_indicator(self):
 
         """
@@ -36,3 +44,4 @@ class Indicator(idf.InputDataframe):
                 value.point_data+=1
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
+        t=5

@@ -23,14 +23,14 @@ class Charting():
             count2 += 1
 
     @classmethod
-    def chart(cls, series, column_date=0, r_square_level=.8,column_price='Close'):
+    def chart(cls,r_square_name, series,column_price, column_date=0, r_square_level=.8):
 
         date_name = series.columns[column_date]
 
-
+        #When r2 is higher than desired level, we have a mark on chart
         first_index = series.first_valid_index()
         tempo_mark=[]
-        tempo_mark= series.loc[series['r_square']>r_square_level].index.tolist()
+        tempo_mark= series.loc[series[r_square_name]>r_square_level].index.tolist()
         mark_= [i - first_index for i in tempo_mark]
 
         cls.candle.plot(date_name, column_price, markevery =mark_, marker = "o",data = series)

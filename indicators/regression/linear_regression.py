@@ -1,8 +1,10 @@
 from scipy import stats
-import data_manip.input_dataframe as idfm
+import initialize as init
+import data_manip.input_dataframe as idf
 import matplotlib.pyplot as plt
 
-class RegressionSlopeStrenght():
+
+class RegressionSlopeStrenght(init.Initialize):
     """
     Indicateur qui évalue si la "slope" est différente de 0 pour une régression linéaire
     Valeurs retournées sont 1 (pente positive), -1 (pente négative) et 0 (neutre)
@@ -14,8 +16,9 @@ class RegressionSlopeStrenght():
 
     def __init__(self):
         super().__init__()
-        self.sous_series=super().sous_series_()
 
+        idf_ = idf.InputDataframe()
+        self.sous_series=idf_.sous_series_()
 
     def __store_stat(self):
 
@@ -24,7 +27,7 @@ class RegressionSlopeStrenght():
         """
 
         return stats.linregress(self.sous_series[self.date_ordinal_name],
-                         self.sous_series[self.close_name])
+                                self.sous_series[self.adj_close_name])
 
     def slope(self):
         """
