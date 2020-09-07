@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+import numpy as np
 import datetime as dt
 import initialize as init
 
@@ -14,6 +15,7 @@ class InputDataframe(init.Initialize):
 
         #No need to change them here
         self.__name_tempor = "_tempo"
+        self.__index_nb = 0
         self.series=self.ordinal_date()
 
     def reverse_csv(self):
@@ -22,11 +24,30 @@ class InputDataframe(init.Initialize):
         la première ligne qui contient le nom des colonnes n'est pas touchée
         """
 
-        with open(self.asset + ".csv") as fr, open(self.asset + __name_tempor + ".csv","w") as fw:
+        with open(self.asset + ".csv") as fr, open(self.asset + self.__name_tempor + ".csv","w") as fw:
             cr = csv.reader(fr,delimiter=",")
             cw = csv.writer(fw,delimiter=",")
             cw.writerow(next(cr))  # write title as-is
             cw.writerows(reversed(list(cr)))
+
+
+    def col_numb(self):
+        """
+        Determine column number based on header name in file + header we want to use (in initialize.py)
+        """
+
+        with open(self.asset + ".csv") as file:
+            reader = csv.reader(file,delimiter=",")
+            col_name = next(reader)
+
+        for col_number in range(len(self.name.columns)):
+            for col_number_ in range(len(col_name)):
+                if self.name.columns[col_number]==col_name[col_number_]:
+                    self.name.loc[self.__index_nb,self.name.columns[col_number]]=int(col_number_)
+                    break
+
+            if self.name[self.name.columns[col_number]].empty:
+                raise Exception('Column name "{}" odoes not exist in database'.format(self.name.columns[col_number]))
 
     def __data_frame(self):
         """
@@ -37,8 +58,10 @@ class InputDataframe(init.Initialize):
          (4 est pour le close)
         """
 
-        __series = pd.read_csv('/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-                               + self.asset + '.csv', usecols=[0,5], names=[self.date_name, self.adj_close_name], header=0)
+        self.col_numb()
+        __series = pd.read_csv(self.directory
+                               + self.asset + '.csv', usecols=list(self.name.columns),
+                               names=list(self.name.columns), header=0)
         self.series=__series.loc[(__series[self.date_name] >= self.date_debut) & (__series[self.date_name]
                                                                                         <= self.date_fin)]
 
@@ -56,6 +79,7 @@ class InputDataframe(init.Initialize):
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
 
         return self.series
+
 
     def sous_series_(self,point_data=0):
         """
