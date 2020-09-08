@@ -83,12 +83,12 @@ class EntFibo(init.Initialize):
 
         local_extremum=cls.mo_.local_extremum(start_point=start_point, end_point=cls.curr_row, window=cls.window)
 
-        for curr_row_ in range(cls.curr_row - start_point + 1):
+        for curr_row_ in range(len(local_extremum)):
             if cls.buy_signal:
-                pass
+                local_low = local_extremum.loc[curr_row_,cls.min]
 
             if cls.sell_signal:
-                pass
+                local_low = local_extremum.loc[curr_row_, cls.min]
 
     @classmethod
     def __extension(cls):
