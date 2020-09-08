@@ -9,7 +9,6 @@ by : Philippe Ostiguy
 from __future__ import division
 import numpy as np
 from scipy.stats import norm
-import data_manip.input_dataframe as idf
 import initialize as init
 
 class MannKendall(init.Initialize):
@@ -24,8 +23,7 @@ class MannKendall(init.Initialize):
         self.first_iteration=iteration
         self.nb_sign=0
 
-        self.sous_series=getattr(idf.InputDataframe(),'sous_series_')()
-
+        self.sous_series=getattr(init.Initialize(),'sous_series_')()
 
     def mk(self):
 
@@ -68,7 +66,7 @@ class MannKendall(init.Initialize):
                             +1 if there is positive trend (at the significance level)
 
         """
-        sous_series_ = self.sous_series.loc[:,self.adj_close_name]
+        sous_series_ = self.sous_series.loc[:,self.default_data]
         n = len(sous_series_)
 
         # calculate positive and negative sign
@@ -82,10 +80,10 @@ class MannKendall(init.Initialize):
             for k in range(n-1):
                 self.nb_sign += np.sign(sous_series_.values[n-1] - sous_series_.values[k])
 
-            self.sous_series= getattr(idf.InputDataframe(), 'sous_series_')(point_data=self.point_data-1)
+            self.sous_series= getattr(init.Initialize(), 'sous_series_')(point_data=self.point_data-1)
 
             #self.sous_series=idf_.sous_series_(point_data=self.point_data-1)
-            sous_series_= self.sous_series.loc[:,self.adj_close_name]
+            sous_series_= self.sous_series.loc[:,self.default_data]
             n = len(sous_series_)
             for k in range(n-1):
                 self.nb_sign -= np.sign(sous_series_.values[k+1] - sous_series_.values[0])

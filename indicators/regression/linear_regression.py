@@ -1,7 +1,5 @@
 from scipy import stats
 import initialize as init
-import data_manip.input_dataframe as idf
-import matplotlib.pyplot as plt
 
 
 class RegressionSlopeStrenght(init.Initialize):
@@ -17,8 +15,8 @@ class RegressionSlopeStrenght(init.Initialize):
     def __init__(self):
         super().__init__()
 
-        idf_ = idf.InputDataframe()
-        self.sous_series=idf_.sous_series_()
+        init_ = init.Initialize()
+        self.sous_series=init_.sous_series_()
 
     def __store_stat(self):
 
@@ -27,7 +25,7 @@ class RegressionSlopeStrenght(init.Initialize):
         """
 
         return stats.linregress(self.sous_series[self.date_ordinal_name],
-                                self.sous_series[self.adj_close_name])
+                                self.sous_series[self.default_data])
 
     def slope(self):
         """

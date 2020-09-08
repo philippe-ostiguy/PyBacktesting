@@ -4,13 +4,11 @@ Return the values of indicator of our choice through the desired timeframe, leng
 
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
-import data_manip.input_dataframe as idf
+import initialize as init
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import charting as cht
 
-class Indicator(idf.InputDataframe):
+
+class Indicator(init.Initialize):
 
 
     def __init__(self):
@@ -30,18 +28,19 @@ class Indicator(idf.InputDataframe):
         """
         Function that return the value of an indicator through desired period, lenght calculation of the
         indicator
+
+        The indicator always take into account the value of price for the same row. Ex: We are at row 99, the indicator
+        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter the
+        market (or exit) on the next row (value)
         """
         nb_columns=len(self.series.columns)
 
         for key,value in self.indicator.items():
             self.series[key] = np.nan
             value.point_data = 0
-            value.sous_series = self.sous_series_()
-            value_ = getattr(value,key)()
 
             for row in range(len(self.series.index)-self.nb_data+1):
-                self.series.loc[self.series.index[row]+self.nb_data-1,key]=value_
-                value.point_data+=1
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
-        t=5
+                self.series.loc[self.series.index[row]+self.nb_data-1,key]=value_
+                value.point_data+=1
