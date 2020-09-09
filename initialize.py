@@ -32,8 +32,8 @@ class Initialize():
         self.close_name = 'Close'
         self.adj_close_name = 'Adj Close'
 
-        self.rel_low= ['min']
-        self.rel_high = ['max']
+        self.rel_low= 'min'
+        self.rel_high = 'max'
 
         #Decide which data type we need in our testing
         self.__name_col={

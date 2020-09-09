@@ -1,6 +1,7 @@
 import math_op as mo
 import initialize as init
 import operator as op
+import math
 
 """
 Trying to enter the market with fibonacci retracement and extension. 3 types:
@@ -50,12 +51,21 @@ class EntFibo(init.Initialize):
         if buy_signal and sell_signal :
             raise Exception('Cannot have a buy and sell signal at the same time')
 
-        cls.mo_ = mo.MathOp(series=cls.series, default_col=cls.default_data)
-
         cls.set_extremum()
-        if cls.extension:
-            cls.__set_extension()
 
+        if cls.buy_signal:
+            start_point=cls.low_idx
+
+        if cls.sell_signal:
+            start_point=cls.high_idx
+
+        cls.mo_ = mo.MathOp(series=cls.series, default_col=cls.default_data)
+        cls.local_extremum_=cls.mo_.local_extremum(start_point=start_point, end_point=cls.curr_row, window=cls.window)
+
+        if cls.extension:
+            cls.largest_extension()
+
+        t = 5
 
     @classmethod
     def set_extremum(cls):
@@ -66,29 +76,80 @@ class EntFibo(init.Initialize):
         cls.high_idx=data_range.idxmax()
         cls.low_idx = data_range.idxmin()
 
-
     @classmethod
-    def __set_extension(cls):
+    def largest_extension(cls):
         """
         Find largest extension from current trend
         """
 
         if cls.buy_signal:
-            start_point=cls.low_idx
-            string_operator=op.ge
+            fst_op=op.gt
+            sec_op = op.lt
+            my_data={}
+            fst_data='curr_high'
+            sec_data='curr_low'
+            my_data[fst_data]=None
+            my_data[sec_data] = None
+            fst_name=cls.rel_high
+            sec_name=cls.rel_low
 
         if cls.sell_signal:
-            start_point=cls.high_idx
-            string_operator=op.le
+            fst_op=op.lt
+            sec_op=op.gt
+            my_data={}
+            fst_data='curr_low'
+            sec_data='curr_high'
+            my_data[fst_data]=None
+            my_data[sec_data] = None
+            fst_name=cls.rel_low
+            sec_name=cls.rel_high
 
-        local_extremum=cls.mo_.local_extremum(start_point=start_point, end_point=cls.curr_row, window=cls.window)
+        curr_row_ = 0
+        while curr_row_ < len(cls.local_extremum_):
+            if  my_data[fst_data] == None:
+                my_data[fst_data] = cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(fst_name)]
+                curr_row_+=1
+                continue
 
-        for curr_row_ in range(len(local_extremum)):
-            if cls.buy_signal:
-                local_low = local_extremum.loc[curr_row_,cls.min]
+            if (math.isnan(my_data[fst_data]) \
+                 | fst_op(cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(fst_name)], \
+                          my_data[fst_data])) & (my_data[sec_data] == None):
+                my_data[fst_data] = cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(fst_name)]
+                curr_row_+=1
+                continue
 
-            if cls.sell_signal:
-                local_low = local_extremum.loc[curr_row_, cls.min]
+            if my_data[sec_data] == None:
+                my_data[sec_data] = cls.local_extremum_.iloc[curr_row_, cls.local_extremum_.columns.get_loc(sec_name)]
+                curr_row_+=1
+                if curr_row_ ==  len(cls.local_extremum_):
+                    pass
+                else:
+                    continue
+
+            if (math.isnan(my_data[sec_data])) \
+                    | sec_op(cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(sec_name)], \
+                         my_data[sec_data]):
+                my_data[sec_data] = cls.local_extremum_.iloc[curr_row_, cls.local_extremum_.columns.get_loc(sec_name)]
+                curr_row_+=1
+                if curr_row_ ==  len(cls.local_extremum_):
+                    pass
+                else:
+                    continue
+
+            if not hasattr(cls,'largest_extension_'):
+                cls.largest_extension_ = my_data[sec_data] - my_data[fst_data]
+                my_data[fst_data] = None
+                my_data[sec_data] = None
+                continue
+
+            if sec_op((my_data[sec_data] - my_data[fst_data]), cls.largest_extension_):
+                cls.largest_extension_ = my_data[sec_data] - my_data[fst_data]
+                my_data[fst_data] = None
+                my_data[sec_data] = None
+                continue
+
+            my_data[fst_data] = None
+            my_data[sec_data] = None
 
     @classmethod
     def __extension(cls):
