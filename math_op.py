@@ -43,12 +43,12 @@ class MathOp():
                                                           order=window)[0]][cls.default_col]
 
         # Plot results - to get ride when finished
-        """ 
+
         plt.scatter(cls.series.index, cls.series[min_], c='r')
         plt.scatter(cls.series.index, cls.series[max_], c='g')
         plt.plot(cls.series.index, cls.series[cls.default_col])
         plt.show()
-        """
+
 
         #Filter nan value for min or max out
         cls.series=cls.series.loc[(cls.series[min_].isna())==False | (cls.series[max_].isna() == False)]

@@ -56,6 +56,9 @@ class Initialize():
         self.date_ordinal_name = 'date_ordinal'
         self.point_data=0
 
+        #PARAMS TO OPTIMIZE STARTS HERE
+        #------------------------------
+
         # Set desired value to test the indicator
         self.date_debut = '2004-05-20'
         self.date_fin = '2005-07-20'
@@ -64,9 +67,16 @@ class Initialize():
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
+
         # Indicator value to trigger a signal
         self.r_square_level = .8
         self.min_data = 100  # nb of data between a signal
+
+
+        self.cdt_ext = .618 #% of largest extension at which if the market reaches, the system
+                            # stops trying to enter in the market
+        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market if the current
+                                # price reach a % of the largest extension
 
 
         #No need to change them here- should not
