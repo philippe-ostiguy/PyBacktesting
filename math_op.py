@@ -7,6 +7,12 @@ import numpy as np
 import pandas as pd
 
 class MathOp():
+    """ Class to provide mathematical operation support
+
+
+
+    """
+
 
     @classmethod
     def __init__(cls,series,default_col):
@@ -15,23 +21,28 @@ class MathOp():
 
     @classmethod
     def local_extremum(cls,start_point,end_point,window = 6,min_= 'min',max_='max' ):
-        """
-
-        Purpose
-        -------
-        Function to find local extremum (min and max) on stock price on a ran, we check current price versus past and future price.
+        """ Function to find local extremum (min and max) on a Dataframe
 
 
         Parameters
         ----------
-        window : the number of the data we check before and after to determine the  local extremum.
-                window by default is 6
+        start_point : int
+            the first data (index) to check in the Dataframe
+        end_point : int
+            the last data (index) to check in the Dataframe
+        window : int
+            the number of the data the method check before and after to determine the local extremum (default is 6)
+        min_ : str
+            Name given to min data column
+        max_ : str
+            Name given to max data column
 
 
-        Returns
+        Return
         ------
-        Return a pandas dataframe with not empty min or max value (if both are empty, not return. If one of
-        them has a value, return the local min or max with index no)
+        DataFrame list : Return a pandas dataframe `cls.series` with the none empty min or max value
+            (if both are empty, nothing is returned. If one of
+            them has a value, return the local min or max with index no)
         """
 
         cls.series=cls.series.loc[start_point:end_point,cls.default_col]
@@ -48,7 +59,6 @@ class MathOp():
         plt.scatter(cls.series.index, cls.series[max_], c='g')
         plt.plot(cls.series.index, cls.series[cls.default_col])
         plt.show()
-
 
         #Filter nan value for min or max out
         cls.series=cls.series.loc[(cls.series[min_].isna())==False | (cls.series[max_].isna() == False)]

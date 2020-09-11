@@ -10,15 +10,16 @@ Module to initialize the value
 
 class Initialize():
     """
-    IMPORTANT NOTE
-        Indicator to test are in the indicator.py file
-        Could be improved to set them here in Initialize()
+    IMPORTANT NOTES
+        - Indicators to test are in the indicator.py file
+        To improve the program, the indicators should be initialized in this module (initialize.py)
+        - In entry_fibo, some improvements could be done... (see not in module entry_fibo.py)
     """
 
     def __init__(self,class_method=False):
 
         """
-        Initialize all the value here
+        Initialize all the value here, and in the darkness bind them
         """
 
         #directory where our data are
@@ -60,8 +61,8 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2004-05-20'
-        self.date_fin = '2005-07-20'
+        self.date_debut = '2003-05-20'
+        self.date_fin = '2004-08-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -72,11 +73,14 @@ class Initialize():
         self.r_square_level = .8
         self.min_data = 100  # nb of data between a signal
 
-
-        self.cdt_ext = .618 #% of largest extension at which if the market reaches, the system
+        #These params are conditions to stop trying entering the market if the current
+        # price reach a % of the largest extension
+        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market
+        self.fst_cdt_ext = .618 #% of largest extension at which if the market reaches, the system
                             # stops trying to enter in the market
-        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market if the current
-                                # price reach a % of the largest extension
+        self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
+                                #opposite direction, the system brings the stop loss closer to the last peak or low (default
+                                #value = adj. close
 
 
         #No need to change them here- should not
