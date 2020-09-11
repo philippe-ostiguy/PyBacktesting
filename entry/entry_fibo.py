@@ -148,6 +148,18 @@ class EntFibo(init.Initialize):
         curr_row_ = 0
 
         while curr_row_ < len(cls.local_extremum_):
+            if curr_row_ ==7:
+                t=5
+
+            #It checks at the second last data, if there is a data for second_name (new relative high for sell
+            # or new relative low for buy), it just basically don't check it, because it is not a real extension
+            if curr_row_ == (len(cls.local_extremum_) -1):
+                    if not math.isnan(cls.local_extremum_.iloc[curr_row_, \
+                            cls.local_extremum_.columns.get_loc(sec_name)]) & \
+                    (curr_row_ == (len(cls.local_extremum_) -1 )):
+                        break
+
+                    pass
 
             if  my_data[fst_data] == None:
                 my_data[fst_data] = cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(fst_name)]
@@ -159,7 +171,7 @@ class EntFibo(init.Initialize):
                     test = cls.local_extremum_.iloc[t_curr_row, cls.local_extremum_.columns.get_loc(fst_name)]
 
                 except:
-                    continue
+                    break
 
                 while not math.isnan(cls.local_extremum_.iloc[t_curr_row, \
                                                               cls.local_extremum_.columns.get_loc(fst_name)]) & (
@@ -176,7 +188,7 @@ class EntFibo(init.Initialize):
                         test = cls.local_extremum_.iloc[t_curr_row, cls.local_extremum_.columns.get_loc(fst_name)]
 
                     except:
-                        continue
+                        break
 
                 t_curr_row = 0
                 continue
@@ -193,6 +205,8 @@ class EntFibo(init.Initialize):
                 curr_row_+=1
 
                 if curr_row_ ==  len(cls.local_extremum_):
+                    if math.isnan(my_data[sec_data]):
+                        break
                     pass
 
                 else:
@@ -202,7 +216,7 @@ class EntFibo(init.Initialize):
                         test = cls.local_extremum_.iloc[t_curr_row, cls.local_extremum_.columns.get_loc(sec_name)]
 
                     except:
-                        continue
+                        break
 
                     while not math.isnan(cls.local_extremum_.iloc[t_curr_row, \
                      cls.local_extremum_.columns.get_loc(sec_name)]) & (t_curr_row < len(cls.local_extremum_)):
@@ -219,24 +233,26 @@ class EntFibo(init.Initialize):
                             test = cls.local_extremum_.iloc[t_curr_row, cls.local_extremum_.columns.get_loc(fst_name)]
 
                         except:
-                            continue
+                            break
 
                     t_curr_row = 0
                     continue
 
+            if curr_row_ !=  len(cls.local_extremum_):
+                if (math.isnan(my_data[sec_data])) \
+                        | cls.sec_op(cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(sec_name)], \
+                             my_data[sec_data]):
+                    my_data[sec_data] = cls.local_extremum_.iloc[curr_row_, cls.local_extremum_.columns.get_loc(sec_name)]
 
-            if (math.isnan(my_data[sec_data])) \
-                    | cls.sec_op(cls.local_extremum_.iloc[curr_row_,cls.local_extremum_.columns.get_loc(sec_name)], \
-                         my_data[sec_data]):
-                my_data[sec_data] = cls.local_extremum_.iloc[curr_row_, cls.local_extremum_.columns.get_loc(sec_name)]
+                    curr_row_+=1
 
-                curr_row_+=1
+                    if curr_row_ == len(cls.local_extremum_):
+                        if math.isnan(my_data[sec_data]):
+                            break
+                        pass
 
-                if curr_row_ == len(cls.local_extremum_):
-                    pass
-                
-                else:
-                    continue
+                    else:
+                        continue
 
             if not hasattr(cls,'largest_extension_'):
                 cls.largest_extension_ = cls.inv*(my_data[sec_data] - my_data[fst_data])
@@ -348,7 +364,7 @@ class EntFibo(init.Initialize):
 
         """Method which try to exit the market.
 
-        The goal of this method is to exit the market when a close signal is triggered or a stop loss is
+        This method exit the market when a close signal is triggered or a stop loss is
         trigerred
 
         Notes
@@ -381,7 +397,7 @@ class EntFibo(init.Initialize):
     
         # Buy or sell signal (exit)
         #   - Buy if current market price goes below our signal or equal
-        #   - Sell if current market price goee above our signal or equal
+        #   - Sell if current market price goes above our signal or equal
 
         if cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data], cls.largest_extension_), \
                       cls.series.loc[cls.curr_row, cls.entry]):

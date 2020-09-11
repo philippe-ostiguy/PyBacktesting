@@ -18,8 +18,13 @@ class Initialize():
 
     def __init__(self,class_method=False):
 
-        """
-        Initialize all the value here, and in the darkness bind them
+        """ Initialize all the value here we want, and in the darkness bind them (well, not really bind,
+        but anyway...)
+
+        PARAMS
+        ------
+
+
         """
 
         #directory where our data are
@@ -61,17 +66,19 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2003-05-20'
-        self.date_fin = '2004-08-20'
+        self.date_debut = '2001-01-20'
+        self.date_fin = '2002-04-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
-
         # Indicator value to trigger a signal
         self.r_square_level = .8
         self.min_data = 100  # nb of data between a signal
+
+        #Params for entry
+
 
         #These params are conditions to stop trying entering the market if the current
         # price reach a % of the largest extension
@@ -162,5 +169,5 @@ class Initialize():
         self.sous_series=self.series.iloc[point_data:point_data+self.nb_data,:]
 
         if self.nb_data > len(self.series):
-            raise Exception("Nombre de données pour calcul de l'indicateur plus grand que le nb de données dispo")
+            raise Exception("Number of necessary data to calculate the indicator lower than available data")
         return self.sous_series
