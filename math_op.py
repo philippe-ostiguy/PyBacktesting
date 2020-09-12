@@ -9,10 +9,7 @@ import pandas as pd
 class MathOp():
     """ Class to provide mathematical operation support
 
-
-
     """
-
 
     @classmethod
     def __init__(cls,series,default_col):

@@ -8,7 +8,7 @@ import math
 class EntFibo(init.Initialize):
 
     @classmethod
-    def __init__(cls,series,last_retracement = True, first_retracement = True, extension = True):
+    def __init__(cls,series):
 
         """ Class that uses Fibonnacci strategy to enter and exit from the market
 
@@ -22,13 +22,8 @@ class EntFibo(init.Initialize):
 
         Parameters
         ----------
-            last_retracement : bool
-                Tell the system if it trys to enter and exit the market using the last low
-            - first_retracement is to say if we try to retrace from the beginning of the trend
-            - extenstion is to say if we try to buy by extending largest setback from the trend
-            - lenght_trend is to say how long we check for either global extremum or search for the largest
-              setback/retracement (for extension). By default, it's 1.5 times the lenght of the nb_data we use as a
-              parameter to test the indicator (so 50% more)
+        series : DataFrame list
+            Contains all market prices (OHLC) according to the initial date range
 
         Notes (Improvements to do)
         --------------------------
@@ -47,16 +42,14 @@ class EntFibo(init.Initialize):
         """
 
         super().__init__(cls,class_method=True)
-        cls.last_retracement = last_retracement
-        cls.first_retracement = first_retracement
-        cls.extension=extension
+
         cls.series=series
         cls.extreme = {}
-        cls.high="high"
-        cls.low="low"
-        cls.high_idx="high_idx"
-        cls.low_idx = "low_idx"
-        cls.fst_ext_cdt = False
+        cls.high="max"
+        cls.low="min"
+        cls.high_idx="max_idx"
+        cls.low_idx = "min_idx"
+        cls.fst_ext_cdt = False #by default first condition for extension it not met, set to False
 
     @classmethod
     def __call__(cls,curr_row,buy_signal=False,sell_signal=False):
@@ -66,8 +59,11 @@ class EntFibo(init.Initialize):
 
         cls.buy_signal = buy_signal
         cls.sell_signal = sell_signal
-        cls.curr_row = curr_row
+        cls.curr_row = curr_row #Row on which the system has a signal. It has to enter on the next row
         cls.is_entry = False
+        cls.price_entry = 0 #price at which the system enters
+        cls.relative_extreme = 0 #last wave the system uses (relative low bor buy, vice versa) as a basis to calculate
+                            # the profit taking price. It uses the default data (close) to smooth data
 
         cls.first_data = curr_row - cls.nb_data - cls.buffer_extremum + 1
         if cls.first_data < 0:
@@ -76,7 +72,7 @@ class EntFibo(init.Initialize):
         if buy_signal and sell_signal :
             raise Exception('Cannot have a buy and sell signal at the same time')
 
-        cls.set_extremum()
+        cls.set_extremum() #set the absolute high and low on the current trend
 
         if cls.buy_signal:
             start_point=cls.extreme[cls.low_idx]
@@ -111,10 +107,13 @@ class EntFibo(init.Initialize):
             cls.inv = 1
 
         cls.mo_ = mo.MathOp(series=cls.series, default_col=cls.default_data)
-        cls.local_extremum_=cls.mo_.local_extremum(start_point=start_point, end_point=cls.curr_row, window=cls.window)
+        cls.local_extremum_=cls.mo_.local_extremum(start_point=start_point, end_point=cls.curr_row, window=cls.window, \
+                                                   min_=cls.low,max_=cls.high)
+        cls.local_extremum_ = cls.local_extremum_.reset_index(drop=True)
+        #last_index = cls.local_extremum_[cls.sec_data].last_valid_index()
+        #cls.rel_extreme = cls.local_extremum_.at[last_index, cls.sec_data]
 
-        if cls.extension:
-            cls.largest_extension()
+        cls.largest_extension() #finding the largest extension used for potential entry and/or exit
 
         cls.try_entry()
 
@@ -287,56 +286,69 @@ class EntFibo(init.Initialize):
 
     @classmethod
     def try_entry(cls):
-        """ Method to try entering in the market
+        """ Method that try entering in the market
 
         Function that will try to enter in the market :
-                Until we hit the desired extension and/or retracement
+                Until the system hit the desired extension and/or retracement. At the moment, only using extension (the
+                    largest because size matters), which is `cls.largest_extension_` set in function
+                    `cls.largest_extension()`. We can decide the proportion of the largest extension we want the system
+                    to use in module `initialize.py` within dictionary `cls.enter_dict{}` and variable `cls.enter_ext`
+                    (default value is 1)
                 Stop trying to enter in the market when a condition is met
                     (Fibonnacci extension 0.618% of largest past extension)
 
         NOTES
         -----
-        Note that the system will priorise an entry over a new high or new low (to be more conservative). To solve
+        - Note that the system will priorise an entry over a new high or new low (to be more conservative). To solve
         this issue (rare cases, only with high volatility) :
             Check simulateneously if a new high or low is reached &  (if a buy/sell level is trigerred |
                 market hits minimum required extension (if this condition is tested))
             Then, on a shorter timeframe, check if an entry | minimum required extension is reached before the
                 market makes new low or high, vice versa
 
+        - The entry signal are based on extension at the moment. We could check if it true or false for different entry
+        type
+
+        - If the price of the current row on which the signal is trigerred is below the buying level or above the
+        selling level, the system just don't execute it and end it. CHECK THIS... Maybe the system could enter unless
+        the price goes below the stop loss (buy) or above the stop loss (sell)
+
         """
 
-        data_test = len(cls.series)-cls.curr_row-1
+        data_test = len(cls.series) - cls.curr_row-1
 
         if cls.is_entry:
             raise Exception('Already have an open position in the market...')
 
+        cls.relative_extreme = cls.series.loc[cls.curr_row, cls.default_data]
+
         for curr_row_ in range(data_test):
 
-            if cls.buy_signal:
-                pass
-
-            if cls.sell_signal:
-                pass
+            #The system first check if the price on the current row is below (for buy) or above (for sell signal)
+            #If it is the case, the system just don't enter in the market
+            if curr_row_ == 0 & cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data],cls.largest_extension_*\
+                        cls.enter_dict[cls.enter_ext_name][cls.enter_ext]),\
+                          cls.series.loc[cls.curr_row,cls.entry]):
+                cls.is_entry = False
+                break
 
             cls.curr_row += 1
 
-            relative_extreme = cls.series.loc[cls.curr_row, cls.default_data]
-
-            #Buy or sell signal (entry)
+            #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goee above our signal or equal
-            if cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data],cls.largest_extension_),\
+            if cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data],cls.largest_extension_*\
+                        cls.enter_dict[cls.enter_ext_name][cls.enter_ext]),\
                           cls.series.loc[cls.curr_row,cls.entry]):
-
                 cls.is_entry = True
+                cls.price_entry=cls.series.loc[cls.curr_row,cls.entry]
+                cls.relative_extreme = cls.series.loc[cls.curr_row,cls.default_data]
                 break
 
             #Market hits the minimum required extension - first condition met (point to enter in the market)
             if cls.bol_st_ext & cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data], \
                         cls.largest_extension_ * cls.fst_cdt_ext), cls.series.loc[cls.curr_row,cls.entry]):
-
-                relative_extreme = cls.series.loc[cls.curr_row, cls.entry]
-
+                cls.relative_extreme = cls.series.loc[cls.curr_row, cls.default_data]
                 cls.fst_ext_cdt = True
                 continue
 
@@ -345,13 +357,32 @@ class EntFibo(init.Initialize):
             #       % of the largest extension, previously (61.8% by default)
             #   - It went back then reached the minimum retracement (88.2% by default)
 
-            if cls.bol_st_ext & cls.fst_ext_cdt & \
-                    cls.six_op(cls.fth_op(relative_extreme,cls.inv*(op.sub(relative_extreme, \
+            """ 
+            if cls.buy_signal:
+                start_point = cls.extreme[cls.low_idx]
+                cls.fst_op = op.gt
+                cls.sec_op = op.lt
+                cls.trd_op = op.sub
+                cls.fth_op = op.add
+                cls.fif_op = op.ge
+                cls.six_op = op.le
+                cls.fst_data = cls.high
+                cls.sec_data = cls.low
+                cls.fst_idx = cls.high_idx
+                cls.sec_idx = cls.low_idx
+                cls.entry = cls.stop = cls.low_name
+                cls.exit = cls.high_name
+                cls.inv = -1
+            """
+
+            if cls.bol_st_ext & cls.fst_ext_cdt :
+                if cls.six_op(cls.fth_op(cls.relative_extreme,cls.inv*(op.sub(cls.relative_extreme, \
                         cls.extreme[cls.fst_data])*cls.sec_cdt_ext)),cls.series.loc[cls.curr_row,cls.exit]) :
-                print(f"The market hits previously the required {cls.fst_cdt_ext} % of the largest extension \
+                    print(f"The market hits previously the required {cls.fst_cdt_ext} % of the largest extension \
                        and then retrace in the opposite direction of {cls.sec_cdt_ext}")
 
-                break
+                    break
+                pass
 
             #Changing global low or high if current one is lower or higher
             if cls.fst_op(cls.series.loc[cls.curr_row, cls.default_data], cls.extreme[cls.fst_data]):
@@ -394,8 +425,25 @@ class EntFibo(init.Initialize):
             cls.exit = cls.low_name
             cls.inv = 1
         """
-    
-        # Buy or sell signal (exit)
+
+        data_test = len(cls.series) - cls.curr_row - 1
+
+        #Put cls.entry to false if the system exit the market
+
+
+        #define stop loss and taking profit first
+        #using extension strategy to exit
+        if cls.exit_dict[cls.exit_ext_name][cls.exit_bool]:
+            stop = cls.trd_op(cls.extreme[cls.fst_data], \
+                              cls.exit_dict[cls.exit_ext_name][cls.stop_ext] * cls.largest_extension_)
+            exit_ =
+
+        #HERE
+
+        #if cls.
+
+
+        # Buy or sell signal (taking profit)
         #   - Buy if current market price goes below our signal or equal
         #   - Sell if current market price goes above our signal or equal
 
@@ -405,5 +453,3 @@ class EntFibo(init.Initialize):
         #break
 
         cls.is_entry = False
-
-
