@@ -3,27 +3,20 @@ import initialize as init
 import operator as op
 import math
 
-
-
 class EntFibo(init.Initialize):
 
     @classmethod
-    def __init__(cls,series):
+    def __init__(cls):
 
-        """ Class that uses Fibonnacci strategy to enter and exit from the market
+        """ Class that uses Fibonnacci strategy to enter the market
+
+
 
         Trying to enter the market with Fibonacci retracement and extension. 3 types:
             1- Retracement from the last wave
             2- Retracement from beginning of the trend
             3- Extension from a previous wave (largest one in the last trend)
 
-        Then try to exit the market using Fibonnacci extension or retracement
-
-
-        Parameters
-        ----------
-        series : DataFrame list
-            Contains all market prices (OHLC) according to the initial date range
 
         Notes (Improvements to do)
         --------------------------
@@ -43,7 +36,6 @@ class EntFibo(init.Initialize):
 
         super().__init__(cls,class_method=True)
 
-        cls.series=series
         cls.extreme = {}
         cls.high="max"
         cls.low="min"
@@ -117,8 +109,7 @@ class EntFibo(init.Initialize):
 
         cls.try_entry()
 
-        if cls.is_entry:
-            cls.try_exit()
+        return cls.is_entry
 
     @classmethod
     def largest_extension(cls):
@@ -357,23 +348,6 @@ class EntFibo(init.Initialize):
             #       % of the largest extension, previously (61.8% by default)
             #   - It went back then reached the minimum retracement (88.2% by default)
 
-            """ 
-            if cls.buy_signal:
-                start_point = cls.extreme[cls.low_idx]
-                cls.fst_op = op.gt
-                cls.sec_op = op.lt
-                cls.trd_op = op.sub
-                cls.fth_op = op.add
-                cls.fif_op = op.ge
-                cls.six_op = op.le
-                cls.fst_data = cls.high
-                cls.sec_data = cls.low
-                cls.fst_idx = cls.high_idx
-                cls.sec_idx = cls.low_idx
-                cls.entry = cls.stop = cls.low_name
-                cls.exit = cls.high_name
-                cls.inv = -1
-            """
 
             if cls.bol_st_ext & cls.fst_ext_cdt :
                 if cls.six_op(cls.fth_op(cls.relative_extreme,cls.inv*(op.sub(cls.relative_extreme, \
@@ -389,67 +363,3 @@ class EntFibo(init.Initialize):
 
                 cls.extreme[cls.fst_data] = cls.series.loc[cls.curr_row, cls.default_data]
                 cls.extreme[cls.fst_idx] = cls.curr_row
-
-    @classmethod
-    def try_exit(cls):
-
-        """Method which try to exit the market.
-
-        This method exit the market when a close signal is triggered or a stop loss is
-        trigerred
-
-        Notes
-        -----
-        The stops is tighten if :
-            `self.bol_st_ext` is `True` in `initialize.py` (we tell the system to test this feature) &
-            `self.sec_cdt_ext` in `initialize.py` is met, ie the market rebounces (or setback) to the desired
-                retracement compared to the last peak or low (default value is 0.882 and `self.default_data` used for
-                calculation is `self.adj_close_name`
-
-        """
-
-        """ 
-        if cls.sell_signal:
-            start_point = cls.extreme[cls.high_idx]
-            cls.fst_op=op.lt
-            cls.sec_op=op.gt
-            cls.trd_op=op.add
-            cls.fth_op=op.sub
-            cls.fif_op=op.le
-            cls.six_op=op.ge
-            cls.fst_data = cls.low
-            cls.sec_data = cls.high
-            cls.fst_idx = cls.low_idx
-            cls.sec_idx = cls.high_idx
-            cls.entry = cls.stop = cls.high_name
-            cls.exit = cls.low_name
-            cls.inv = 1
-        """
-
-        data_test = len(cls.series) - cls.curr_row - 1
-
-        #Put cls.entry to false if the system exit the market
-
-
-        #define stop loss and taking profit first
-        #using extension strategy to exit
-        if cls.exit_dict[cls.exit_ext_name][cls.exit_bool]:
-            stop = cls.trd_op(cls.extreme[cls.fst_data], \
-                              cls.exit_dict[cls.exit_ext_name][cls.stop_ext] * cls.largest_extension_)
-            exit_ =
-
-        #HERE
-
-        #if cls.
-
-
-        # Buy or sell signal (taking profit)
-        #   - Buy if current market price goes below our signal or equal
-        #   - Sell if current market price goes above our signal or equal
-
-        if cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data], cls.largest_extension_), \
-                      cls.series.loc[cls.curr_row, cls.entry]):
-            pass
-        #break
-
-        cls.is_entry = False

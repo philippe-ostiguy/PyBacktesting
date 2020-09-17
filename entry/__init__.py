@@ -1,3 +1,3 @@
 """
-Techniques used to enter in the market
+Techniques used to enter the market
 """

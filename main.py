@@ -18,7 +18,6 @@ class Main(tr.RSquareTr):
                                              column_price=self.default_data,series=self.series,
                                              r_square_level=self.r_square_level )
         t=5
-        i=6
 
 if __name__ == '__main__':
     Main().next_main()

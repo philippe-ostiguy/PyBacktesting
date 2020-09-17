@@ -50,7 +50,7 @@ class MathOp():
         cls.series[max_] = cls.series.iloc[argrelextrema(cls.series.values, np.greater_equal,
                                                           order=window)[0]][cls.default_col]
 
-        # Plot results - to get ride when finished
+        # Plot results - to get ride when the project is done. Only as a guideline at the moment
 
         plt.scatter(cls.series.index, cls.series[min_], c='r')
         plt.scatter(cls.series.index, cls.series[max_], c='g')

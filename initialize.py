@@ -17,7 +17,7 @@ class Initialize():
 
     def __init__(self,class_method=False):
 
-        """ Initialize all the values here we want, and in the darkness bind them (well, not really bind,
+        """ Initialize all the values here we want, and in the darkness bind them (well, not really bind them,
         but anyway...)
 
         It is the values that are initialized here and used through the system
