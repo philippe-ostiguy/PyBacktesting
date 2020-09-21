@@ -15,40 +15,35 @@ class Initialize():
         - In entry_fibo, some improvements could be done... (see not in module entry_fibo.py)
     """
 
-    def __init__(self,class_method=False):
 
-        """ Initialize all the values here we want, and in the darkness bind them (well, not really bind them,
-        but anyway...)
+
+    def __init__(self):
+
+        """ Initialize all the values here we want
 
         It is the values that are initialized here and used through the system
 
 
-        Values to initialize
-        --------------------
+        Attributes
+        ----------
 
-        Exit
-        -----
-            Extension
-            ---------
-            self.exit_ext_name : str
-                name of the dictionary key to try to exit the market with Fibonnacci extensions
-            self.exit_ext : bool
-                tells the system if tries to exit (or not) the market using the largest extension as a reference.
-                Ex : largest extension from preivous trend is 1, the system takes profit when it is 2.618 this size. So,
-                when this value is reached, it takes the profit.
-            self.profit_ext :float
-                 % of the largest extension from previous trend that the system uses to exit the market to take profit
-                 (default value is 2.618)
-            self.stop_ext : float
-                    % of the largest extension from previous trend that the system uses as a stop loss
-                 (default value is 1.618)
+            Exit
+            -----
+                Extension
+                ---------
+                self.exit_ext_name : str
+                    name of the dictionary key to try to exit the market with Fibonnacci extensions
+                self.exit_ext : bool
+                    tells the system if tries to exit (or not) the market using the largest extension as a reference.
+                    Ex : largest extension from preivous trend is 1, the system takes profit when it is 2.618 this size. So,
+                    when this value is reached, it takes the profit.
+                self.profit_ext :float
+                     % of the largest extension from previous trend that the system uses to exit the market to take profit
+                     (default value is 2.618)
+                self.stop_ext : float
+                        % of the largest extension from previous trend that the system uses as a stop loss
+                     (default value is 1.618)
 
-
-        Return
-        ------
-        DataFrame list : Return a pandas dataframe `cls.series` with the none empty min or max value
-            (if both are empty, nothing is returned. If one of
-            them has a value, return the local min or max with index no)
         """
 
 
@@ -78,9 +73,6 @@ class Initialize():
         #Value we use by default for chart, extremum, etc.
         self.default_data=self.adj_close_name
 
-        #Number of data (points) we check before and after to find a local min and max
-        #By default, value is 6, but could be optimized between 5 and 7
-        self.window = 6
 
         #Can't touch this
         self.name = pd.DataFrame(self.__name_col)
@@ -90,10 +82,9 @@ class Initialize():
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
 
-
         # Set desired value to test the indicator
-        self.date_debut = '2000-01-20'
-        self.date_fin = '2008-04-20'
+        self.date_debut = '2006-01-20'
+        self.date_fin = '2007-04-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -103,22 +94,29 @@ class Initialize():
         self.r_square_level = .8
         self.min_data = 100  # nb of data between a signal
 
+        #Number of data (points) we check before and after to find a local min and max
+        #By default, value is 6, but could be optimized between 5 and 7
+        self.window = 6
+
         #ENTRY
         #-----
+        # All the possible entry types that the system can do (extension, retracement)
 
         self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
-
         self.enter_ext_name = 'enter_ext_name'
         self.enter_ext = 'enter_ext'
         self.stop_ext = 'stop_ext'
 
         self.enter_dict = {self.enter_ext_name :
                               {self.enter_bool : True,
-                               self.enter_ext: 1, #could be .882 or .764
+                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
+                                                  #the system enters the market
                                }
                           }
 
-
+        #STOP TRY ENTRY
+        #--------------
+        
         #These params are conditions to stop trying entering the market if the current
         # price reach a % of the largest extension
         self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market
@@ -130,6 +128,7 @@ class Initialize():
 
         # EXIT
         # -----
+        # All the possible exit types that the system can do (extension, retracement)
 
         self.exit_bool = 'exit_bool' #same key name for all the exit strategy (located in different dictionary)
 
@@ -139,23 +138,18 @@ class Initialize():
 
         self.exit_dict = {self.exit_ext_name :
                               {self.exit_bool : True,
-                               self.profit_ext : 2.618,
-                               self.stop_ext : 1.618
+                               self.profit_ext : 2.618, #also try 3.382, 4.236
+                               self.stop_ext : 1.618    #also try 2
                                }
+
                           }
-
-
-        # Extension
-        #-----------
-
-
 
         #No need to change them here- should not
         self.__name_tempor = "_tempo"
         self.__index_nb = 0
 
-        if not class_method:
-            self.series=self.ordinal_date()
+
+        self.series=self.ordinal_date()
 
 
     def reverse_csv(self):

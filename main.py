@@ -17,7 +17,6 @@ class Main(tr.RSquareTr):
         cht.Charting(**self.indicator).chart(r_square_name=list(self.indicator.keys())[1],
                                              column_price=self.default_data,series=self.series,
                                              r_square_level=self.r_square_level )
-        t=5
 
 if __name__ == '__main__':
     Main().next_main()

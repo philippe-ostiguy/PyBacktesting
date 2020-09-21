@@ -3,8 +3,8 @@ import entry.entry_fibo as ef
 
 class ExitFibo(ef.EntFibo):
 
-    @classmethod
-    def __init__(cls):
+  
+    def __init__(self,curr_row,buy_signal=False,sell_signal=False):
 
         """ Class that uses Fibonnacci strategy to exit the market.
 
@@ -21,9 +21,18 @@ class ExitFibo(ef.EntFibo):
         """
 
         super().__init__()
+        super().__call__(curr_row=curr_row,buy_signal=buy_signal,sell_signal=sell_signal)
 
-    @classmethod
-    def try_exit(cls):
+
+    def __call__(self):
+
+        # EXIT TRACKER
+        # ----------------
+        # Entry level, tells if the system has a position in the market, buy or sell signal
+        self.price_exit = 0
+        self.try_exit()
+
+    def try_exit(self):
 
         """Method which try to exit the market.
 
@@ -40,46 +49,65 @@ class ExitFibo(ef.EntFibo):
 
         """
 
-        """ 
-        if cls.sell_signal:
-            start_point = cls.extreme[cls.high_idx]
-            cls.fst_op=op.lt
-            cls.sec_op=op.gt
-            cls.trd_op=op.add
-            cls.fth_op=op.sub
-            cls.fif_op=op.le
-            cls.six_op=op.ge
-            cls.fst_data = cls.low
-            cls.sec_data = cls.high
-            cls.fst_idx = cls.low_idx
-            cls.sec_idx = cls.high_idx
-            cls.entry = cls.stop = cls.high_name
-            cls.exit = cls.low_name
-            cls.inv = 1
+
+        #If no entry signal, exit the function
+        if not self.is_entry:
+            return
+
+        """
+        if self.buy_signal:
+            start_point=self.extreme[self.low_idx]
+            self.fst_op=op.gt
+            self.sec_op=op.lt
+            self.trd_op=op.sub
+            self.fth_op=op.add
+            self.fif_op=op.ge
+            self.six_op=op.le
+            self.fst_data = self.high
+            self.sec_data = self.low
+            self.fst_idx = self.high_idx
+            self.sec_idx = self.low_idx
+            self.entry = self.stop = self.low_name
+            self.exit = self.high_name
+            self.inv = -1
         """
 
-        data_test = len(cls.series) - cls.curr_row - 1
+        #Check if the first row (signal) is already below the stop loss (for buy) and vice versa for sell signal
+        #If yes, just not entering in the market
+        if self.is_tentative & self.exit_dict[self.exit_ext_name][self.exit_bool] & \
+            self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
+                            self.largest_extension_* self.exit_dict[self.exit_ext_name][self.stop_ext])):
 
-        # Put cls.entry to false if the system exit the market
+            self.is_entry = False
+            return
+
+        data_test = len(self.series) - self.curr_row - 1
+
+        for curr_row_ in range(data_test):
+
+            pass
+
+
+            # Put self.entry to false if the system exit the market
 
         # define stop loss and taking profit first
         # using extension strategy to exit
-        if cls.exit_dict[cls.exit_ext_name][cls.exit_bool]:
-            stop = cls.trd_op(cls.extreme[cls.fst_data], \
-                              cls.exit_dict[cls.exit_ext_name][cls.stop_ext] * cls.largest_extension_)
+        if self.exit_dict[self.exit_ext_name][self.exit_bool]:
+            stop = self.trd_op(self.extreme[self.fst_data], \
+                              self.exit_dict[self.exit_ext_name][self.stop_ext] * self.largest_extension_)
             # exit_ =
 
         # HERE
 
-        # if cls.
+        # if self.
 
         # Buy or sell signal (taking profit)
         #   - Buy if current market price goes below our signal or equal
         #   - Sell if current market price goes above our signal or equal
 
-        if cls.fif_op(cls.trd_op(cls.extreme[cls.fst_data], cls.largest_extension_), \
-                      cls.series.loc[cls.curr_row, cls.entry]):
+        if self.fif_op(self.trd_op(self.extreme[self.fst_data], self.largest_extension_), \
+                      self.series.loc[self.curr_row, self.entry]):
             pass
         # break
 
-        cls.is_entry = False
+        self.is_entry = False
