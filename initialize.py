@@ -212,8 +212,9 @@ class Initialize():
         self.series.Date=pd.to_datetime(self.series.Date)
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
 
-        return self.series
+        self.series.rename(columns={'open': 'b'})
 
+        return self.series
 
     def sous_series_(self,point_data=0):
         """
