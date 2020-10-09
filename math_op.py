@@ -55,6 +55,7 @@ class MathOp():
         plt.scatter(cls.series.index, cls.series[min_], c='r')
         plt.scatter(cls.series.index, cls.series[max_], c='g')
         plt.plot(cls.series.index, cls.series[cls.default_col])
+        plt.ion()
         plt.show()
 
         #Filter nan value for min or max out

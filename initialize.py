@@ -84,7 +84,7 @@ class Initialize():
 
         # Set desired value to test the indicator
         self.date_debut = '2006-01-20'
-        self.date_fin = '2010-08-20'
+        self.date_fin = '2007-08-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the

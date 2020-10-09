@@ -262,9 +262,7 @@ class EntFibo(init.Initialize):
     
     def set_extremum(self):
         """
-        PURPOSE
-        -------
-        Set the global max and min for the given range (from first_data to curr_row)
+        Set the global max and min for the given range (from first_data to curr_row).
 
         """
 
@@ -281,31 +279,38 @@ class EntFibo(init.Initialize):
 
         Function that will try to enter in the market :
                 Until the system hit the desired extension and/or retracement. At the moment, only using extension (the
-                    largest because size matters), which is `self.largest_extension_` set in function
+                    largest), which is `self.largest_extension_` set in function
                     `self.largest_extension()`. We can decide the proportion of the largest extension we want the system
                     to use in module `initialize.py` within dictionary `self.enter_dict{}` and variable `self.enter_ext`
                     (default value is 1)
-                Stop trying to enter in the market when a condition is met
-                    (Fibonnacci extension 0.618% of largest past extension)
+                Stop trying to enter in the market when a condition is met.
+                    At the moment, the only condition is when the price during a setback hits  a
+                    percentage `self.fst_cdt_ext` (0.618 by default) of the largest extension `self.largest_extension_`
+                    (low for a buy signal and high for a sell signal which is `self.entry`)
+                    AND hits the minimum retracement in the other direction `self.sec_cdt_ext` (.882 by default)
+                    Set true with this `self.bol_st_ext` in `initialize.py.
+
 
         NOTES
         -----
-        - Note that the system will priorise an entry over a new high or new low (to be more conservative). To solve
+        Note that the system will priorise an entry over a new high or new low (to be more conservative). To solve
         this issue (rare cases, only with high volatility) :
             Check simulateneously if a new high or low is reached &  (if a buy/sell level is trigerred |
                 market hits minimum required extension (if this condition is tested))
             Then, on a shorter timeframe, check if an entry | minimum required extension is reached before the
                 market makes new low or high, vice versa
 
-        - The entry signal are based on extension at the moment. We could check if it true or false for different entry
-        type
+        The entry signal are based on extension at the moment. We could check if it true or false
+        for different entry type
 
-        - If the price of the current row on which the signal is trigerred is below the buying level or above the
+        If the price of the current row on which the signal is trigerred is below the buying level or above the
         selling level, the system just don't execute it and end it. CHECK THIS... Maybe the system could enter unless
         the price goes below the stop loss (buy) or above the stop loss (sell)
 
-        - At the moment, the system uses ONLY the extension to try to enter in the market. We may have to change a bit
+        At the moment, the system uses ONLY the extension to try to enter in the market. We may have to change a bit
         of the code if we want the flexibility of using other stuff
+
+
 
         """
 
@@ -331,7 +336,8 @@ class EntFibo(init.Initialize):
 
                     self.is_entry = True
                     self.price_entry = self.series.loc[self.curr_row, self.entry]
-                    self.is_tentative = True #check in the exit if the current price is lower than stop (for buy), vice versa
+                    self.is_tentative = True #check in the exit if the current price is lower than the stop (for buy),
+                                            #vice versa
                     self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
                     break
 
@@ -358,11 +364,8 @@ class EntFibo(init.Initialize):
 
             # The system will stop trying to enter the market :
             #   - first condition (extension) is met. It hit the required
-            #       % of the largest extension, previously (61.8% by default) - low data for buy, high data for sell
+            #       % of the largest extension, previously (61.8% by default) - low for buy, high for sell
             #   - It went back then reached the minimum retracement in the other direction (88.2% by default)
-            #       Using the default_data here for the second condition (retracement in the other direction)
-
-
             if self.bol_st_ext & self.fst_ext_cdt :
                 if self.fif_op(self.series.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :

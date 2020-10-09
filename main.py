@@ -21,5 +21,3 @@ class Main(tr.RSquareTr):
 if __name__ == '__main__':
     Main().next_main()
     t=5
-
-
