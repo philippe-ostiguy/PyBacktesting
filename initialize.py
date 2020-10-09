@@ -84,7 +84,7 @@ class Initialize():
 
         # Set desired value to test the indicator
         self.date_debut = '2006-01-20'
-        self.date_fin = '2007-04-20'
+        self.date_fin = '2010-08-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -116,41 +116,39 @@ class Initialize():
 
         #STOP TRY ENTRY
         #--------------
-        
+
         #These params are conditions to stop trying entering the market if the current
         # price reach a % of the largest extension
-        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market
+
+        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market using extension technic
         self.fst_cdt_ext = .618 #% of largest extension at which if the market reaches, the system
                             # stops trying to enter in the market
         self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
-                                #opposite direction, the system brings the stop loss closer to the last peak or low (default
-                                #value = adj. close
+                                #opposite direction, the system brings the stop loss closer to the last peak or
+                                # low (default value = adj. close
 
         # EXIT
         # -----
         # All the possible exit types that the system can do (extension, retracement)
 
-        self.exit_bool = 'exit_bool' #same key name for all the exit strategy (located in different dictionary)
+        self.exit_name = 'exit_name' #same key name for all the exit strategy (located in different dictionary)
 
-        self.exit_ext_name = 'exit_ext_name'
+        self.exit_ext_bool = 'exit_ext_bool'
         self.profit_ext = 'profit_ext'
         self.stop_ext = 'stop_ext'
 
-        self.exit_dict = {self.exit_ext_name :
-                              {self.exit_bool : True,
+        self.exit_dict = {self.exit_name :
+                              {self.exit_ext_bool : True,
                                self.profit_ext : 2.618, #also try 3.382, 4.236
                                self.stop_ext : 1.618    #also try 2
                                }
-
                           }
 
         #No need to change them here- should not
         self.__name_tempor = "_tempo"
         self.__index_nb = 0
 
-
         self.series=self.ordinal_date()
-
 
     def reverse_csv(self):
         """
@@ -207,7 +205,7 @@ class Initialize():
         dataframe pour ajouter une colonne avec les dates en numérique (pas timestamp), ce qui rend plus facile dans
         le calcul des indicateurs
         """
-        
+
         self.series=self.__data_frame()
         self.series.Date=pd.to_datetime(self.series.Date)
         self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)

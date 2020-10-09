@@ -41,7 +41,6 @@ class EntFibo(init.Initialize):
         self.high_idx="max_idx"
         self.low_idx = "min_idx"
         self.fst_ext_cdt = False #by default first condition for extension it not met, set to False
-
     
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
         """
@@ -140,8 +139,7 @@ class EntFibo(init.Initialize):
         curr_row_ = 0
 
         while curr_row_ < len(self.local_extremum_):
-            if curr_row_ ==7:
-                t=5
+
 
             #It checks at the second last data, if there is a data for second_name (new relative high for sell
             # or new relative low for buy), it just basically don't check it, because it is not a real extension
@@ -306,6 +304,9 @@ class EntFibo(init.Initialize):
         selling level, the system just don't execute it and end it. CHECK THIS... Maybe the system could enter unless
         the price goes below the stop loss (buy) or above the stop loss (sell)
 
+        - At the moment, the system uses ONLY the extension to try to enter in the market. We may have to change a bit
+        of the code if we want the flexibility of using other stuff
+
         """
 
         data_test = len(self.series) - self.curr_row - 1
@@ -317,33 +318,36 @@ class EntFibo(init.Initialize):
 
         for curr_row_ in range(data_test):
 
+            #We may change that later if we decides to use other things than only the largest extension to enter in
+            # the market. It checks if there is a "largest extension" set (in some case, there might not be)
+            if not hasattr(self, 'largest_extension_'):
+                break
+
             #The system first check if the price on the current row is below (for buy) or above (for sell signal)
             #If it is the case, the system just don't enter in the market
+            if self.enter_dict[self.enter_ext_name][self.enter_bool]:
+                if (curr_row_ == 0) & self.fif_op(self.trd_op(self.extreme[self.fst_data],self.largest_extension_*\
+                    self.enter_dict[self.enter_ext_name][self.enter_ext]), self.series.loc[self.curr_row,self.entry]):
 
-            if (curr_row_ == 0) & self.fif_op(self.trd_op(self.extreme[self.fst_data],self.largest_extension_*\
-                        self.enter_dict[self.enter_ext_name][self.enter_ext]),\
-                          self.series.loc[self.curr_row,self.entry]):
-
-                print(self.trd_op(self.extreme[self.fst_data],self.largest_extension_*\
-                        self.enter_dict[self.enter_ext_name][self.enter_ext]))
-                print(self.series.loc[self.curr_row,self.entry])
-                self.is_entry = True
-                self.price_entry = self.series.loc[self.curr_row, self.entry]
-                self.is_tentative = True #check in the exit if the current price is lower than stop (for buy), vice versa
-                self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
-                break
+                    self.is_entry = True
+                    self.price_entry = self.series.loc[self.curr_row, self.entry]
+                    self.is_tentative = True #check in the exit if the current price is lower than stop (for buy), vice versa
+                    self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                    break
 
             self.curr_row += 1
 
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goee above our signal or equal
-            if self.six_op(self.series.loc[self.curr_row,self.entry],self.trd_op(self.extreme[self.fst_data],\
-                            self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])):
-                self.is_entry = True
-                self.price_entry=self.series.loc[self.curr_row,self.entry]
-                self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
-                break
+
+            if self.enter_dict[self.enter_ext_name][self.enter_bool]:
+                if self.six_op(self.series.loc[self.curr_row,self.entry],self.trd_op(self.extreme[self.fst_data],\
+                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])):
+                    self.is_entry = True
+                    self.price_entry=self.series.loc[self.curr_row,self.entry]
+                    self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                    break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
             if self.bol_st_ext & self.six_op(self.series.loc[self.curr_row,self.entry], \
