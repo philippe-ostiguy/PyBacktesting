@@ -52,8 +52,10 @@ class Initialize():
                     contains the different possibilities to tighten the stop
                 `self.stop_tight` : bool
                     tells the system if it has to use this particular technique to tighten the stop or not
-                `self.default_data` : str
-                    default data used to determine the stop loss level when tightened
+                `self.default_data` : bool
+                    default data used to determine if the stop loss level must be tightened. It is `True`, then
+                    `self.adj_close_name` is used. Otherwise, `self.low_name` with `self.high_name` (depends if it is
+                    a buy or sell signal).
 
                 Stop tightening (technique no 1)
                 `self.stop_tight_ret` : str
@@ -61,7 +63,8 @@ class Initialize():
                 `self.stop_ret_level` : float
                     level at which the system tight the stop when it reaches this retracement in the opposite direction.
                     Ex: Buy signal then, market reaches `self.stop_ret_level` (.882 by default) in the other direction.
-                    The system will tighen the stop.
+                    The system will tighen the stop to the lowest (or highest)
+                `self.stop
 
 
 
