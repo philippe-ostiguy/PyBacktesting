@@ -3,16 +3,20 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 
-"""
-Module to initialize the value
-"""
+
 
 class Initialize():
     """
-    IMPORTANT NOTES
-        - Indicators to test are in the indicator.py file
-        To improve the program, the indicators should be initialized in this module (initialize.py)
-        - In entry_fibo, some improvements could be done... (see not in module entry_fibo.py)
+    Module to initialize the values
+
+
+    Notes
+    -----
+    Indicators to test are in the indicator.py file
+
+    To improve the program, the indicators should be initialized in this module (initialize.py)
+
+    In entry_fibo, some improvements could be done... (see notes in module entry_fibo.py)
     """
 
 
@@ -21,28 +25,79 @@ class Initialize():
 
         """ Initialize all the values here we want
 
-        It is the values that are initialized here and used through the system
+        It is the values that are initialized  and used through the system
 
 
         Attributes
         ----------
 
             Exit
-            -----
                 Extension
-                ---------
-                self.exit_ext_name : str
+                `self.exit_ext_name` : str
                     name of the dictionary key to try to exit the market with Fibonnacci extensions
-                self.exit_ext : bool
+                `self.exit_ext` : bool
                     tells the system if tries to exit (or not) the market using the largest extension as a reference.
                     Ex : largest extension from preivous trend is 1, the system takes profit when it is 2.618 this size. So,
                     when this value is reached, it takes the profit.
-                self.profit_ext :float
+                `self.profit_ext` : float
                      % of the largest extension from previous trend that the system uses to exit the market to take profit
                      (default value is 2.618)
-                self.stop_ext : float
+                `self.stop_ext` : float
                         % of the largest extension from previous trend that the system uses as a stop loss
                      (default value is 1.618)
+
+            Stop tightening
+                General
+                `self.stop_tight_dict` : dictionary
+                    contains the different possibilities to tighten the stop
+                `self.stop_tight` : bool
+                    tells the system if it has to use this particular technique to tighten the stop or not
+                `self.default_data` : str
+                    default data used to determine the stop loss level when tightened
+
+                Stop tightening (technique no 1)
+                `self.stop_tight_ret` : str
+                     tightening the stop using Fibonacci retracement condition (contains the condition).
+                `self.stop_ret_level` : float
+                    level at which the system tight the stop when it reaches this retracement in the opposite direction.
+                    Ex: Buy signal then, market reaches `self.stop_ret_level` (.882 by default) in the other direction.
+                    The system will tighen the stop.
+
+
+
+
+
+
+
+            `self.bol_st_ext` is `True` in `initialize.py` (we tell the system to test this feature) &
+            `self.sec_cdt_ext` in `initialize.py` is met, ie the market rebounces (or setback) to the desired
+                retracement compared to the last peak or low (default value is 0.882 and `self.default_data` used for
+                calculation is `self.adj_close_name`)
+
+
+                        self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
+        self.enter_ext_name = 'enter_ext_name'
+        self.enter_ext = 'enter_ext'
+        self.stop_ext = 'stop_ext'
+
+        self.enter_dict = {self.enter_ext_name :
+                              {self.enter_bool : True,
+                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
+                                                  #the system enters the market
+                               }
+                          }
+
+                                # Fibonacci extension techniques
+        self.fst_cdt_ext = .618 #% of the largest extension that if the market reaches, the system
+                                # stops trying to enter the market
+        self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
+                                #opposite direction, the system brings the stop loss closer to the last peak or
+                                # low (default value = adj. close
+
+
+
+
+
 
         """
 
@@ -117,15 +172,21 @@ class Initialize():
         #STOP TRY ENTRY
         #--------------
 
-        #These params are conditions to stop trying entering the market if the current
+
+        #These params are conditions to stop trying to enter the market if the current
         # price reach a % of the largest extension
 
-        self.bol_st_ext = True  #Tells the system if it has to stop trying enter the market using extension technic
-        self.fst_cdt_ext = .618 #% of largest extension at which if the market reaches, the system
-                            # stops trying to enter in the market
+        self.bol_st_ext = True  #Tells the system if it has to stop trying to enter the market using
+                                # Fibonacci extension techniques
+        self.fst_cdt_ext = .618 #% of the largest extension that if the market reaches, the system
+                                # stops trying to enter the market
         self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
                                 #opposite direction, the system brings the stop loss closer to the last peak or
                                 # low (default value = adj. close
+
+
+        #STOP TIGHTENING
+
 
         # EXIT
         # -----

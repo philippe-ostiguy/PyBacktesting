@@ -115,7 +115,7 @@ class EntFibo(init.Initialize):
     
     def largest_extension(self):
         """
-        Find largest extension from current trend
+        Find largest extension (setback) from current trend
         """
 
         if self.buy_signal:

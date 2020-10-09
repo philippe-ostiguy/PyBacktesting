@@ -33,22 +33,21 @@ class ExitFibo(ef.EntFibo):
         self.try_exit()
 
     def try_exit(self):
+        """
+        Method which try to exit the market.
 
-        """Method which try to exit the market.
-
-        This method exit the market when a close signal is triggered or a stop loss is
-        trigerred
+        This method will make the system exit the market when a close or a stop loss signal is triggered
 
         Notes
         -----
-        The stops is tighten if :
-            `self.bol_st_ext` is `True` in `initialize.py` (we tell the system to test this feature) &
-            `self.sec_cdt_ext` in `initialize.py` is met, ie the market rebounces (or setback) to the desired
-                retracement compared to the last peak or low (default value is 0.882 and `self.default_data` used for
-                calculation is `self.adj_close_name`
+        The stops may be tightened (see in `initialize.py` Stop tightening)
+
+        See also
+        --------
+        See
+
 
         """
-
 
         #If no entry signal, exit the function
         if not self.is_entry:
