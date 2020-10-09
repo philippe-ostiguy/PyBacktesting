@@ -44,7 +44,7 @@ class EntFibo(init.Initialize):
     
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
         """
-        Default function to determine the entry point
+        Default function called to determine the entry level
         """
 
         #ENTRY TRACKER
@@ -55,7 +55,8 @@ class EntFibo(init.Initialize):
         self.buy_signal=buy_signal
         self.sell_signal=sell_signal
         self.is_entry = False
-        self.is_tentative = False #the price is already below the
+        self.is_tentative = False #the price is already below the buying level or above the selling level. If this
+                                    #is the case, there is no entry. False by default.
         self.relative_extreme = 0 #last wave the system uses (relative low for buy, vice versa) as a basis to calculate
                             # the profit taking price. It uses the default data (close) to smooth data
         self.price_entry = 0

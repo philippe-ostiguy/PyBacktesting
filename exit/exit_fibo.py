@@ -40,11 +40,7 @@ class ExitFibo(ef.EntFibo):
 
         Notes
         -----
-        The stops may be tightened (see in `initialize.py` Stop tightening)
-
-        See also
-        --------
-        See
+        The stops may be tightened (see "stop tightening" in `initialize.py`)
 
 
         """

@@ -50,7 +50,7 @@ class Initialize():
                 General
                 `self.stop_tight_dict` : dictionary
                     contains the different possibilities to tighten the stop
-                `self.stop_tight` : bool
+                `self.is_true` : bool
                     tells the system if it has to use this particular technique to tighten the stop or not
                 `self.default_data` : bool
                     default data used to determine if the stop loss level must be tightened. It is `True`, then
@@ -64,43 +64,6 @@ class Initialize():
                     level at which the system tight the stop when it reaches this retracement in the opposite direction.
                     Ex: Buy signal then, market reaches `self.stop_ret_level` (.882 by default) in the other direction.
                     The system will tighen the stop to the lowest (or highest)
-                `self.stop
-
-
-
-
-
-
-
-            `self.bol_st_ext` is `True` in `initialize.py` (we tell the system to test this feature) &
-            `self.sec_cdt_ext` in `initialize.py` is met, ie the market rebounces (or setback) to the desired
-                retracement compared to the last peak or low (default value is 0.882 and `self.default_data` used for
-                calculation is `self.adj_close_name`)
-
-
-                        self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
-        self.enter_ext_name = 'enter_ext_name'
-        self.enter_ext = 'enter_ext'
-        self.stop_ext = 'stop_ext'
-
-        self.enter_dict = {self.enter_ext_name :
-                              {self.enter_bool : True,
-                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
-                                                  #the system enters the market
-                               }
-                          }
-
-                                # Fibonacci extension techniques
-        self.fst_cdt_ext = .618 #% of the largest extension that if the market reaches, the system
-                                # stops trying to enter the market
-        self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
-                                #opposite direction, the system brings the stop loss closer to the last peak or
-                                # low (default value = adj. close
-
-
-
-
-
 
         """
 
@@ -189,7 +152,33 @@ class Initialize():
 
 
         #STOP TIGHTENING
+        # All the possible stop tightening types that the system can do (extension, retracement)
 
+        self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
+        self.enter_ext_name = 'enter_ext_name'
+        self.enter_ext = 'enter_ext'
+        self.stop_ext = 'stop_ext'
+
+        self.enter_dict = {self.enter_ext_name :
+                              {self.enter_bool : True,
+                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
+                                                  #the system enters the market
+                               }
+                          }
+
+
+        #Stop tightening technique no 1. See description above in docstrings
+        self.stop_tight_ret =  'stop_tight_ret'
+        self.is_true = 'is_true'
+        self.default_data = 'default_data'
+        self.stop_ret_level = 'stop_ret_level'
+
+        self.stop_tight_dict = {self.stop_tight_ret :
+                                    {self.is_true : True, #can be optimized (True or False)
+                                     self.default_data : False, #can be optimized (True or False)
+                                     self.stop_ret_level : .882 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
+                                     }
+                                }
 
         # EXIT
         # -----
