@@ -51,7 +51,7 @@ class RSquareTr(ind.Indicator):
                     if self.last_short >= self.min_data :
                         sell_signal=True
                         self.last_long = self.min_data
-                        exf.ExitFibo(curr_row=curr_row,buy_signal=sell_signal).__call__()
+                        exf.ExitFibo(curr_row=curr_row,sell_signal=sell_signal).__call__()
                     self.last_short=0
 
             buy_signal = False

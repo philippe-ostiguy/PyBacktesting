@@ -79,8 +79,6 @@ class Initialize():
         self.close_name = 'Close'
         self.adj_close_name = 'Adj Close'
 
-        self.rel_low= 'min'
-        self.rel_high = 'max'
 
         #Decide which data type we need in our testing
         self.__name_col={
@@ -104,8 +102,8 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2006-01-20'
-        self.date_fin = '2007-08-20'
+        self.date_debut = '2008-01-20'
+        self.date_fin = '2010-01-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -170,12 +168,12 @@ class Initialize():
         #Stop tightening technique no 1. See description above in docstrings
         self.stop_tight_ret =  'stop_tight_ret'
         self.is_true = 'is_true'
-        self.default_data = 'default_data'
+        self.default_data_ = 'default_data_'
         self.stop_ret_level = 'stop_ret_level'
 
         self.stop_tight_dict = {self.stop_tight_ret :
                                     {self.is_true : True, #can be optimized (True or False)
-                                     self.default_data : False, #can be optimized (True or False)
+                                     self.default_data_ : False, #can be optimized (True or False)
                                      self.stop_ret_level : .882 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
                                      }
                                 }

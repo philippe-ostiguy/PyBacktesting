@@ -55,9 +55,7 @@ class EntFibo(init.Initialize):
         self.buy_signal=buy_signal
         self.sell_signal=sell_signal
         self.is_entry = False
-        self.is_tentative = False #the price is already below the buying level or above the selling level. If this
-                                    #is the case, there is no entry. False by default.
-        self.relative_extreme = 0 #last wave the system uses (relative low for buy, vice versa) as a basis to calculate
+        self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a basis to calculate
                             # the profit taking price. It uses the default data (close) to smooth data
         self.price_entry = 0
 
@@ -125,8 +123,8 @@ class EntFibo(init.Initialize):
             sec_data='curr_low'
             my_data[fst_data]=None
             my_data[sec_data] = None
-            fst_name=self.rel_high
-            sec_name=self.rel_low
+            fst_name=self.high
+            sec_name=self.low
 
         if self.sell_signal:
             my_data={}
@@ -134,132 +132,66 @@ class EntFibo(init.Initialize):
             sec_data='curr_high'
             my_data[fst_data]=None
             my_data[sec_data] = None
-            fst_name=self.rel_low
-            sec_name=self.rel_high
+            fst_name=self.low
+            sec_name=self.high
 
-        curr_row_ = 0
+        for curr_row_ in range(len(self.local_extremum_)):
 
-        while curr_row_ < len(self.local_extremum_):
+            #Sorten the name
+            fst_val = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(fst_name)]
+            sec_val = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(sec_name)]
 
+            #If there are value to high and low, assign largest_extension_
+            if (my_data[fst_data] != None) & (my_data[sec_data] != None):
+                if math.isnan(sec_val) & (not math.isnan(my_data[fst_data])) & (not math.isnan(my_data[sec_data])):
+
+                    if not hasattr(self,'largest_extension_'):
+                        self.largest_extension_ = self.inv*(my_data[sec_data] - my_data[fst_data])
+
+                    if (my_data[fst_data] != None) & (my_data[sec_data] != None) :
+                        if op.ge(self.inv*(my_data[sec_data] - my_data[fst_data]), self.largest_extension_):
+                            self.largest_extension_ = self.inv*(my_data[sec_data] - my_data[fst_data])
+
+                    my_data[fst_data] = None
+                    my_data[sec_data] = None
+
+                    if self.largest_extension_ > 5:
+                        t=5
 
             #It checks at the second last data, if there is a data for second_name (new relative high for sell
             # or new relative low for buy), it just basically don't check it, because it is not a real extension
             if curr_row_ == (len(self.local_extremum_) -1):
-                    if not math.isnan(self.local_extremum_.iloc[curr_row_, \
-                            self.local_extremum_.columns.get_loc(sec_name)]) & \
-                    (curr_row_ == (len(self.local_extremum_) -1 )):
-                        break
-
-                    pass
-
-            if  my_data[fst_data] == None:
-                my_data[fst_data] = self.local_extremum_.iloc[curr_row_,self.local_extremum_.columns.get_loc(fst_name)]
-                curr_row_+=1
-
-                t_curr_row = curr_row_
-
-                try:
-                    test = self.local_extremum_.iloc[t_curr_row, self.local_extremum_.columns.get_loc(fst_name)]
-
-                except:
+                if not math.isnan(sec_val) & (curr_row_ == (len(self.local_extremum_) -1 )):
                     break
+                pass
 
-                while not math.isnan(self.local_extremum_.iloc[t_curr_row, \
-                                                              self.local_extremum_.columns.get_loc(fst_name)]) & (
-                                  t_curr_row < len(self.local_extremum_)):
-
-                    if self.fst_op(self.local_extremum_.iloc[t_curr_row, self.local_extremum_.columns.get_loc(fst_name)], \
-                                  my_data[fst_data]):
-                        my_data[fst_data] = self.local_extremum_.iloc[t_curr_row, \
-                                                                     self.local_extremum_.columns.get_loc(fst_name)]
-
-                    t_curr_row += 1
-
-                    try:
-                        test = self.local_extremum_.iloc[t_curr_row, self.local_extremum_.columns.get_loc(fst_name)]
-
-                    except:
-                        break
-
-                t_curr_row = 0
+            #Assign a value to first value (high for buy, low for sell) until it's NOT None or Nan
+            if (my_data[fst_data] == None):
+                my_data[fst_data] = fst_val
                 continue
 
-            if (math.isnan(my_data[fst_data]) \
-                 | self.fst_op(self.local_extremum_.iloc[curr_row_,self.local_extremum_.columns.get_loc(fst_name)], \
-                          my_data[fst_data])) & (my_data[sec_data] == None):
-                my_data[fst_data] = self.local_extremum_.iloc[curr_row_,self.local_extremum_.columns.get_loc(fst_name)]
-
-
-            if my_data[sec_data] == None:
-
-                my_data[sec_data] = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(sec_name)]
-                curr_row_+=1
-
-                if curr_row_ ==  len(self.local_extremum_):
-                    if math.isnan(my_data[sec_data]):
-                        break
-                    pass
-
-                else:
-                    t_curr_row = curr_row_
-
-                    try:
-                        test = self.local_extremum_.iloc[t_curr_row, self.local_extremum_.columns.get_loc(sec_name)]
-
-                    except:
-                        break
-
-                    while not math.isnan(self.local_extremum_.iloc[t_curr_row, \
-                     self.local_extremum_.columns.get_loc(sec_name)]) & (t_curr_row < len(self.local_extremum_)):
-
-                        if self.sec_op(self.local_extremum_.iloc[t_curr_row, \
-                                        self.local_extremum_.columns.get_loc(sec_name)], my_data[sec_data]):
-
-                            my_data[sec_data] = self.local_extremum_.iloc[t_curr_row, \
-                                                                        self.local_extremum_.columns.get_loc(sec_name)]
-
-                        t_curr_row += 1
-
-                        try:
-                            test = self.local_extremum_.iloc[t_curr_row, self.local_extremum_.columns.get_loc(fst_name)]
-
-                        except:
-                            break
-
-                    t_curr_row = 0
-                    continue
-
-            if curr_row_ !=  len(self.local_extremum_):
-                if (math.isnan(my_data[sec_data])) \
-                        | self.sec_op(self.local_extremum_.iloc[curr_row_,self.local_extremum_.columns.get_loc(sec_name)], \
-                             my_data[sec_data]):
-                    my_data[sec_data] = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(sec_name)]
-
-                    curr_row_+=1
-
-                    if curr_row_ == len(self.local_extremum_):
-                        if math.isnan(my_data[sec_data]):
-                            break
-                        pass
-
-                    else:
-                        continue
-
-            if not hasattr(self,'largest_extension_'):
-                self.largest_extension_ = self.inv*(my_data[sec_data] - my_data[fst_data])
-                my_data[fst_data] = None
-                my_data[sec_data] = None
+            if math.isnan(my_data[fst_data]):
+                my_data[fst_data] = fst_val
                 continue
 
-            if op.ge(self.inv*(my_data[sec_data] - my_data[fst_data]), self.largest_extension_):
-                self.largest_extension_ = self.inv*(my_data[sec_data] - my_data[fst_data])
-                my_data[fst_data] = None
-                my_data[sec_data] = None
+            #If there is a valid first value, check if current value higher than recorded high (for buy), vice versa
+            if not math.isnan(fst_val):
+                if self.fst_op(fst_val, my_data[fst_data]):
+                    my_data[fst_data] = fst_val
                 continue
 
-            my_data[fst_data] = None
-            my_data[sec_data] = None
+            if (my_data[sec_data] == None):
+                my_data[sec_data] = sec_val
+                continue
 
+            if math.isnan(my_data[sec_data]):
+                my_data[sec_data] = sec_val
+                continue
+
+            if not math.isnan(sec_val):
+                if self.sec_op(sec_val, my_data[sec_data]):
+                    my_data[sec_data] = sec_val
+                continue
     
     def set_extremum(self):
         """
@@ -320,8 +252,6 @@ class EntFibo(init.Initialize):
         if self.is_entry:
             raise Exception('Already have an open position in the market...')
 
-        self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
-
         for curr_row_ in range(data_test):
 
             #We may change that later if we decides to use other things than only the largest extension to enter in
@@ -329,37 +259,38 @@ class EntFibo(init.Initialize):
             if not hasattr(self, 'largest_extension_'):
                 break
 
-            #The system first check if the price on the current row is below (for buy) or above (for sell signal)
-            #If it is the case, the system just don't enter in the market
+            #Test first if using Fibonacci extension as a signal to enter in the market.
+            #Then the system first check if the price on the current row is below (for buy) or above (for sell signal)
+            #If it is the case, the system just don't enter in the market.
+
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
                 if (curr_row_ == 0) & self.fif_op(self.trd_op(self.extreme[self.fst_data],self.largest_extension_*\
                     self.enter_dict[self.enter_ext_name][self.enter_ext]), self.series.loc[self.curr_row,self.entry]):
-
-                    self.is_entry = True
-                    self.price_entry = self.series.loc[self.curr_row, self.entry]
-                    self.is_tentative = True #check in the exit if the current price is lower than the stop (for buy),
-                                            #vice versa
-                    self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                    self.is_entry = False
                     break
 
             self.curr_row += 1
 
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
-            #   - Sell if current market price goee above our signal or equal
+            #   - Sell if current market price goes above our signal or equal
 
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
                 if self.six_op(self.series.loc[self.curr_row,self.entry],self.trd_op(self.extreme[self.fst_data],\
                                 self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])):
                     self.is_entry = True
-                    self.price_entry=self.series.loc[self.curr_row,self.entry]
+                    self.price_entry = self.trd_op(self.extreme[self.fst_data],\
+                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])
                     self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
             if self.bol_st_ext & self.six_op(self.series.loc[self.curr_row,self.entry], \
                         self.trd_op(self.extreme[self.fst_data],self.largest_extension_ * self.fst_cdt_ext)):
-                self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                if self.relative_extreme == None :
+                    self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                if self.sec_op(self.series.loc[self.curr_row, self.default_data], self.relative_extreme):
+                    self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
                 self.fst_ext_cdt = True
                 continue
 
@@ -367,7 +298,7 @@ class EntFibo(init.Initialize):
             #   - first condition (extension) is met. It hit the required
             #       % of the largest extension, previously (61.8% by default) - low for buy, high for sell
             #   - It went back then reached the minimum retracement in the other direction (88.2% by default)
-            if self.bol_st_ext & self.fst_ext_cdt :
+            if self.bol_st_ext & self.fst_ext_cdt & (self.relative_extreme != None) :
                 if self.fif_op(self.series.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :
                     print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension \

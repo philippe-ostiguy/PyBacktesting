@@ -69,7 +69,7 @@ class ExitFibo(ef.EntFibo):
 
         #Check if the first row (signal) is already below the stop loss (for buy) and vice versa for sell signal
         #If yes, just not entering in the market
-        if self.is_tentative & self.exit_dict[self.exit_name][self.exit_ext_bool] & \
+        if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
             self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
                             self.largest_extension_* self.exit_dict[self.exit_name][self.stop_ext])):
 
@@ -79,7 +79,7 @@ class ExitFibo(ef.EntFibo):
         data_test = len(self.series) - self.curr_row - 1
 
         for curr_row_ in range(data_test):
-
+            self.curr_row += 1
             pass
 
 
@@ -92,7 +92,7 @@ class ExitFibo(ef.EntFibo):
                               self.exit_dict[self.exit_name][self.stop_ext] * self.largest_extension_)
             # exit_ =
 
-        # HERE
+
 
         # if self.
 
