@@ -30,8 +30,8 @@ class Indicator(init.Initialize):
         indicator
 
         The indicator always take into account the value of price for the same row. Ex: We are at row 99, the indicator
-        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter the
-        market (or exit) on the next row (value)
+        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or exit
+        the market (or exit) on the next row (value)
         """
         nb_columns=len(self.series.columns)
 

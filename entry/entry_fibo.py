@@ -114,7 +114,7 @@ class EntFibo(init.Initialize):
     
     def largest_extension(self):
         """
-        Find largest extension (setback) from current trend
+        Find largest extension (setback) from current trend (Fibonacci)
         """
 
         if self.buy_signal:
@@ -154,9 +154,6 @@ class EntFibo(init.Initialize):
 
                     my_data[fst_data] = None
                     my_data[sec_data] = None
-
-                    if self.largest_extension_ > 5:
-                        t=5
 
             #It checks at the second last data, if there is a data for second_name (new relative high for sell
             # or new relative low for buy), it just basically don't check it, because it is not a real extension

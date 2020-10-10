@@ -133,7 +133,7 @@ class Initialize():
                                }
                           }
 
-        #STOP TRY ENTRY
+        #STOP TRY ENTER
         #--------------
 
 
@@ -194,6 +194,12 @@ class Initialize():
                                self.stop_ext : 1.618    #also try 2
                                }
                           }
+
+        #P&L TRACKER
+
+        self.pnl_name = 'pl_name'
+
+
 
         #No need to change them here- should not
         self.__name_tempor = "_tempo"
