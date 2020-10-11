@@ -20,9 +20,6 @@ class ExitFibo(ef.EntFibo):
         No slippage included in `try_exit()`. If the price reached the desired level, we just exit at either the
             current price or the next desired price
 
-
-
-
         """
 
         super().__init__()
@@ -36,6 +33,7 @@ class ExitFibo(ef.EntFibo):
         # Entry level, tells if the system has a position in the market, buy or sell signal
         self.price_exit = 0
         self.try_exit()
+
 
     def try_exit(self):
         """
@@ -61,15 +59,21 @@ class ExitFibo(ef.EntFibo):
 
         #extension level if condition in initialize.py is True
         if self.exit_dict[self.exit_name][self.exit_ext_bool]:
-            __extension = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
-            if __extension < 0:
-                print(f"Houston, we've got a problem, Extension value in exit_fibo.py is {__extension} \
+            __extension_lost = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
+            __extension_profit = self.largest_extension_ * self.exit_dict[self.exit_name][self.profit_ext]
+
+            if __extension_lost < 0:
+                print(f"Houston, we've got a problem, Extension value in exit_fibo.py is {__extension_lost} \
+                and should not be negative")
+            if __extension_profit < 0:
+                print(f"Houston, we've got a problem, Extension value in exit_fibo.py is {__extension_profit} \
                 and should not be negative")
 
         #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
         # and vice versa for sell signal. If yes, just not entering in the market
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
-            self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data], __extension)):
+            self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
+                                                                             __extension_lost)):
             self.is_entry = False
             return
 
@@ -78,16 +82,16 @@ class ExitFibo(ef.EntFibo):
         for curr_row_ in range(data_test):
             self.curr_row += 1
             __curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
+            __current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
             __entry_level = self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.entry_level)]
 
             if self.exit_dict[self.exit_name][self.exit_ext_bool]:
-                __stop_value = self.trd_op(self.extreme[self.fst_data], __extension)
+                __stop_value = self.trd_op(self.extreme[self.fst_data], __extension_lost)
+                __profit_value = self.fth_op(self.relative_extreme, __extension_profit)
 
             #First check if price is below a stop (for a buy signal)
             if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
-                    self.six_op(self.series.loc[self.curr_row, self.stop],
-                                self.trd_op(self.extreme[self.fst_data], __extension)):
-
+                    self.six_op(__current_stop, __stop_value):
                 self.is_entry = False
 
                 self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
@@ -105,53 +109,11 @@ class ExitFibo(ef.EntFibo):
             if self.sec_op(__curent_value, self.relative_extreme):
                 self.relative_extreme = __curent_value
 
-
-
-
-            """
-            if self.buy_signal:
-                start_point=self.extreme[self.low_idx]
-                self.fst_op=op.gt
-                self.sec_op=op.lt
-                self.trd_op=op.sub
-                self.fth_op=op.add
-                self.fif_op=op.ge
-                self.six_op=op.le
-                self.fst_data = self.high
-                self.sec_data = self.low
-                self.fst_idx = self.high_idx
-                self.sec_idx = self.low_idx
-                self.entry = self.stop = self.low_name
-                self.exit = self.high_name
-                self.inv = -1
-            """
-
-            if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-
-
-                pass
-
-
-            # Put self.entry to false if the system exit the market
-
-        # define stop loss and taking profit first
-        # using extension strategy to exit
-        if self.exit_dict[self.exit_name][self.exit_ext_bool]:
-            stop = self.trd_op(self.extreme[self.fst_data], \
-                              self.exit_dict[self.exit_name][self.stop_ext] * self.largest_extension_)
-            # exit_ =
-
-
-
-        # if self.
-
-        # Buy or sell signal (taking profit)
-        #   - Buy if current market price goes below our signal or equal
-        #   - Sell if current market price goes above our signal or equal
-
-        if self.fif_op(self.trd_op(self.extreme[self.fst_data], self.largest_extension_), \
-                      self.series.loc[self.curr_row, self.entry]):
-            pass
-        # break
-
-        self.is_entry = False
+            # Check if we can take profit
+            if self.exit_dict[self.exit_name][self.exit_ext_bool] & self.fif_op(__curent_value,__profit_value):
+                self.is_entry = False
+                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
+                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+                    __profit_value  # exit level
+                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+                    self.inv * ((__entry_level - __profit_value) / __profit_value)

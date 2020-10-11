@@ -202,7 +202,7 @@ class Initialize():
         self.exit_dict = {self.exit_name :
                               {self.exit_ext_bool : True,
                                self.profit_ext : 2.618, #also try 3.382, 4.236
-                               self.stop_ext : 1.618    #also try 2
+                               self.stop_ext : 1.618    #also try 1.382, 2
                                }
                           }
 
