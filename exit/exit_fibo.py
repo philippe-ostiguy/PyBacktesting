@@ -1,6 +1,5 @@
 import entry.entry_fibo as ef
 
-
 class ExitFibo(ef.EntFibo):
 
   
@@ -17,6 +16,9 @@ class ExitFibo(ef.EntFibo):
         -----
 
         Need to use also Fibonnacci retracements to exit the market
+
+        No slippage included in `try_exit()`. If the price reached the desired level, we just exit at either the
+            current price or the next desired price
 
 
 
@@ -45,17 +47,24 @@ class ExitFibo(ef.EntFibo):
         -----
         The stops may be tightened (see "stop tightening" in `initialize.py`)
 
+        The system doesn't check on a shorter time frame if it reaches an exit point and a stop in `try_exit()`
+            in case of high volatility. Really rare cases
+
+        No slippage included in `try_exit()`. If the price reached the desired level, we just exit at either the
+            current price.
 
         """
-
-
 
         #If no entry signal, exit the function
         if not self.is_entry:
             return
 
-
-        __extension = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
+        #extension level if condition in initialize.py is True
+        if self.exit_dict[self.exit_name][self.exit_ext_bool]:
+            __extension = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
+            if __extension < 0:
+                print(f"Houston, we've got a problem, Extension value in exit_fibo.py is {__extension} \
+                and should not be negative")
 
         #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
         # and vice versa for sell signal. If yes, just not entering in the market
@@ -68,13 +77,34 @@ class ExitFibo(ef.EntFibo):
 
         for curr_row_ in range(data_test):
             self.curr_row += 1
+            __curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
+            __entry_level = self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.entry_level)]
 
-            #First check if price is below a stop
+            if self.exit_dict[self.exit_name][self.exit_ext_bool]:
+                __stop_value = self.trd_op(self.extreme[self.fst_data], __extension)
+
+            #First check if price is below a stop (for a buy signal)
             if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
                     self.six_op(self.series.loc[self.curr_row, self.stop],
                                 self.trd_op(self.extreme[self.fst_data], __extension)):
 
                 self.is_entry = False
+
+                self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
+                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+                    __stop_value #exit level
+                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+                    self.inv*((__entry_level-__stop_value)/__stop_value)
+
+            #Changing global low or high if current one is lower or higher
+            if self.fst_op(__current_value, self.extreme[self.fst_data]):
+                self.extreme[self.fst_data] = __curent_value
+                self.extreme[self.fst_idx] = self.curr_row
+
+            #Changing relative low (for a buying), vice versa
+            if self.sec_op(__curent_value, self.relative_extreme):
+                self.relative_extreme = __curent_value
+
 
 
 

@@ -7,29 +7,26 @@ class EntFibo(init.Initialize):
 
     
     def __init__(self):
-
-        """ Class that uses Fibonnacci strategy to enter the market
+        """
+        Class that uses Fibonnacci strategy to enter the market
 
 
         Trying to enter the market with Fibonacci retracement and extension. 3 types:
-            1- Retracement from the last wave
-            2- Retracement from beginning of the trend
-            3- Extension from a previous wave (largest one in the last trend)
+            Retracement from the last wave
+            Retracement from beginning of the trend
+            Extension from a previous wave (largest one in the last trend)
 
 
-        Notes (Improvements to do)
-        --------------------------
+        Notes
+        -----
 
-            - No slippage included in entry or exit. If the price reached the desired level, we just exit at either the
+        No slippage included in `try_entry()`. If the price reached the desired level, we just exit at either the
             current price or the next desired price
-            - The system doesn't check on a shorter time frame if it reaches an entry point and a stop at the same time
-            or even an exit point and stop at the same time (in case of high volatility).
-                - The system is "conservative", if a stop is trigerred it will priorise it over an entry or exit.
-                    It also prioritizes an entry over a new low/high or when the system reaches an extension's condition
-                    (conditions that make the system stop trying to enter in the market when trigerred)
-                - Taking into account the system, those are really rare cases. However it could be tested by using a
-                shorter time every time an entry or exit signal
-                - Desired modifications should be in functions "try_entry" and "try_exit"
+
+        The system doesn't check on a shorter time frame if it reaches an entry point and a stop at the same time
+            or even an exit point and stop at the same time (in case of high volatility) in `try_entry()`
+            Taking into account the system, those are really rare cases. However it could be tested by using a
+            shorter time every time an entry or exit signal
 
         """
 
@@ -55,9 +52,9 @@ class EntFibo(init.Initialize):
         self.buy_signal=buy_signal
         self.sell_signal=sell_signal
         self.is_entry = False
-        self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a basis to calculate
-                            # the profit taking price. It uses the default data (close) to smooth data
-        self.price_entry = 0
+        self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a
+                                        # basis to calculate the profit taking price. It uses the default data (close)
+                                          # to smooth data
 
         self.first_data = self.curr_row - self.nb_data - self.buffer_extremum + 1
         if self.first_data < 0:
@@ -256,36 +253,37 @@ class EntFibo(init.Initialize):
             if not hasattr(self, 'largest_extension_'):
                 break
 
+            if self.enter_dict[self.enter_ext_name][self.enter_bool]:
+                _entry_tentative = self.trd_op(self.extreme[self.fst_data],\
+                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])
+
             #Test first if using Fibonacci extension as a signal to enter in the market.
             #Then the system first check if the price on the current row is below (for buy) or above (for sell signal)
             #If it is the case, the system just don't enter in the market.
-
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                if (curr_row_ == 0) & self.fif_op(self.trd_op(self.extreme[self.fst_data],self.largest_extension_*\
-                    self.enter_dict[self.enter_ext_name][self.enter_ext]), self.series.loc[self.curr_row,self.entry]):
+                if (curr_row_ == 0) & self.fif_op(_entry_tentative, self.series.loc[self.curr_row,self.entry]):
                     self.is_entry = False
                     break
 
             self.curr_row += 1
 
+            if self.relative_extreme == None:
+                self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goes above our signal or equal
-
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                if self.six_op(self.series.loc[self.curr_row,self.entry],self.trd_op(self.extreme[self.fst_data],\
-                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])):
+                if self.six_op(self.series.loc[self.curr_row,self.entry],_entry_tentative):
                     self.is_entry = True
-                    self.price_entry = self.trd_op(self.extreme[self.fst_data],\
-                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])
+                    self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
+                                                                  self.entry_level:_entry_tentative})
                     self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
             if self.bol_st_ext & self.six_op(self.series.loc[self.curr_row,self.entry], \
                         self.trd_op(self.extreme[self.fst_data],self.largest_extension_ * self.fst_cdt_ext)):
-                if self.relative_extreme == None :
-                    self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
                 if self.sec_op(self.series.loc[self.curr_row, self.default_data], self.relative_extreme):
                     self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
                 self.fst_ext_cdt = True

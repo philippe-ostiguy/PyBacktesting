@@ -65,6 +65,13 @@ class Initialize():
                     Ex: Buy signal then, market reaches `self.stop_ret_level` (.882 by default) in the other direction.
                     The system will tighen the stop to the lowest (or highest)
 
+            Exit
+                All the possible ways that the system can exit the market (extension, retracement)
+
+            Trades
+
+
+
         """
 
 
@@ -97,6 +104,7 @@ class Initialize():
         self.name = pd.DataFrame(self.__name_col)
         self.date_ordinal_name = 'date_ordinal'
         self.point_data=0
+        self.end_value = 0 #final value of portfolio
 
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
@@ -110,12 +118,15 @@ class Initialize():
                                               #the global max or min (half of self.nb_data by default)
 
         # Indicator value to trigger a signal
-        self.r_square_level = .8
+        self.r_square_level = .8 #can be .6, .7 and .9 too
         self.min_data = 100  # nb of data between a signal
 
         #Number of data (points) we check before and after to find a local min and max
         #By default, value is 6, but could be optimized between 5 and 7
         self.window = 6
+
+        #Initial value of portfolio
+        self.init_value = 10000
 
         #ENTRY
         #-----
@@ -150,7 +161,7 @@ class Initialize():
 
 
         #STOP TIGHTENING
-        # All the possible stop tightening types that the system can do (extension, retracement)
+        #---------------
 
         self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
         self.enter_ext_name = 'enter_ext_name'
@@ -180,7 +191,7 @@ class Initialize():
 
         # EXIT
         # -----
-        # All the possible exit types that the system can do (extension, retracement)
+        # All the possible ways that the system can exit the market (extension, retracement)
 
         self.exit_name = 'exit_name' #same key name for all the exit strategy (located in different dictionary)
 
@@ -195,9 +206,31 @@ class Initialize():
                                }
                           }
 
-        #P&L TRACKER
+        #TRADES TRACKER
+        #--------------
 
-        self.pnl_name = 'pl_name'
+        self.entry_row = 'Entry_row'
+        self.entry_level = 'Entry_level'
+        self.exit_row = 'Exit_row'
+        self.exit_level = 'Exit_level'
+        self.trade_return = 'trade_return'
+
+        self.trades_track = pd.DataFrame(columns=[self.entry_row,self.entry_level,self.exit_row,self.exit_level,\
+                                                  self.trade_return])
+
+        #P&L TRACKER
+        #----------
+
+        self.return_= 0
+        self.max_draw= 0
+        self.profit_pourc = 0
+        self.win_loss = 0
+
+        #self.ann_return = 0
+        #self.ann_vol = 0
+        #self.sharpe_ratio = 0
+
+        self.pl_dict = {}
 
 
 
