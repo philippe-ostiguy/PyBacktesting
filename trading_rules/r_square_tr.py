@@ -16,6 +16,8 @@ class RSquareTr(ind.Indicator):
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
 
+
+
     def signal_trig(self):
 
         """
@@ -24,6 +26,7 @@ class RSquareTr(ind.Indicator):
         on each row (data), so we enter or exit in the market on the next row (data)
 
         """
+        exf_ = exf.ExitFibo()
 
         buy_signal = False
         sell_signal = False
@@ -35,13 +38,12 @@ class RSquareTr(ind.Indicator):
             r_value=self.series.loc[curr_row,self.r_square_key]
 
             #Buy signal
-
             if slope_value > 0 :
                 if r_value > self.r_square_level:
                     if self.last_long >= self.min_data :
                         buy_signal = True
                         self.last_short = self.min_data
-                        exf.ExitFibo(curr_row=curr_row,buy_signal=buy_signal).__call__()
+                        exf.ExitFibo().__call__(curr_row=curr_row,buy_signal=buy_signal)
                     self.last_long = 0
 
             #Sell signal
@@ -51,7 +53,7 @@ class RSquareTr(ind.Indicator):
                     if self.last_short >= self.min_data :
                         sell_signal=True
                         self.last_long = self.min_data
-                        exf.ExitFibo(curr_row=curr_row,sell_signal=sell_signal).__call__()
+                        exf.ExitFibo().__call__(curr_row=curr_row,sell_signal=sell_signal)
                     self.last_short=0
 
             buy_signal = False
@@ -59,3 +61,4 @@ class RSquareTr(ind.Indicator):
 
             self.last_long += 1
             self.last_short += 1
+        t=5

@@ -37,7 +37,7 @@ class EntFibo(init.Initialize):
         self.low="min"
         self.high_idx="max_idx"
         self.low_idx = "min_idx"
-        self.fst_ext_cdt = False #by default first condition for extension it not met, set to False
+        self.fst_ext_cdt = False #by default first condition for extension is not met, set to False
     
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
         """
@@ -55,6 +55,7 @@ class EntFibo(init.Initialize):
         self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a
                                         # basis to calculate the profit taking price. It uses the default data (close)
                                           # to smooth data
+        self.row_rel_extreme = 0
 
         self.first_data = self.curr_row - self.nb_data - self.buffer_extremum + 1
         if self.first_data < 0:
@@ -101,9 +102,6 @@ class EntFibo(init.Initialize):
         self.local_extremum_=self.mo_.local_extremum(start_point=start_point, end_point=self.curr_row, \
                                                      window=self.window, min_=self.low,max_=self.high)
         self.local_extremum_ = self.local_extremum_.reset_index(drop=True)
-        #last_index = self.local_extremum_[self.sec_data].last_valid_index()
-        #self.rel_extreme = self.local_extremum_.at[last_index, self.sec_data]
-
 
         self.largest_extension() #finding the largest extension used for potential entry and/or exit
 
@@ -269,6 +267,7 @@ class EntFibo(init.Initialize):
 
             if self.relative_extreme == None:
                 self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                self.row_rel_extreme = self.curr_row
 
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
@@ -277,8 +276,9 @@ class EntFibo(init.Initialize):
                 if self.six_op(self.series.loc[self.curr_row,self.entry],_entry_tentative):
                     self.is_entry = True
                     self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
-                                                                  self.entry_level:_entry_tentative})
+                                                                  self.entry_level:_entry_tentative},ignore_index=True)
                     self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                    self.row_rel_extreme = self.curr_row
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
@@ -286,6 +286,7 @@ class EntFibo(init.Initialize):
                         self.trd_op(self.extreme[self.fst_data],self.largest_extension_ * self.fst_cdt_ext)):
                 if self.sec_op(self.series.loc[self.curr_row, self.default_data], self.relative_extreme):
                     self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                    self.row_rel_extreme = self.curr_row
                 self.fst_ext_cdt = True
                 continue
 
@@ -296,8 +297,8 @@ class EntFibo(init.Initialize):
             if self.bol_st_ext & self.fst_ext_cdt & (self.relative_extreme != None) :
                 if self.fif_op(self.series.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :
-                    print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension \
-                    and then retrace in the opposite direction of {self.sec_cdt_ext}")
+                    print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension"
+                          f"and then retrace in the opposite direction of {self.sec_cdt_ext}")
                     break
                 pass
 
@@ -305,3 +306,6 @@ class EntFibo(init.Initialize):
             if self.fst_op(self.series.loc[self.curr_row, self.default_data], self.extreme[self.fst_data]):
                 self.extreme[self.fst_data] = self.series.loc[self.curr_row, self.default_data]
                 self.extreme[self.fst_idx] = self.curr_row
+
+        if self.is_entry & (op.gt(self.extreme[self.fst_idx]),self.row_rel_extreme):
+            print("'Absolute' extremum is after relative extremum which doesn't work")

@@ -163,28 +163,18 @@ class Initialize():
         #STOP TIGHTENING
         #---------------
 
-        self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
-        self.enter_ext_name = 'enter_ext_name'
-        self.enter_ext = 'enter_ext'
-        self.stop_ext = 'stop_ext'
-
-        self.enter_dict = {self.enter_ext_name :
-                              {self.enter_bool : True,
-                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
-                                                  #the system enters the market
-                               }
-                          }
-
-
         #Stop tightening technique no 1. See description above in docstrings
         self.stop_tight_ret =  'stop_tight_ret'
         self.is_true = 'is_true'
-        self.default_data_ = 'default_data_'
+        self.default_data_ = 'default_data_' #adjusted closed
         self.stop_ret_level = 'stop_ret_level'
 
         self.stop_tight_dict = {self.stop_tight_ret :
-                                    {self.is_true : True, #can be optimized (True or False)
+                                    {self.is_true : True, #can be optimized (possible value is True or False)
+                                                            #True if the system use this technique
                                      self.default_data_ : False, #can be optimized (True or False)
+                                                            #True it uses the adj. close. False it uses low for buy
+                                                            #signal and high for sell signal
                                      self.stop_ret_level : .882 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
                                      }
                                 }

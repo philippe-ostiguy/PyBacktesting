@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 class MathOp():
-    """ Class to provide mathematical operation support
-
+    """
+    Class to provide mathematical operation support
     """
 
     @classmethod
