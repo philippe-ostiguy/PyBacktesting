@@ -86,7 +86,7 @@ class Initialize():
 
 
         #Decide which data type we need in our testing
-        self.__name_col={
+        self.name_col={
             self.date_name:[],
             self.open_name:[],
             self.high_name:[],
@@ -99,10 +99,12 @@ class Initialize():
 
 
         #Can't touch this
-        self.name = pd.DataFrame(self.__name_col)
+        self.name = pd.DataFrame(self.name_col)
         self.date_ordinal_name = 'date_ordinal'
         self.point_data=0
         self.end_value = 0 #final value of portfolio
+
+        period = 1 # nb of period differentiate to remove trend
 
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
@@ -125,6 +127,12 @@ class Initialize():
 
         #Initial value of portfolio
         self.init_value = 10000
+
+        # DE-TRENDING
+        #------------
+        # Remove the trend from the series by different with the last value. First value is set to 0
+        self.is_detrend = True #Possible to set to yes or no
+
 
         #ENTRY
         #-----
@@ -225,7 +233,19 @@ class Initialize():
         self.__name_tempor = "_tempo"
         self.__index_nb = 0
 
-        self.series=self.ordinal_date()
+
+        self.series=self.__data_frame()
+
+        if self.is_detrend :
+            self.series_diff = self.series.copy()
+            self.series_diff.drop(self.date_name ,axis=1,inplace = True)
+            self.series_diff = self.series_diff.diff(periods=period) #differentiate with previous row
+            self.series_diff.loc[:(period-1),:] = 0
+            self.series_diff.insert(0,self.date_name,self.series[self.date_name])
+            self.series_diff = self.ordinal_date(self.series_diff)
+
+        self.series = self.ordinal_date(self.series)
+        t= 5
 
     def reverse_csv(self):
         """
@@ -260,11 +280,7 @@ class Initialize():
 
     def __data_frame(self):
         """
-         fonction pour retourner le csv sous forme de data frame selon le range désiré avec une colonne
-         numérique pour les dates
-         Le csv est un format standard Date,Open,High,Low,Close,Adj Close,Volume
-         par défaut retourne le close seulement, mais on pourrait changer la possibilité avec usecols
-         (4 est pour le close)
+        Return the csv to a dataframe
         """
 
         self.col_numb()
@@ -277,17 +293,15 @@ class Initialize():
         self.series=self.series.reset_index(drop=True)
         return self.series
 
-    def ordinal_date(self):
+    def ordinal_date(self,_series):
         """
-        dataframe pour ajouter une colonne avec les dates en numérique (pas timestamp), ce qui rend plus facile dans
-        le calcul des indicateurs
+        Add a column to have the dates in numeric format
         """
 
-        self.series=self.__data_frame()
-        self.series.Date=pd.to_datetime(self.series.Date)
-        self.series[self.date_ordinal_name] = pd.to_datetime(self.series[self.date_name]).map(dt.datetime.toordinal)
+        _series.Date=pd.to_datetime(_series.Date)
+        _series[self.date_ordinal_name] = pd.to_datetime(_series[self.date_name]).map(dt.datetime.toordinal)
 
-        return self.series
+        return _series
 
     def sous_series_(self,point_data=0):
         """

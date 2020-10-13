@@ -31,4 +31,3 @@ class AlphaVantage():
 
 av_ = AlphaVantage()
 data_ = av_.intraday_fx()
-t = 5
