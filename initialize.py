@@ -70,8 +70,6 @@ class Initialize():
 
             Trades
 
-
-
         """
 
 
@@ -110,8 +108,8 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2008-01-20'
-        self.date_fin = '2010-01-20'
+        self.date_debut = '1990-01-20'
+        self.date_fin = '2019-01-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -147,17 +145,16 @@ class Initialize():
         #STOP TRY ENTER
         #--------------
 
-
         #These params are conditions to stop trying to enter the market if the current
         # price reach a % of the largest extension
 
         self.bol_st_ext = True  #Tells the system if it has to stop trying to enter the market using
-                                # Fibonacci extension techniques
+                                # Fibonacci extension techniques. Can be optimized to True or False
         self.fst_cdt_ext = .618 #% of the largest extension that if the market reaches, the system
-                                # stops trying to enter the market
+                                # stops trying to enter the market. Can be optimized to .764 or .882
         self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
                                 #opposite direction, the system brings the stop loss closer to the last peak or
-                                # low (default value = adj. close
+                                # low (default value = adj. close). Can be set to .764, 1 or 1.382
 
 
         #STOP TIGHTENING
@@ -172,7 +169,7 @@ class Initialize():
         self.stop_tight_dict = {self.stop_tight_ret :
                                     {self.is_true : True, #can be optimized (possible value is True or False)
                                                             #True if the system use this technique
-                                     self.default_data_ : False, #can be optimized (True or False)
+                                     self.default_data_ : True, #can be optimized (True or False)
                                                             #True it uses the adj. close. False it uses low for buy
                                                             #signal and high for sell signal
                                      self.stop_ret_level : .882 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2

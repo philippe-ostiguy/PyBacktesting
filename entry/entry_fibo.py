@@ -307,5 +307,5 @@ class EntFibo(init.Initialize):
                 self.extreme[self.fst_data] = self.series.loc[self.curr_row, self.default_data]
                 self.extreme[self.fst_idx] = self.curr_row
 
-        if self.is_entry & (op.gt(self.extreme[self.fst_idx]),self.row_rel_extreme):
+        if self.is_entry & (op.gt(self.extreme[self.fst_idx],self.row_rel_extreme)):
             print("'Absolute' extremum is after relative extremum which doesn't work")

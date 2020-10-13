@@ -1,5 +1,6 @@
 import entry.entry_fibo as ef
 import sys
+import operator as op
 
 class ExitFibo(ef.EntFibo):
 
@@ -28,8 +29,7 @@ class ExitFibo(ef.EntFibo):
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
 
         super().__call__(curr_row=curr_row, buy_signal=buy_signal, sell_signal=sell_signal)
-        self.try_exit()
-        #self.try_exit()
+        return self.try_exit()
 
 
     def try_exit(self):
@@ -52,27 +52,21 @@ class ExitFibo(ef.EntFibo):
 
         #If no entry signal, exit the function
         if not self.is_entry:
-            return
+            return None
 
-        __entry_level = self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.entry_level)]
-        is_tightened = False #stop has been tightened
-
-        # Changing global low or high if current one is lower or higher
-        if self.fst_op(__current_value, self.extreme[self.fst_data]):
-            self.extreme[self.fst_data] = __curent_value
-            self.extreme[self.fst_idx] = self.curr_row
+        _entry_level = self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.entry_level)]
 
         #extension level if condition in initialize.py is True
         if self.exit_dict[self.exit_name][self.exit_ext_bool]:
-            __extension_lost = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
-            __extension_profit = self.largest_extension_ * self.exit_dict[self.exit_name][self.profit_ext]
-            __stop_value = self.trd_op(self.extreme[self.fst_data], __extension_lost)
+            _extension_lost = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
+            _extension_profit = self.largest_extension_ * self.exit_dict[self.exit_name][self.profit_ext]
+            _stop_value = self.trd_op(self.extreme[self.fst_data], _extension_lost)
 
-            if __extension_lost < 0:
-                sys.exit(f"Houston, we've got a problem, Extension lost in exit_fibo.py is {__extension_lost}"
+            if _extension_lost < 0:
+                sys.exit(f"Houston, we've got a problem, Extension lost in exit_fibo.py is {_extension_lost}"
                          f"and should not be negative")
-            if __extension_profit < 0:
-                sys.exit(f"Houston, we've got a problem, Extension profit in exit_fibo.py is {__extension_profit}"
+            if _extension_profit < 0:
+                sys.exit(f"Houston, we've got a problem, Extension profit in exit_fibo.py is {_extension_profit}"
                          f"and should not be negative")
 
         #stop tightening using extension
@@ -92,39 +86,39 @@ class ExitFibo(ef.EntFibo):
         # and vice versa for sell signal. If yes, just not entering in the market
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
             self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
-                                                                             __extension_lost)):
+                                                                             _extension_lost)):
             self.is_entry = False
-            return
+            return None
 
         data_test = len(self.series) - self.curr_row - 1
 
         for curr_row_ in range(data_test):
             self.curr_row += 1
-            __curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
-            __current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
+            _curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
+            _current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
 
             #Profit can change if relative_extreme changes
             if self.exit_dict[self.exit_name][self.exit_ext_bool]:
-                __profit_value = self.fth_op(self.relative_extreme, __extension_profit)
+                _profit_value = self.fth_op(self.relative_extreme, _extension_profit)
 
             #Value that will make tighten the stop
             if _is_stop_ext:
                 _tight_trig = self.fth_op(self.relative_extreme,_extension_stop)
 
-            #Checking if stop is triggered
+            #Stop loss trigerred?
             if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
-                    self.six_op(__current_stop, __stop_value):
+                    self.six_op(_current_stop, _stop_value):
                 self.is_entry = False
-
                 self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
                 self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
-                    __stop_value #exit level
+                    _stop_value #exit level
                 self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
-                    self.inv*((__entry_level-__stop_value)/__stop_value)
+                    self.inv*((_entry_level-_stop_value)/_stop_value)
+                break
 
             #Changing relative low (for a buying), vice versa
-            if self.sec_op(__curent_value, self.relative_extreme):
-                self.relative_extreme = __curent_value
+            if self.sec_op(_curent_value, self.relative_extreme):
+                self.relative_extreme = _curent_value
                 self.row_rel_extreme = self.curr_row
 
                 #Changing stop tightening level
@@ -135,18 +129,19 @@ class ExitFibo(ef.EntFibo):
                     _extension_stop = _extension_tight * self.stop_tight_dict[self.stop_tight_ret][self.stop_ret_level]
 
             #Taking profit
-            if self.exit_dict[self.exit_name][self.exit_ext_bool] & self.fif_op(__curent_value,__profit_value):
+            if self.exit_dict[self.exit_name][self.exit_ext_bool] & self.fif_op(_curent_value,_profit_value):
                 self.is_entry = False
                 self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
                 self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
-                    __profit_value  # exit level
+                    _profit_value  # exit level
                 self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
-                    self.inv * ((__entry_level - __profit_value) / __profit_value)
+                    self.inv * ((_entry_level - _profit_value) / _profit_value)
+                break
 
             #Tightening the stop using extension
-            if _is_stop_ext & self.fst_op(__curent_value,_tight_trig):
-                if sec_op(__stop_value,self.series.loc[self.row_rel_extreme, _data_stop]):
-                    __stop_value = self.series.loc[self.row_rel_extreme, _data_stop]
+            if _is_stop_ext & self.fst_op(_curent_value,_tight_trig):
+                if self.sec_op(_stop_value,self.series.loc[self.row_rel_extreme, _data_stop]):
+                    _stop_value = self.series.loc[self.row_rel_extreme, _data_stop]
 
-        #return self.trades_track
+        return self.trades_track
 

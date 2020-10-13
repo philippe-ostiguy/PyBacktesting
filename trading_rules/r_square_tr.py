@@ -26,7 +26,6 @@ class RSquareTr(ind.Indicator):
         on each row (data), so we enter or exit in the market on the next row (data)
 
         """
-        exf_ = exf.ExitFibo()
 
         buy_signal = False
         sell_signal = False
@@ -43,7 +42,8 @@ class RSquareTr(ind.Indicator):
                     if self.last_long >= self.min_data :
                         buy_signal = True
                         self.last_short = self.min_data
-                        exf.ExitFibo().__call__(curr_row=curr_row,buy_signal=buy_signal)
+                        trades_track = exf.ExitFibo().__call__(curr_row=curr_row,buy_signal=buy_signal)
+                        self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_long = 0
 
             #Sell signal
@@ -53,7 +53,8 @@ class RSquareTr(ind.Indicator):
                     if self.last_short >= self.min_data :
                         sell_signal=True
                         self.last_long = self.min_data
-                        exf.ExitFibo().__call__(curr_row=curr_row,sell_signal=sell_signal)
+                        trades_track = exf.ExitFibo().__call__(curr_row=curr_row,sell_signal=sell_signal)
+                        self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_short=0
 
             buy_signal = False
