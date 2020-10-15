@@ -30,11 +30,11 @@ class RSquareTr(ind.Indicator):
         buy_signal = False
         sell_signal = False
 
-        for row in range(len(self.series)-self.nb_data+1):
+        for row in range(len(self.series_diff)-self.nb_data+1):
             curr_row=row + self.nb_data-1
 
-            slope_value=self.series.loc[curr_row, self.slope_key]
-            r_value=self.series.loc[curr_row,self.r_square_key]
+            slope_value=self.series_diff.loc[curr_row, self.slope_key]
+            r_value=self.series_diff.loc[curr_row,self.r_square_key]
 
             #Buy signal
             if slope_value > 0 :

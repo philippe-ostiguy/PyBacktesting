@@ -85,17 +85,17 @@ class ExitFibo(ef.EntFibo):
         #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
         # and vice versa for sell signal. If yes, just not entering in the market
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
-            self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
+            self.six_op(self.series_diff.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
                                                                              _extension_lost)):
             self.is_entry = False
             return None
 
-        data_test = len(self.series) - self.curr_row - 1
+        data_test = len(self.series_diff) - self.curr_row - 1
 
         for curr_row_ in range(data_test):
             self.curr_row += 1
-            _curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
-            _current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
+            _curent_value = self.series_diff.loc[self.curr_row, self.default_data] #curent value with default data type
+            _current_stop = self.series_diff.loc[self.curr_row, self.stop] #current stop value with data stop type
 
             #Profit can change if relative_extreme changes
             if self.exit_dict[self.exit_name][self.exit_ext_bool]:
@@ -140,8 +140,8 @@ class ExitFibo(ef.EntFibo):
 
             #Tightening the stop using extension
             if _is_stop_ext & self.fst_op(_curent_value,_tight_trig):
-                if self.sec_op(_stop_value,self.series.loc[self.row_rel_extreme, _data_stop]):
-                    _stop_value = self.series.loc[self.row_rel_extreme, _data_stop]
+                if self.sec_op(_stop_value,self.series_diff.loc[self.row_rel_extreme, _data_stop]):
+                    _stop_value = self.series_diff.loc[self.row_rel_extreme, _data_stop]
 
         return self.trades_track
 

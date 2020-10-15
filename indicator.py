@@ -33,14 +33,14 @@ class Indicator(init.Initialize):
         will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or exit
         the market (or exit) on the next row (value)
         """
-        nb_columns=len(self.series.columns)
+        nb_columns=len(self.series_diff.columns)
 
         for key,value in self.indicator.items():
-            self.series[key] = np.nan
+            self.series_diff[key] = np.nan
             value.point_data = 0
 
-            for row in range(len(self.series.index)-self.nb_data+1):
+            for row in range(len(self.series_diff.index)-self.nb_data+1):
                 value.sous_series = self.sous_series_(point_data=value.point_data)
                 value_ = getattr(value,key)()
-                self.series.loc[self.series.index[row]+self.nb_data-1,key]=value_
+                self.series_diff.loc[self.series_diff.index[row]+self.nb_data-1,key]=value_
                 value.point_data+=1

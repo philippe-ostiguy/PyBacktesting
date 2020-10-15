@@ -2,13 +2,12 @@ import csv
 import pandas as pd
 import numpy as np
 import datetime as dt
-
-
+import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
 
 class Initialize():
     """
     Module to initialize the values
-
 
     Notes
     -----
@@ -19,14 +18,11 @@ class Initialize():
     In entry_fibo, some improvements could be done... (see notes in module entry_fibo.py)
     """
 
-
-
     def __init__(self):
 
         """ Initialize all the values here we want
 
         It is the values that are initialized  and used through the system
-
 
         Attributes
         ----------
@@ -52,7 +48,7 @@ class Initialize():
                     contains the different possibilities to tighten the stop
                 `self.is_true` : bool
                     tells the system if it has to use this particular technique to tighten the stop or not
-                `self.default_data` : bool
+                `self.default_data_` : bool
                     default data used to determine if the stop loss level must be tightened. It is `True`, then
                     `self.adj_close_name` is used. Otherwise, `self.low_name` with `self.high_name` (depends if it is
                     a buy or sell signal).
@@ -71,8 +67,6 @@ class Initialize():
             Trades
 
         """
-
-
         #directory where our data are
         self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 
@@ -105,13 +99,14 @@ class Initialize():
         self.end_value = 0 #final value of portfolio
 
         period = 1 # nb of period differentiate to remove trend
+        p_value_station= .01 #significance level to test for non stationarity with Augmented Dickey-Fuller
 
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '1990-01-20'
-        self.date_fin = '2019-01-20'
+        self.date_debut = '2008-01-20'
+        self.date_fin = '2012-01-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -227,8 +222,6 @@ class Initialize():
 
         self.pl_dict = {}
 
-
-
         #No need to change them here- should not
         self.__name_tempor = "_tempo"
         self.__index_nb = 0
@@ -236,6 +229,7 @@ class Initialize():
 
         self.series=self.__data_frame()
 
+        #Differentiate with previous period to transform the series as stationary
         if self.is_detrend :
             self.series_diff = self.series.copy()
             self.series_diff.drop(self.date_name ,axis=1,inplace = True)
@@ -245,7 +239,18 @@ class Initialize():
             self.series_diff = self.ordinal_date(self.series_diff)
 
         self.series = self.ordinal_date(self.series)
-        t= 5
+
+
+
+        #PLOTTING THE DIFFENTIATED TIME SERIES
+        #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
+        #plt.ion()
+        #plt.show()
+
+        #Check if differentiated series is stationary
+        if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
+            raise Exception("The differentiated series is not stationary")
+
 
     def reverse_csv(self):
         """

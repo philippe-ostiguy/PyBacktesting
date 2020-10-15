@@ -98,7 +98,7 @@ class EntFibo(init.Initialize):
             self.exit = self.low_name
             self.inv = 1
 
-        self.mo_ = mo.MathOp(series=self.series, default_col=self.default_data)
+        self.mo_ = mo.MathOp(series=self.series_diff, default_col=self.default_data)
         self.local_extremum_=self.mo_.local_extremum(start_point=start_point, end_point=self.curr_row, \
                                                      window=self.window, min_=self.low,max_=self.high)
         self.local_extremum_ = self.local_extremum_.reset_index(drop=True)
@@ -191,7 +191,7 @@ class EntFibo(init.Initialize):
 
         """
 
-        data_range = self.series.loc[self.first_data:self.curr_row,self.default_data]
+        data_range = self.series_diff.loc[self.first_data:self.curr_row,self.default_data]
         self.extreme = {self.high : data_range.max(),
                        self.low : data_range.min(),
                        self.high_idx : data_range.idxmax(),
@@ -239,7 +239,7 @@ class EntFibo(init.Initialize):
 
         """
 
-        data_test = len(self.series) - self.curr_row - 1
+        data_test = len(self.series_diff) - self.curr_row - 1
 
         if self.is_entry:
             raise Exception('Already have an open position in the market...')
@@ -259,33 +259,33 @@ class EntFibo(init.Initialize):
             #Then the system first check if the price on the current row is below (for buy) or above (for sell signal)
             #If it is the case, the system just don't enter in the market.
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                if (curr_row_ == 0) & self.fif_op(_entry_tentative, self.series.loc[self.curr_row,self.entry]):
+                if (curr_row_ == 0) & self.fif_op(_entry_tentative, self.series_diff.loc[self.curr_row,self.entry]):
                     self.is_entry = False
                     break
 
             self.curr_row += 1
 
             if self.relative_extreme == None:
-                self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                self.relative_extreme = self.series_diff.loc[self.curr_row, self.default_data]
                 self.row_rel_extreme = self.curr_row
 
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goes above our signal or equal
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                if self.six_op(self.series.loc[self.curr_row,self.entry],_entry_tentative):
+                if self.six_op(self.series_diff.loc[self.curr_row,self.entry],_entry_tentative):
                     self.is_entry = True
                     self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
                                                                   self.entry_level:_entry_tentative},ignore_index=True)
-                    self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                    self.relative_extreme = self.series_diff.loc[self.curr_row,self.default_data]
                     self.row_rel_extreme = self.curr_row
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
-            if self.bol_st_ext & self.six_op(self.series.loc[self.curr_row,self.entry], \
+            if self.bol_st_ext & self.six_op(self.series_diff.loc[self.curr_row,self.entry], \
                         self.trd_op(self.extreme[self.fst_data],self.largest_extension_ * self.fst_cdt_ext)):
-                if self.sec_op(self.series.loc[self.curr_row, self.default_data], self.relative_extreme):
-                    self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                if self.sec_op(self.series_diff.loc[self.curr_row, self.default_data], self.relative_extreme):
+                    self.relative_extreme = self.series_diff.loc[self.curr_row, self.default_data]
                     self.row_rel_extreme = self.curr_row
                 self.fst_ext_cdt = True
                 continue
@@ -295,7 +295,7 @@ class EntFibo(init.Initialize):
             #       % of the largest extension, previously (61.8% by default) - low for buy, high for sell
             #   - It went back then reached the minimum retracement in the other direction (88.2% by default)
             if self.bol_st_ext & self.fst_ext_cdt & (self.relative_extreme != None) :
-                if self.fif_op(self.series.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
+                if self.fif_op(self.series_diff.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :
                     print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension"
                           f"and then retrace in the opposite direction of {self.sec_cdt_ext}")
@@ -303,8 +303,8 @@ class EntFibo(init.Initialize):
                 pass
 
             #Changing global low or high if current one is lower or higher
-            if self.fst_op(self.series.loc[self.curr_row, self.default_data], self.extreme[self.fst_data]):
-                self.extreme[self.fst_data] = self.series.loc[self.curr_row, self.default_data]
+            if self.fst_op(self.series_diff.loc[self.curr_row, self.default_data], self.extreme[self.fst_data]):
+                self.extreme[self.fst_data] = self.series_diff.loc[self.curr_row, self.default_data]
                 self.extreme[self.fst_idx] = self.curr_row
 
         if self.is_entry & (op.gt(self.extreme[self.fst_idx],self.row_rel_extreme)):
