@@ -15,8 +15,8 @@ class Indicator(init.Initialize):
 
         super().__init__()
 
-        rg = lr.RegressionSlopeStrenght(self.series_diff)
-        mk_ = mk.MannKendall(self.series_diff)
+        rg = lr.RegressionSlopeStrenght(self.series_test)
+        mk_ = mk.MannKendall(self.series_test)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
 
         self.slope_key=list(self.indicator.keys())[0]
@@ -33,14 +33,14 @@ class Indicator(init.Initialize):
         will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or exit
         the market (or exit) on the next row (value)
         """
-        nb_columns=len(self.series_diff.columns)
+        nb_columns=len(self.series_test.columns)
 
         for key,value in self.indicator.items():
-            self.series_diff[key] = np.nan
+            self.series_test[key] = np.nan
             value.point_data = 0
 
-            for row in range(len(self.series_diff.index)-self.nb_data+1):
-                value.sous_series = self.sous_series_(self.series_diff,point_data=value.point_data)
+            for row in range(len(self.series_test.index)-self.nb_data+1):
+                value.sous_series = self.sous_series_(self.series_test,point_data=value.point_data)
                 value_ = getattr(value,key)()
-                self.series_diff.loc[self.series_diff.index[row]+self.nb_data-1,key]=value_
+                self.series_test.loc[self.series_test.index[row]+self.nb_data-1,key]=value_
                 value.point_data+=1

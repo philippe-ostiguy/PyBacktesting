@@ -24,17 +24,16 @@ class RSquareTr(ind.Indicator):
         Take 2 key-word args : r2 level to triger a signal + minimum nb of data (self.min_data) between each
         signal before trigerring a new signal telling us to try to enter in the market. It gives the signal
         on each row (data), so we enter or exit in the market on the next row (data)
-
         """
 
         buy_signal = False
         sell_signal = False
 
-        for row in range(len(self.series_diff)-self.nb_data+1):
+        for row in range(len(self.series_test)-self.nb_data+1):
             curr_row=row + self.nb_data-1
 
-            slope_value=self.series_diff.loc[curr_row, self.slope_key]
-            r_value=self.series_diff.loc[curr_row,self.r_square_key]
+            slope_value=self.series_test.loc[curr_row, self.slope_key]
+            r_value=self.series_test.loc[curr_row,self.r_square_key]
 
             #Buy signal
             if slope_value > 0 :

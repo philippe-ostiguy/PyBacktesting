@@ -17,12 +17,12 @@ class AlphaVantage():
     def intraday_fx(cls):
 
         # Submit our API and create a session
-        alpha_fx = fx.ForeignExchange(key=api_key, output_format='pandas')
-        #alpha_ts = ts.TimeSeries(key=Apikey, output_format='pandas')
+        alpha_fx = fx.ForeignExchange(key=api_key, output_format='pandas',)
+
 
         data_, _ = alpha_fx.get_currency_exchange_intraday(from_symbol = from_symbol, to_symbol = to_symbol, \
-                                                          interval='15min',outputsize=size)
-        #data, meta_data = alpha_ts.get_intraday(symbol=symbol, outputsize=size)
+                                                          interval='5min',outputsize=size)
+
 
         # Convert the index to datetime.
         data_.index = pd.to_datetime(data_.index)
@@ -31,3 +31,4 @@ class AlphaVantage():
 
 av_ = AlphaVantage()
 data_ = av_.intraday_fx()
+t = 5

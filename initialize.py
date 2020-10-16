@@ -106,7 +106,7 @@ class Initialize():
 
         # Set desired value to test the indicator
         self.date_debut = '2008-01-20'
-        self.date_fin = '2012-01-20'
+        self.date_fin = '2010-01-20'
         self.asset = "MSFT"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -126,7 +126,7 @@ class Initialize():
         # DE-TRENDING
         #------------
         # Remove the trend from the series by different with the last value. First value is set to 0
-        self.is_detrend = True #Possible to set to yes or no
+        self.is_detrend = False #Possible to set to yes or no
 
 
         #ENTRY
@@ -228,18 +228,20 @@ class Initialize():
 
 
         self.series=self.__data_frame()
+        self.series = self.ordinal_date(self.series)
+        self.series_test = self.series.copy()
 
         #Differentiate with previous period to transform the series as stationary
         if self.is_detrend :
             self.series_diff = self.series.copy()
-            self.series_diff.drop(self.date_name ,axis=1,inplace = True)
+            self.series_diff.drop([self.date_name ,self.date_ordinal_name],axis=1,inplace = True)
             self.series_diff = self.series_diff.diff(periods=period) #differentiate with previous row
             self.series_diff.loc[:(period-1),:] = 0
             self.series_diff.insert(0,self.date_name,self.series[self.date_name])
-            self.series_diff = self.ordinal_date(self.series_diff)
-
-        self.series = self.ordinal_date(self.series)
-
+            self.series_diff[self.date_ordinal_name] = self.series[self.date_ordinal_name]
+            self.series_test = self.series_diff
+            if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
+                raise Exception("The differentiated series is not stationary")
 
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
@@ -247,8 +249,6 @@ class Initialize():
         #plt.show()
 
         #Check if differentiated series is stationary
-        if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
-            raise Exception("The differentiated series is not stationary")
 
     def reverse_csv(self):
         """
