@@ -241,7 +241,6 @@ class Initialize():
         self.series = self.ordinal_date(self.series)
 
 
-
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
         #plt.ion()
@@ -250,7 +249,6 @@ class Initialize():
         #Check if differentiated series is stationary
         if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
             raise Exception("The differentiated series is not stationary")
-
 
     def reverse_csv(self):
         """
@@ -298,23 +296,23 @@ class Initialize():
         self.series=self.series.reset_index(drop=True)
         return self.series
 
-    def ordinal_date(self,_series):
+    def ordinal_date(self,series_):
         """
         Add a column to have the dates in numeric format
         """
 
-        _series.Date=pd.to_datetime(_series.Date)
-        _series[self.date_ordinal_name] = pd.to_datetime(_series[self.date_name]).map(dt.datetime.toordinal)
+        series_.Date=pd.to_datetime(series_.Date)
+        series_[self.date_ordinal_name] = pd.to_datetime(series_[self.date_name]).map(dt.datetime.toordinal)
 
-        return _series
+        return series_
 
-    def sous_series_(self,point_data=0):
+    def sous_series_(self,series_,point_data=0):
         """
         Retourne la serie selon la qté de données nécessaires pour la calcul de l'indicateur (itération)
         """
 
-        self.sous_series=self.series.iloc[point_data:point_data+self.nb_data,:]
+        self.sous_series=series_.iloc[point_data:point_data+self.nb_data,:]
 
-        if self.nb_data > len(self.series):
+        if self.nb_data > len(series_):
             raise Exception("Number of necessary data to calculate the indicator lower than available data")
         return self.sous_series

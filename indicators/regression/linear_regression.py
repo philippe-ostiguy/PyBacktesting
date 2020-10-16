@@ -12,11 +12,11 @@ class RegressionSlopeStrenght(init.Initialize):
     """
 
 
-    def __init__(self):
+    def __init__(self,series_):
         super().__init__()
 
         init_ = init.Initialize()
-        self.sous_series=init_.sous_series_()
+        self.sous_series=init_.sous_series_(series_)
 
     def __store_stat(self):
 

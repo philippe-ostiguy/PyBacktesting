@@ -15,8 +15,8 @@ class Indicator(init.Initialize):
 
         super().__init__()
 
-        rg = lr.RegressionSlopeStrenght()
-        mk_ = mk.MannKendall()
+        rg = lr.RegressionSlopeStrenght(self.series_diff)
+        mk_ = mk.MannKendall(self.series_diff)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
 
         self.slope_key=list(self.indicator.keys())[0]
@@ -40,7 +40,7 @@ class Indicator(init.Initialize):
             value.point_data = 0
 
             for row in range(len(self.series_diff.index)-self.nb_data+1):
-                value.sous_series = self.sous_series_(point_data=value.point_data)
+                value.sous_series = self.sous_series_(self.series_diff,point_data=value.point_data)
                 value_ = getattr(value,key)()
                 self.series_diff.loc[self.series_diff.index[row]+self.nb_data-1,key]=value_
                 value.point_data+=1
