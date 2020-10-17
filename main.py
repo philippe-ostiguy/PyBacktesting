@@ -2,6 +2,7 @@ import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
 import charting as cht
 import trading_rules as tr
+import pandas as pd
 
 
 class Main(tr.RSquareTr):
@@ -18,5 +19,6 @@ class Main(tr.RSquareTr):
                      r_square_level=self.r_square_level, **self.indicator).chart_()
 
 if __name__ == '__main__':
+
     Main().next_main()
     t=5

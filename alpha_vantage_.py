@@ -1,9 +1,10 @@
-import alpha_vantage.timeseries as ts
 import alpha_vantage.foreignexchange as fx
 import pandas as pd
 import os
 
 api_key = os.environ.get('ALPHAVANTAGE_API_KEY')
+api_key_ = os.environ.get('FINHUB_API_KEY')
+
 from_symbol = 'EUR'
 to_symbol = 'USD'
 size = 'full'

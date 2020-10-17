@@ -105,9 +105,9 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2008-01-20'
+        self.date_debut = '2009-01-20'
         self.date_fin = '2010-01-20'
-        self.asset = "MSFT"
+        self.asset = "EURUSD"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
@@ -243,6 +243,7 @@ class Initialize():
             if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
                 raise Exception("The differentiated series is not stationary")
 
+        t = 5
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
         #plt.ion()
