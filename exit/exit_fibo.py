@@ -4,7 +4,6 @@ import operator as op
 
 class ExitFibo(ef.EntFibo):
 
-  
     def __init__(self):
         """
         Class that uses Fibonnacci strategy to exit the market.
@@ -23,12 +22,13 @@ class ExitFibo(ef.EntFibo):
             current price or the next desired price
 
         """
+        pass
 
-        super().__init__()
 
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
 
-        super().__call__(curr_row=curr_row, buy_signal=buy_signal, sell_signal=sell_signal)
+        super().__init__()
+        self.ent_fibo(curr_row=curr_row, buy_signal=buy_signal, sell_signal=sell_signal)
         return self.try_exit()
 
 
@@ -83,12 +83,16 @@ class ExitFibo(ef.EntFibo):
                 _data_stop = self.stop
 
         #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
-        # and vice versa for sell signal. If yes, just not entering in the market
+        # and vice versa for sell signal. If yes, stop loss trigerred
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
-            self.six_op(self.series.loc[self.curr_row,self.stop],self.trd_op(self.extreme[self.fst_data],\
-                                                                             _extension_lost)):
+            self.six_op(self.series.loc[self.curr_row,self.stop],_stop_value):
             self.is_entry = False
-            return None
+            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
+            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+                _stop_value  # exit level
+            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+                self.inv * ((_entry_level - _stop_value) / _stop_value)
+            return self.trades_track
 
         data_test = len(self.series) - self.curr_row - 1
 

@@ -23,7 +23,7 @@ class MannKendall(init.Initialize):
         self.first_iteration=iteration
         self.nb_sign=0
 
-        self.sous_series=getattr(init.Initialize(),'sous_series_')(series_)
+        self.sous_series=self.sous_series_(series_)
         self.series_mk = series_
 
     def mk(self):
@@ -81,14 +81,13 @@ class MannKendall(init.Initialize):
             for k in range(n-1):
                 self.nb_sign += np.sign(sous_series_.values[n-1] - sous_series_.values[k])
 
-            self.sous_series= getattr(init.Initialize(), 'sous_series_')(self.series_mk,point_data=self.point_data-1)
+            self.sous_series= self.sous_series_(self.series_mk,point_data=self.point_data-1)
 
             #self.sous_series=idf_.sous_series_(point_data=self.point_data-1)
             sous_series_= self.sous_series.loc[:,self.default_data]
             n = len(sous_series_)
             for k in range(n-1):
                 self.nb_sign -= np.sign(sous_series_.values[k+1] - sous_series_.values[0])
-
 
         self.first_iteration = False
 

@@ -10,13 +10,10 @@ it trigers a signal to get long (slope is positive) or to get short (slope is ne
 
 class RSquareTr(ind.Indicator):
 
-
     def __init__(self):
         super().__init__()
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
-
-
 
     def signal_trig(self):
 
@@ -29,12 +26,13 @@ class RSquareTr(ind.Indicator):
         buy_signal = False
         sell_signal = False
 
+        ind_ =ind.Indicator()
+
         for row in range(len(self.series_test)-self.nb_data+1):
             curr_row=row + self.nb_data-1
 
             slope_value=self.series_test.loc[curr_row, self.slope_key]
             r_value=self.series_test.loc[curr_row,self.r_square_key]
-
             #Buy signal
             if slope_value > 0 :
                 if r_value > self.r_square_level:
@@ -42,6 +40,7 @@ class RSquareTr(ind.Indicator):
                         buy_signal = True
                         self.last_short = self.min_data
                         trades_track = exf.ExitFibo().__call__(curr_row=curr_row,buy_signal=buy_signal)
+
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_long = 0
 

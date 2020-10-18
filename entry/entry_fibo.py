@@ -5,7 +5,7 @@ import math
 
 class EntFibo(init.Initialize):
 
-    
+
     def __init__(self):
         """
         Class that uses Fibonnacci strategy to enter the market
@@ -29,17 +29,16 @@ class EntFibo(init.Initialize):
             shorter time every time an entry or exit signal
 
         """
-
         super().__init__()
-
         self.extreme = {}
         self.high="max"
         self.low="min"
         self.high_idx="max_idx"
         self.low_idx = "min_idx"
         self.fst_ext_cdt = False #by default first condition for extension is not met, set to False
-    
-    def __call__(self,curr_row,buy_signal=False,sell_signal=False):
+
+
+    def ent_fibo(self,curr_row,buy_signal=False,sell_signal=False):
         """
         Default function called to determine the entry level
         """
@@ -57,7 +56,7 @@ class EntFibo(init.Initialize):
                                           # to smooth data
         self.row_rel_extreme = 0
 
-        self.first_data = self.curr_row - self.nb_data - self.buffer_extremum + 1
+        self.first_data = self.curr_row - self.nb_data + 1
         if self.first_data < 0:
             self.first_data = 0
 
@@ -106,6 +105,7 @@ class EntFibo(init.Initialize):
         self.largest_extension() #finding the largest extension used for potential entry and/or exit
 
         self.try_entry()
+
     
     def largest_extension(self):
         """
@@ -184,6 +184,7 @@ class EntFibo(init.Initialize):
                 if self.sec_op(sec_val, my_data[sec_data]):
                     my_data[sec_data] = sec_val
                 continue
+
     
     def set_extremum(self):
         """

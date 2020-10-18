@@ -105,8 +105,9 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2009-01-20'
-        self.date_fin = '2010-01-20'
+        self.date_debut = '2015-11-11'
+        self.date_fin = '2016-12-01'
+        self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
         self.nb_data = 100  # nb of data on which data are tested
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -243,7 +244,6 @@ class Initialize():
             if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
                 raise Exception("The differentiated series is not stationary")
 
-        t = 5
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
         #plt.ion()
@@ -288,11 +288,21 @@ class Initialize():
         """
 
         self.col_numb()
-        __series = pd.read_csv(self.directory
-                               + self.asset + '.csv', usecols=list(self.name.columns),
-                               names=list(self.name.columns), header=0)
-        self.series=__series.loc[(__series[self.date_name] >= self.date_debut) & (__series[self.date_name]
+
+        if self.is_fx:
+            dateparse = lambda x: dt.datetime.strptime(x, '%d.%m.%Y %H:%M:%S')
+        else :
+            dateparse = None
+
+        _series = pd.read_csv(self.directory
+                               + self.asset + '.csv', usecols=list(self.name.columns),parse_dates=[self.date_name],
+                              date_parser=dateparse)
+
+        self.series=_series.loc[(_series[self.date_name] >= self.date_debut) & (_series[self.date_name]
                                                                                         <= self.date_fin)]
+
+        if self.series.empty:
+          raise Exception("Desired range date not available in the current files or not able to read the csv")
 
         self.series=self.series.reset_index(drop=True)
         return self.series

@@ -10,8 +10,8 @@ class Main(tr.RSquareTr):
     def __init__(self):
 
         super().__init__()
-        super().calcul_indicator()
-        super().signal_trig()
+        self.calcul_indicator()
+        self.signal_trig()
 
     def next_main(self):
 
