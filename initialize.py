@@ -59,7 +59,7 @@ class Initialize():
                 `self.stop_ret_level` : float
                     level at which the system tight the stop when it reaches this retracement in the opposite direction.
                     Ex: Buy signal then, market reaches `self.stop_ret_level` (.882 by default) in the other direction.
-                    The system will tighen the stop to the lowest (or highest)
+                    The system will tighen the stop to the lowest (or highest) point
 
             Exit
                 All the possible ways that the system can exit the market (extension, retracement)
@@ -105,11 +105,11 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2015-11-11'
-        self.date_fin = '2016-12-01'
+        self.date_debut = '2017-11-11'
+        self.date_fin = '2017-12-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
-        self.nb_data = 100  # nb of data on which data are tested
+        self.nb_data = 100  # nb of data on which data are tested, can be 150, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
@@ -136,14 +136,21 @@ class Initialize():
 
         self.enter_bool = 'enter_bool' #same key name for all the exit strategy (located in different dictionary)
         self.enter_ext_name = 'enter_ext_name'
-        self.enter_ext = 'enter_ext'
+        self.enter_ext = 'enter_ext' #Entering the market with largest extension from setback in current trend
         self.stop_ext = 'stop_ext'
+        self.enter_time = 'enter_time'
+        self.time_ext = 'time_ext' #Entering the market only if the current setback is a minimum percentage of
+                                    #largest setback from current trend in term of time
 
         self.enter_dict = {self.enter_ext_name :
                               {self.enter_bool : True,
                                self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
                                                   #the system enters the market
-                               }
+                               },
+                           self.enter_time:
+                               {self.enter_bool : True,
+                                self.time_ext : 0.5 #could be .5, .764
+                                }
                           }
 
         #STOP TRY ENTER
@@ -176,7 +183,7 @@ class Initialize():
                                      self.default_data_ : True, #can be optimized (True or False)
                                                             #True it uses the adj. close. False it uses low for buy
                                                             #signal and high for sell signal
-                                     self.stop_ret_level : .882 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
+                                     self.stop_ret_level : 1 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
                                      }
                                 }
 
@@ -228,7 +235,7 @@ class Initialize():
         self.__index_nb = 0
 
 
-        self.series=self.__data_frame()
+        self.series=self._data_frame()
         self.series = self.ordinal_date(self.series)
         self.series_test = self.series.copy()
 
@@ -282,7 +289,7 @@ class Initialize():
             if self.name[self.name.columns[col_number]].empty:
                 raise Exception('Column name "{}" odoes not exist in database'.format(self.name.columns[col_number]))
 
-    def __data_frame(self):
+    def _data_frame(self):
         """
         Return the csv to a dataframe
         """

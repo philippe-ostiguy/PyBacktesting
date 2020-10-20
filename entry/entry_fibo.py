@@ -36,7 +36,13 @@ class EntFibo(init.Initialize):
         self.high_idx="max_idx"
         self.low_idx = "min_idx"
         self.fst_ext_cdt = False #by default first condition for extension is not met, set to False
-
+        self.is_entry = False
+        self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a
+                                        # basis to calculate the profit taking price. It uses the default data (close)
+                                          # to smooth data
+        self.row_rel_extreme = 0
+        self.largest_time = 0 #extension in time
+        self.index_name = 'index'
 
     def ent_fibo(self,curr_row,buy_signal=False,sell_signal=False):
         """
@@ -50,11 +56,9 @@ class EntFibo(init.Initialize):
         self.curr_row=curr_row
         self.buy_signal=buy_signal
         self.sell_signal=sell_signal
-        self.is_entry = False
-        self.relative_extreme = None #last wave the system uses (relative low for buy, vice versa) as a
-                                        # basis to calculate the profit taking price. It uses the default data (close)
-                                          # to smooth data
-        self.row_rel_extreme = 0
+
+        if (self.largest_time != 0):
+            raise Exception("Largest extension in term of times is not equal to 0 in __init__")
 
         self.first_data = self.curr_row - self.nb_data + 1
         if self.first_data < 0:
@@ -99,17 +103,17 @@ class EntFibo(init.Initialize):
 
         self.mo_ = mo.MathOp(series=self.series, default_col=self.default_data)
         self.local_extremum_=self.mo_.local_extremum(start_point=start_point, end_point=self.curr_row, \
-                                                     window=self.window, min_=self.low,max_=self.high)
+                                            window=self.window, min_=self.low,max_=self.high,index_= self.index_name)
         self.local_extremum_ = self.local_extremum_.reset_index(drop=True)
 
         self.largest_extension() #finding the largest extension used for potential entry and/or exit
-
+        self.set_value()
         self.try_entry()
 
-    
+
     def largest_extension(self):
         """
-        Find largest extension (setback) from current trend (Fibonacci)
+        Find largest extension (setback) from current trend (Fibonacci) in size + largest in time
         """
 
         if self.buy_signal:
@@ -130,11 +134,17 @@ class EntFibo(init.Initialize):
             fst_name=self.low
             sec_name=self.high
 
+        trd_data = 'first_index'
+        my_data[trd_data] = 0
+        fth_data = 'sec_index'
+        my_data[fth_data] = 0
+
         for curr_row_ in range(len(self.local_extremum_)):
 
             #Sorten the name
             fst_val = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(fst_name)]
             sec_val = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(sec_name)]
+            _current_index = self.local_extremum_.iloc[curr_row_, self.local_extremum_.columns.get_loc(self.index_name)]
 
             #If there are value to high and low, assign largest_extension_
             if (my_data[fst_data] != None) & (my_data[sec_data] != None):
@@ -147,8 +157,13 @@ class EntFibo(init.Initialize):
                         if op.ge(self.inv*(my_data[sec_data] - my_data[fst_data]), self.largest_extension_):
                             self.largest_extension_ = self.inv*(my_data[sec_data] - my_data[fst_data])
 
+                    _ext_time = my_data[fth_data]- my_data[trd_data]
+                    if (_ext_time>self.largest_time):
+                        self.largest_time = _ext_time
+
                     my_data[fst_data] = None
                     my_data[sec_data] = None
+
 
             #It checks at the second last data, if there is a data for second_name (new relative high for sell
             # or new relative low for buy), it just basically don't check it, because it is not a real extension
@@ -160,32 +175,37 @@ class EntFibo(init.Initialize):
             #Assign a value to first value (high for buy, low for sell) until it's NOT None or Nan
             if (my_data[fst_data] == None):
                 my_data[fst_data] = fst_val
+                my_data[trd_data] = _current_index
                 continue
 
             if math.isnan(my_data[fst_data]):
                 my_data[fst_data] = fst_val
+                my_data[trd_data] = _current_index
                 continue
 
             #If there is a valid first value, check if current value higher than recorded high (for buy), vice versa
             if not math.isnan(fst_val):
                 if self.fst_op(fst_val, my_data[fst_data]):
                     my_data[fst_data] = fst_val
+                    my_data[trd_data] = _current_index
                 continue
 
             if (my_data[sec_data] == None):
                 my_data[sec_data] = sec_val
+                my_data[fth_data] = _current_index
                 continue
 
             if math.isnan(my_data[sec_data]):
                 my_data[sec_data] = sec_val
+                my_data[fth_data] = _current_index
                 continue
 
             if not math.isnan(sec_val):
                 if self.sec_op(sec_val, my_data[sec_data]):
                     my_data[sec_data] = sec_val
+                    my_data[fth_data] = _current_index
                 continue
 
-    
     def set_extremum(self):
         """
         Set the global max and min for the given range (from first_data to curr_row).
@@ -199,9 +219,30 @@ class EntFibo(init.Initialize):
                        self.low_idx : data_range.idxmin()
                        }
 
-    
+
+    def set_value(self):
+        """
+        Method to set some values that will are used in class and sublcass
+        """
+
+        # extension level if condition in initialize.py is True
+        if self.exit_dict[self.exit_name][self.exit_ext_bool]:
+            self.extension_lost = self.largest_extension_ * self.exit_dict[self.exit_name][self.stop_ext]
+            self.extension_profit = self.largest_extension_ * self.exit_dict[self.exit_name][self.profit_ext]
+            self.stop_value = self.trd_op(self.extreme[self.fst_data], self.extension_lost)
+
+            if self.extension_lost < 0:
+                raise Exception(
+                    f"Houston, we've got a problem, Extension lost in enter_fibo.py is {self.extension_lost} "
+                    f"and should not be negative")
+            if self.extension_profit < 0:
+                raise Exception(f"Houston, we've got a problem, Extension profit in enter_fibo.py is "
+                                f"{self.extension_profit} and should not be negative")
+
+
     def try_entry(self):
-        """ Method that try entering in the market
+        """
+        Method that try entering in the market
 
         Function that will try to enter in the market :
                 Until the system hit the desired extension and/or retracement. At the moment, only using extension (the
@@ -235,12 +276,15 @@ class EntFibo(init.Initialize):
 
         At the moment, the system uses ONLY the extension to try to enter in the market. We may have to change a bit
         of the code if we want the flexibility of using other stuff
-
-
-
         """
 
         data_test = len(self.series) - self.curr_row - 1
+
+        #Data used only in entry.fibo at the moment
+        _largest_time = self.largest_time * self.enter_dict[self.enter_time][self.time_ext]
+        _bool_time = self.enter_dict[self.enter_time][self.enter_bool]
+        _largest_ext = self.largest_extension_ * self.enter_dict[self.enter_ext_name][self.enter_ext]
+        _bool_ext = self.enter_dict[self.enter_ext_name][self.enter_bool]
 
         if self.is_entry:
             raise Exception('Already have an open position in the market...')
@@ -250,11 +294,16 @@ class EntFibo(init.Initialize):
             #We may change that later if we decides to use other things than only the largest extension to enter in
             # the market. It checks if there is a "largest extension" set (in some case, there might not be)
             if not hasattr(self, 'largest_extension_'):
+                self.is_entry = False
+                print("Not any largest extension")
                 break
 
-            if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                _entry_tentative = self.trd_op(self.extreme[self.fst_data],\
-                                self.largest_extension_* self.enter_dict[self.enter_ext_name][self.enter_ext])
+            if _bool_ext:
+                if _largest_ext < 0: #Can happens when the market moves really fast and not able to find
+                                        # a `self.largest_extension` that is positive
+                    self.is_entry = False
+                    break
+                _entry_tentative = self.trd_op(self.extreme[self.fst_data], _largest_ext)
 
             #Test first if using Fibonacci extension as a signal to enter in the market.
             #Then the system first check if the price on the current row is below (for buy) or above (for sell signal)
@@ -264,29 +313,77 @@ class EntFibo(init.Initialize):
                     self.is_entry = False
                     break
 
+
             self.curr_row += 1
+
+            _curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
+            _current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
+            _current_entry = self.series.loc[self.curr_row, self.entry]
+
+            if not hasattr(self, 'stop_value'):
+                self.is_entry = False
+                print("Not any stop_value")
+                break
+            """
+            if self.buy_signal:
+                start_point = self.extreme[self.low_idx]
+                self.fst_op = op.gt
+                self.sec_op = op.lt
+                self.trd_op = op.sub
+                self.fth_op = op.add
+                self.fif_op = op.ge
+                self.six_op = op.le
+                self.fst_data = self.high
+                self.sec_data = self.low
+                self.fst_idx = self.high_idx
+                self.sec_idx = self.low_idx
+                self.entry = self.stop = self.low_name
+                self.exit = self.high_name
+                self.inv = -1
+            """
+
 
             if self.relative_extreme == None:
                 self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
                 self.row_rel_extreme = self.curr_row
 
+            #Check if has to enter after a certain time only
+            if _bool_time & (self.curr_row <_largest_time):
+                # Retrace two quickly (in time) and went below (for a buy signal) the stop loss. Do not enter
+                if self.six_op(_current_stop, self.stop_value):
+                    self.is_entry = False
+                    break
+                else :
+                    continue
+
+            if _bool_time & (self.curr_row == math.ceil(_largest_time - 1)):
+                tes = 5
+
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goes above our signal or equal
             if self.enter_dict[self.enter_ext_name][self.enter_bool]:
-                if self.six_op(self.series.loc[self.curr_row,self.entry],_entry_tentative):
+                if self.six_op(_current_entry,_entry_tentative):
+
+                    #Check if current price is below (for buy) desired entry level after the minimum time. If yes,
+                    #the market enters at the current price and not the desired
+                    if _bool_time & (self.curr_row == math.ceil(_largest_time - 1)):
+                        _entry_level = _current_entry
+                    else :
+                        _entry_level = _entry_tentative
+
                     self.is_entry = True
                     self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
-                                                                  self.entry_level:_entry_tentative},ignore_index=True)
-                    self.relative_extreme = self.series.loc[self.curr_row,self.default_data]
+                                                            self.entry_level:_entry_level},ignore_index=True)
+                    self.relative_extreme = _current_value
                     self.row_rel_extreme = self.curr_row
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
-            if self.bol_st_ext & self.six_op(self.series.loc[self.curr_row,self.entry], \
+            if self.bol_st_ext & self.six_op(_current_entry, \
                         self.trd_op(self.extreme[self.fst_data],self.largest_extension_ * self.fst_cdt_ext)):
-                if self.sec_op(self.series.loc[self.curr_row, self.default_data], self.relative_extreme):
-                    self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
+                if self.sec_op(_current_value, self.relative_extreme):
+                    self.relative_extreme = _current_value
                     self.row_rel_extreme = self.curr_row
                 self.fst_ext_cdt = True
                 continue
@@ -300,6 +397,7 @@ class EntFibo(init.Initialize):
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :
                     print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension"
                           f"and then retrace in the opposite direction of {self.sec_cdt_ext}")
+                    self.is_entry = False
                     break
                 pass
 

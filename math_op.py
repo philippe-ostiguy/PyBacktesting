@@ -17,7 +17,7 @@ class MathOp():
         cls.default_col=default_col
 
     @classmethod
-    def local_extremum(cls,start_point,end_point,window = 6,min_= 'min',max_='max' ):
+    def local_extremum(cls,start_point,end_point,window = 6,min_= 'min',max_='max',index_ = 'index'):
         """ Function to find local extremum (min and max) on a Dataframe
 
 
@@ -49,6 +49,7 @@ class MathOp():
                                                           order=window)[0]][cls.default_col]
         cls.series[max_] = cls.series.iloc[argrelextrema(cls.series.values, np.greater_equal,
                                                           order=window)[0]][cls.default_col]
+        cls.series[index_] = cls.series.index
 
         # Plot results - to get ride when the project is done. Only as a guideline at the moment
 
