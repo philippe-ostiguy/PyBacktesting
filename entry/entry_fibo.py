@@ -316,7 +316,7 @@ class EntFibo(init.Initialize):
 
             self.curr_row += 1
 
-            _curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
+            _current_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
             _current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
             _current_entry = self.series.loc[self.curr_row, self.entry]
 
@@ -324,31 +324,13 @@ class EntFibo(init.Initialize):
                 self.is_entry = False
                 print("Not any stop_value")
                 break
-            """
-            if self.buy_signal:
-                start_point = self.extreme[self.low_idx]
-                self.fst_op = op.gt
-                self.sec_op = op.lt
-                self.trd_op = op.sub
-                self.fth_op = op.add
-                self.fif_op = op.ge
-                self.six_op = op.le
-                self.fst_data = self.high
-                self.sec_data = self.low
-                self.fst_idx = self.high_idx
-                self.sec_idx = self.low_idx
-                self.entry = self.stop = self.low_name
-                self.exit = self.high_name
-                self.inv = -1
-            """
-
 
             if self.relative_extreme == None:
                 self.relative_extreme = self.series.loc[self.curr_row, self.default_data]
                 self.row_rel_extreme = self.curr_row
 
             #Check if has to enter after a certain time only
-            if _bool_time & (self.curr_row <_largest_time):
+            if _bool_time & (curr_row_ <_largest_time):
                 # Retrace two quickly (in time) and went below (for a buy signal) the stop loss. Do not enter
                 if self.six_op(_current_stop, self.stop_value):
                     self.is_entry = False
@@ -356,7 +338,7 @@ class EntFibo(init.Initialize):
                 else :
                     continue
 
-            if _bool_time & (self.curr_row == math.ceil(_largest_time - 1)):
+            if _bool_time & (curr_row_ == math.ceil(_largest_time)):
                 tes = 5
 
             #Buy or sell signal (entry) with extension
@@ -367,7 +349,7 @@ class EntFibo(init.Initialize):
 
                     #Check if current price is below (for buy) desired entry level after the minimum time. If yes,
                     #the market enters at the current price and not the desired
-                    if _bool_time & (self.curr_row == math.ceil(_largest_time - 1)):
+                    if _bool_time & (self.curr_row == math.ceil(_largest_time)):
                         _entry_level = _current_entry
                     else :
                         _entry_level = _entry_tentative
