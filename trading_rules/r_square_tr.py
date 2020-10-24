@@ -1,7 +1,6 @@
 import indicator as ind
 import entry.entry_fibo as enf
 import exit.exit_fibo as exf
-from copy import deepcopy
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -13,11 +12,12 @@ class RSquareTr(ind.Indicator):
 
     def __init__(self):
         super().__init__()
+        super().__call__()
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
 
 
-    def signal_trig(self):
+    def __call__(self):
 
         """
         Take 2 key-word args : r2 level to triger a signal + minimum nb of data (self.min_data) between each

@@ -21,9 +21,9 @@ class Indicator(init.Initialize):
 
         self.slope_key=list(self.indicator.keys())[0]
         self.r_square_key=list(self.indicator.keys())[1]
+        #self.calcul_indicator()
 
-
-    def calcul_indicator(self):
+    def __call__(self):
 
         """
         Function that return the value of an indicator through desired period, lenght calculation of the

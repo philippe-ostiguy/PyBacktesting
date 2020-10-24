@@ -104,7 +104,7 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2017-08-01'
+        self.date_debut = '2017-11-01'
         self.date_fin = '2017-12-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
