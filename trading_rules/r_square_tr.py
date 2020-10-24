@@ -1,6 +1,7 @@
 import indicator as ind
 import entry.entry_fibo as enf
 import exit.exit_fibo as exf
+from copy import deepcopy
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -15,6 +16,7 @@ class RSquareTr(ind.Indicator):
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
 
+
     def signal_trig(self):
 
         """
@@ -26,7 +28,7 @@ class RSquareTr(ind.Indicator):
         buy_signal = False
         sell_signal = False
 
-        ind_ =ind.Indicator()
+        init_ = ind.Indicator()
 
         for row in range(len(self.series_test)-self.nb_data+1):
             curr_row=row + self.nb_data-1
@@ -39,7 +41,7 @@ class RSquareTr(ind.Indicator):
                     if self.last_long >= self.min_data :
                         buy_signal = True
                         self.last_short = self.min_data
-                        trades_track = exf.ExitFibo().__call__(curr_row=curr_row,buy_signal=buy_signal)
+                        trades_track = exf.ExitFibo(init_).__call__(curr_row=curr_row,buy_signal=buy_signal)
 
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_long = 0
@@ -51,7 +53,7 @@ class RSquareTr(ind.Indicator):
                     if self.last_short >= self.min_data :
                         sell_signal=True
                         self.last_long = self.min_data
-                        trades_track = exf.ExitFibo().__call__(curr_row=curr_row,sell_signal=sell_signal)
+                        trades_track = exf.ExitFibo(init_).__call__(curr_row=curr_row,sell_signal=sell_signal)
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_short=0
 

@@ -10,14 +10,13 @@ class Main(tr.RSquareTr):
     def __init__(self):
 
         super().__init__()
-        self.calcul_indicator()
-        self.signal_trig()
 
     def next_main(self):
 
-        cht.Charting(list(self.indicator.keys())[1],self.series,self.series_test,self.default_data,
-                     r_square_level=self.r_square_level, **self.indicator).chart_signal()
-
+        self.calcul_indicator()
+        self.signal_trig()
+        cht.Charting(self.series,self.default_data, series_test=self.series_test,**self.indicator).\
+            chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
 
 if __name__ == '__main__':
 

@@ -104,7 +104,7 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2017-11-11'
+        self.date_debut = '2017-08-01'
         self.date_fin = '2017-12-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
@@ -151,7 +151,6 @@ class Initialize():
                                 self.time_ext : 0.618 #could be .5, .764,1
                                 }
                           }
-
 
         #STOP TRY ENTER
         #--------------
@@ -227,13 +226,16 @@ class Initialize():
         #----------
 
         self.return_= 0
-
+        self.sharpe_ratio = 0 #Did not substract the risk-free rate, only return divided by vol
+        self.ann_return = 0
+        self.ann_vol = 0
         self.profit_pourc = 0
         self.win_loss = 0
 
+
         #self.ann_return = 0
         #self.ann_vol = 0
-        #self.sharpe_ratio = 0
+
         #self.sortino_ratio = 0
         #self.max_draw= 0
         #self.average_pnl (average profit over average lost)
