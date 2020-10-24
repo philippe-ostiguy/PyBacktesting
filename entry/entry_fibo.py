@@ -222,7 +222,7 @@ class EntFibo(init.Initialize):
 
     def set_value(self):
         """
-        Method to set some values that will are used in class and sublcass
+        Method to set some values that are used in class and sublcass
         """
 
         # extension level if condition in initialize.py is True
@@ -289,6 +289,8 @@ class EntFibo(init.Initialize):
         if self.is_entry:
             raise Exception('Already have an open position in the market...')
 
+        self.set_value()
+
         for curr_row_ in range(data_test):
 
             #We may change that later if we decides to use other things than only the largest extension to enter in
@@ -312,7 +314,6 @@ class EntFibo(init.Initialize):
                 if (curr_row_ == 0) & self.fif_op(_entry_tentative, self.series.loc[self.curr_row,self.entry]):
                     self.is_entry = False
                     break
-
 
             self.curr_row += 1
 
@@ -338,9 +339,6 @@ class EntFibo(init.Initialize):
                 else :
                     continue
 
-            if _bool_time & (curr_row_ == math.ceil(_largest_time)):
-                tes = 5
-
             #Buy or sell signal (entry) with extension
             #   - Buy if current market price goes below our signal or equal
             #   - Sell if current market price goes above our signal or equal
@@ -357,8 +355,10 @@ class EntFibo(init.Initialize):
                     self.is_entry = True
                     self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
                                                             self.entry_level:_entry_level},ignore_index=True)
-                    self.relative_extreme = _current_value
-                    self.row_rel_extreme = self.curr_row
+
+                    if self.sec_op(_current_value, self.relative_extreme):
+                        self.relative_extreme = _current_value
+                        self.row_rel_extreme = self.curr_row
                     break
 
             #Market hits the minimum required extension - first condition met (to stop trying entering the market)
@@ -388,5 +388,6 @@ class EntFibo(init.Initialize):
                 self.extreme[self.fst_data] = self.series.loc[self.curr_row, self.default_data]
                 self.extreme[self.fst_idx] = self.curr_row
 
-        if self.is_entry & (op.gt(self.extreme[self.fst_idx],self.row_rel_extreme)):
-            print("'Absolute' extremum is after relative extremum which doesn't work")
+                #Changing stop value
+                if self.exit_dict[self.exit_name][self.exit_ext_bool]:
+                    self.stop_value = self.trd_op(self.extreme[self.fst_data], self.extension_lost)

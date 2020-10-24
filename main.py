@@ -16,7 +16,8 @@ class Main(tr.RSquareTr):
     def next_main(self):
 
         cht.Charting(list(self.indicator.keys())[1],self.series,self.series_test,self.default_data,
-                     r_square_level=self.r_square_level, **self.indicator).chart_()
+                     r_square_level=self.r_square_level, **self.indicator).chart_signal()
+
 
 if __name__ == '__main__':
 

@@ -78,7 +78,6 @@ class Initialize():
         self.close_name = 'Close'
         self.adj_close_name = 'Adj Close'
 
-
         #Decide which data type we need in our testing
         self.name_col={
             self.date_name:[],
@@ -109,12 +108,12 @@ class Initialize():
         self.date_fin = '2017-12-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
-        self.nb_data = 100  # nb of data on which data are tested, can be 150, 200, 300
+        self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
         # Indicator value to trigger a signal
-        self.r_square_level = .8 #can be .6, .7 and .9 too
+        self.r_square_level = .7 #can be .6, .7 and .9 too
         self.min_data = 100  # nb of data between a signal
 
         #Number of data (points) we check before and after to find a local min and max
@@ -149,9 +148,10 @@ class Initialize():
                                },
                            self.enter_time:
                                {self.enter_bool : True,
-                                self.time_ext : 0.5 #could be .5, .764
+                                self.time_ext : 0.618 #could be .5, .764,1
                                 }
                           }
+
 
         #STOP TRY ENTER
         #--------------
@@ -161,11 +161,11 @@ class Initialize():
 
         self.bol_st_ext = True  #Tells the system if it has to stop trying to enter the market using
                                 # Fibonacci extension techniques. Can be optimized to True or False
-        self.fst_cdt_ext = .618 #% of the largest extension that if the market reaches, the system
-                                # stops trying to enter the market. Can be optimized to .764 or .882
-        self.sec_cdt_ext = .882 #% if the system triggers the first condition, then if it reaches this level in the
+        self.fst_cdt_ext = .764 #% of the largest extension that if the market reaches, the system
+                                # stops trying to enter the market. Can be optimized to .618, .764 or .882
+        self.sec_cdt_ext = 1.382 #% if the system triggers the first condition, then if it reaches this level in the
                                 #opposite direction, the system brings the stop loss closer to the last peak or
-                                # low (default value = adj. close). Can be set to .764, 1 or 1.382
+                                # low (default value = adj. close). Can be set to .618, .764, 1 or 1.382
 
 
         #STOP TIGHTENING
@@ -173,10 +173,12 @@ class Initialize():
 
         #Stop tightening technique no 1. See description above in docstrings
         self.stop_tight_ret =  'stop_tight_ret'
+        self.stop_tight_pour = 'stop_tight_pourentage'
         self.is_true = 'is_true'
         self.default_data_ = 'default_data_' #adjusted closed
         self.stop_ret_level = 'stop_ret_level'
-
+        self.tight_value = 'tight_value'
+        self.pour_tight = 'pour_tight'
         self.stop_tight_dict = {self.stop_tight_ret :
                                     {self.is_true : True, #can be optimized (possible value is True or False)
                                                             #True if the system use this technique
@@ -184,7 +186,12 @@ class Initialize():
                                                             #True it uses the adj. close. False it uses low for buy
                                                             #signal and high for sell signal
                                      self.stop_ret_level : 1 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
-                                     }
+                                     },
+                                self.stop_tight_pour :  #tighten when at 50% of target
+                                    {self.is_true : True,
+                                     self.tight_value : .5,  #.5,.618,.764 is possible too
+                                     self.pour_tight : .5 #.5, .618 pourcentage the stop is tighten
+                                    }
                                 }
 
         # EXIT
@@ -199,14 +206,14 @@ class Initialize():
 
         self.exit_dict = {self.exit_name :
                               {self.exit_ext_bool : True,
-                               self.profit_ext : 2.618, #also try 3.382, 4.236
+                               self.profit_ext : 3.382, #also try 2.618, 3.382, 4.236
                                self.stop_ext : 1.618    #also try 1.382, 2
                                }
                           }
 
+
         #TRADES TRACKER
         #--------------
-
         self.entry_row = 'Entry_row'
         self.entry_level = 'Entry_level'
         self.exit_row = 'Exit_row'
@@ -220,13 +227,17 @@ class Initialize():
         #----------
 
         self.return_= 0
-        self.max_draw= 0
+
         self.profit_pourc = 0
         self.win_loss = 0
 
         #self.ann_return = 0
         #self.ann_vol = 0
         #self.sharpe_ratio = 0
+        #self.sortino_ratio = 0
+        #self.max_draw= 0
+        #self.average_pnl (average profit over average lost)
+        #self.profit (%of total trades in profits)
 
         self.pl_dict = {}
 
@@ -250,6 +261,7 @@ class Initialize():
             self.series_test = self.series_diff
             if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
                 raise Exception("The differentiated series is not stationary")
+
 
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
