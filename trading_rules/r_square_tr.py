@@ -42,7 +42,6 @@ class RSquareTr(ind.Indicator):
                         buy_signal = True
                         self.last_short = self.min_data
                         trades_track = exf.ExitFibo(init_).__call__(curr_row=curr_row,buy_signal=buy_signal)
-
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_long = 0
 

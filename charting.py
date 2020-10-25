@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import initialize as init
 
 class Charting():
 
@@ -12,7 +13,8 @@ class Charting():
         cls.series_test = series_test
         cls.column_price = column_price
         cls.column_date = column_date
-        cls.date_name = cls.series_test.columns[cls.column_date]
+        if series_test != None:
+            cls.date_name = series_test.columns[cls.column_date]
         
         count = len(cls.indicator)
         cls.divider = .24
@@ -52,5 +54,35 @@ class Charting():
         _plot(cls.series_test)
         if not (cls.series[cls.column_price] == cls.series_test[cls.column_price]).all():
             _plot(cls.series)
+    @classmethod
+    def chart_marker(cls, marker_name = 'Default', **marker):
+        """
+        Method to plot a chart with marker
+        """
+        fig = plt.figure()
+        candle.plot(cls.date_name, cls.column_price, markevery=marker, marker="o", data=cls.series)
+
+        for key, _ in cls.marker.items():
+            candle.plot(cls.date_name, cls.column_price, markevery=marker, marker="o", data=cls.series)
+
+            cls.indicator_dict[key] = fig.add_axes((0, cls.height_chart - cls.divider * count, 1, 0.2), sharex=candle)
+            count += 1
 
 
+
+init_ = init.Initialize()
+
+init_.trades_track = init_.trades_track.append({init_.entry_row: 5,
+                                              init_.exit_row: 10}, ignore_index=True)
+
+
+
+mark_up = init_.trades_track.loc[init_.entry_row].index.tolist()
+mark_down = init_.trades_track.loc[init_.exit_row].index.tolist()
+
+test =  {'marker_entry':{init_.marker_name : '^',init_.color_mark : 'g',init_.marker_entry : mark_up},
+         'marker_exit':{init_.marker_name : 'v',init_.color_mark : 'r',init_.marker_exit : mark_down}}
+
+
+cht_ = Charting(init_.series,init_.default_data).chart_marker(init_.trades_track, marker_name=init_.marker_name,**test)
+t = 5

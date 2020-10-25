@@ -78,6 +78,11 @@ class Initialize():
         self.close_name = 'Close'
         self.adj_close_name = 'Adj Close'
 
+        self.marker_name = 'marker_name'
+        self.color_mark = 'color_mark'
+        self.marker_entry = 'marker_entry'
+        self.market_exit = 'marker_exit'
+
         #Decide which data type we need in our testing
         self.name_col={
             self.date_name:[],
@@ -89,7 +94,6 @@ class Initialize():
 
         #Value we use by default for chart, extremum, etc.
         self.default_data=self.adj_close_name
-
 
         #Can't touch this
         self.name = pd.DataFrame(self.name_col)
@@ -104,8 +108,8 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2017-11-01'
-        self.date_fin = '2017-12-01'
+        self.date_debut = '2017-03-15'
+        self.date_fin = '2017-05-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
         self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
@@ -221,6 +225,7 @@ class Initialize():
 
         self.trades_track = pd.DataFrame(columns=[self.entry_row,self.entry_level,self.exit_row,self.exit_level,\
                                                   self.trade_return])
+
 
         #P&L TRACKER
         #----------
