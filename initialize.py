@@ -78,10 +78,10 @@ class Initialize():
         self.close_name = 'Close'
         self.adj_close_name = 'Adj Close'
 
-        self.marker_name = 'marker_name'
+        self.marker_ = 'marker_name'
         self.color_mark = 'color_mark'
-        self.marker_entry = 'marker_entry'
-        self.market_exit = 'marker_exit'
+        self.marker_signal = 'marker_signal'
+
 
         #Decide which data type we need in our testing
         self.name_col={

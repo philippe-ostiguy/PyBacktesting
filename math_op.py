@@ -20,7 +20,6 @@ class MathOp():
     def local_extremum(cls,start_point,end_point,window = 6,min_= 'min',max_='max',index_ = 'index'):
         """ Function to find local extremum (min and max) on a Dataframe
 
-
         Parameters
         ----------
         start_point : int
@@ -53,13 +52,38 @@ class MathOp():
 
         # Plot results - to get ride when the project is done. Only as a guideline at the moment
 
+        """
         plt.scatter(cls.series.index, cls.series[min_], c='r')
         plt.scatter(cls.series.index, cls.series[max_], c='g')
+        
         plt.plot(cls.series.index, cls.series[cls.default_col])
         plt.ion()
         plt.show()
+        """
 
         #Filter nan value for min or max out
         cls.series=cls.series.loc[(cls.series[min_].isna())==False | (cls.series[max_].isna() == False)]
 
         return cls.series
+
+    @classmethod
+    def nan_list(cls,list_):
+        """
+        Check if a list has one empty value
+
+        Return
+        ------
+        Bool : `True` or `False`
+            Return `True` if at least one value in the list is `nan` and `False otherwise
+        """
+
+        return True if True in np.isnan(list_) else False
+
+    @classmethod
+    def pd_tolist(cls,pd_, row_name):
+        """
+        Transform a pandas column to a list. It makes sure it is an integer
+        """
+        pd__ = pd_.loc[:, row_name].tolist()
+        return [int(i) for i in pd__]
+

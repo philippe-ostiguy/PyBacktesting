@@ -1,6 +1,7 @@
 import indicator as ind
 import entry.entry_fibo as enf
 import exit.exit_fibo as exf
+from math_op import MathOp as mo
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -61,4 +62,10 @@ class RSquareTr(ind.Indicator):
 
             self.last_long += 1
             self.last_short += 1
-        t=5
+
+        #Check if there is a row with no entry or exit signal
+        if mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row)):
+            raise Exception("Nan value in entry row")
+
+        if mo.nan_list(mo.pd_tolist(self.trades_track, self.exit_row)):
+            raise Exception("Nan value in exit row")

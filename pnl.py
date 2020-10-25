@@ -1,5 +1,5 @@
 import trading_rules as tr
-
+from math_op import MathOp as mo
 
 class PnL(tr.RSquareTr):
 
@@ -9,6 +9,3 @@ class PnL(tr.RSquareTr):
 
     def __call__(self):
         pass
-
-
-
