@@ -71,8 +71,8 @@ class Initialize():
         self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 
         #Writing data
-        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results'
-        self.name_out = 'results.csv'
+        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
+        self.name_out = 'results'
 
         #No need to change them
         self.date_name = 'Date'
@@ -112,7 +112,7 @@ class Initialize():
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2017-03-15'
+        self.date_debut = '2007-03-15'
         self.date_fin = '2017-05-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
@@ -234,17 +234,15 @@ class Initialize():
         #P&L TRACKER
         #----------
 
-        self.return_= 0
-        self.sharpe_ratio_ = 0 #Did not substract the risk-free rate, only return divided by vol
-        self.ann_return_ = 0
-        self.ann_vol_ = 0
-        self.pour_win_ = 0 #pourcentage of winning trades
-        self.win_loss_ = 0
-        self.max_draw_ = 0
+        self.sharpe_ratio_ = 'Sharpe ratio' #Did not substract the risk-free rate, only return divided by vol
+        self.ann_return_ = 'Annualized return'
+        self.ann_vol_ = 'Annualized volatility'
+        self.pour_win_ = '% win' #pourcentage of winning trades
+        self.max_draw_ = 'Maximum drawdown'
 
         #self.sortino_ratio = 0
 
-        self.pl_dict = {}
+        self.pnl_dict = {}
 
         #No need to change them here- should not
         self.__name_tempor = "_tempo"

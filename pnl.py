@@ -1,6 +1,7 @@
 import trading_rules as tr
 import numpy as np
 import math
+from manip_data.manip_data_ import ManipData as md
 
 class PnL(tr.RSquareTr):
 
@@ -13,11 +14,12 @@ class PnL(tr.RSquareTr):
 
     def __call__(self):
         self.diff_ = ((self.end_date_ - self.start_date_).days / 365) #diff in term of year with decimal
-        self.ann_return_=self.ann_return()
-        self.ann_vol()
-        self.sharpe_ratio()
-        self.max_draw()
-        self.pour_win()
+        self.pnl_dict[self.ann_return_] = self.ann_return()
+        self.pnl_dict[self.ann_vol_] = self.ann_vol()
+        self.pnl_dict[self.sharpe_ratio_] = self.sharpe_ratio()
+        self.pnl_dict[self.max_draw_] = self.max_draw()
+        self.pnl_dict[self.pour_win_] = self.pour_win()
+        md.write_data(self.dir_output, self.name_out, **self.pnl_dict)
 
     def annualized_(func):
         """Decorator to return annualized value
@@ -40,32 +42,34 @@ class PnL(tr.RSquareTr):
         """Calculate annualized vol
         """
 
-        self.ann_vol_ = self.trades_track[self.trade_return].std()
-        if not np.isnan(self.ann_vol_):
-            self.ann_vol_ = self.ann_vol_ *  math.sqrt(1/self.diff_)
+        vol_ = self.trades_track[self.trade_return].std()
+        if not np.isnan(vol_):
+            return (vol_ *  math.sqrt(1/self.diff_))
+        else :
+            return None
 
     def sharpe_ratio(self):
         """Sharpe ratio
 
         Not using the risk-free rate has it doesn't change the final result
         """
+        if self.pnl_dict[self.ann_vol_] == None:
+            return None
 
-        if ((self.ann_vol_ == 0) | np.isnan(self.ann_vol_)):
-            self.sharpe_ratio_ = None
+        elif ((self.pnl_dict[self.ann_vol_] == 0) | np.isnan(self.pnl_dict[self.ann_vol_])):
+            return None
         else :
-            self.sharpe_ratio_ = self.ann_return_ /self.ann_vol_
+            return (self.pnl_dict[self.ann_return_] /self.pnl_dict[self.ann_vol_])
 
     def max_draw(self):
-        """Return lowest value
-        """
+        """Return lowest value """
 
-        self.max_draw_ = self.trades_track[self.trade_return].min()
+        return self.trades_track[self.trade_return].min()
 
     def pour_win(self):
         """Return the pourcentage of winning trades
         """
 
         total_trade = self.trades_track.shape[0]
-        self.pour_win_ = self.trades_track[self.trades_track[self.trade_return] >= 0].shape[0]
-        self.pour_win_ = self.pour_win_ / total_trade
-        print(self.pour_win_)
+        pour_win_ = self.trades_track[self.trades_track[self.trade_return] >= 0].shape[0]
+        return (pour_win_ / total_trade)
