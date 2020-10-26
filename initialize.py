@@ -2,8 +2,8 @@ import csv
 import pandas as pd
 import numpy as np
 import datetime as dt
-import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
+from dateutil.relativedelta import relativedelta
 
 class Initialize():
     """
@@ -231,11 +231,11 @@ class Initialize():
         #----------
 
         self.return_= 0
-        self.sharpe_ratio = 0 #Did not substract the risk-free rate, only return divided by vol
-        self.ann_return = 0
-        self.ann_vol = 0
-        self.profit_pourc = 0
-        self.win_loss = 0
+        self.sharpe_ratio_ = 0 #Did not substract the risk-free rate, only return divided by vol
+        self.ann_return_ = 0
+        self.ann_vol_ = 0
+        self.profit_pourc_ = 0
+        self.win_loss_ = 0
 
 
         #self.ann_return = 0
@@ -268,7 +268,6 @@ class Initialize():
             self.series_test = self.series_diff
             if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
                 raise Exception("The differentiated series is not stationary")
-
 
         #PLOTTING THE DIFFENTIATED TIME SERIES
         #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])

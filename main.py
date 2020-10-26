@@ -16,7 +16,6 @@ class Main(pnl.PnL):
         """
         Marks signal on chart
         """
-
         self.cht_.chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
 
     def chart_trigger(self):
@@ -30,6 +29,8 @@ class Main(pnl.PnL):
                 'marker_exit': {self.marker_: 'v', self.color_mark: 'r', self.marker_signal: mark_down}}
 
         self.cht_.chart_marker(self.marker_signal, self.marker_, self.color_mark,**marks_)
+
+
 
 if __name__ == '__main__':
     main_ = Main()
