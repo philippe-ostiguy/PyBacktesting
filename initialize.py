@@ -70,6 +70,10 @@ class Initialize():
         #directory where our data are
         self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 
+        #Writing data
+        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results'
+        self.name_out = 'results.csv'
+
         #No need to change them
         self.date_name = 'Date'
         self.open_name = 'Open'
@@ -234,24 +238,17 @@ class Initialize():
         self.sharpe_ratio_ = 0 #Did not substract the risk-free rate, only return divided by vol
         self.ann_return_ = 0
         self.ann_vol_ = 0
-        self.profit_pourc_ = 0
+        self.pour_win_ = 0 #pourcentage of winning trades
         self.win_loss_ = 0
-
-
-        #self.ann_return = 0
-        #self.ann_vol = 0
+        self.max_draw_ = 0
 
         #self.sortino_ratio = 0
-        #self.max_draw= 0
-        #self.average_pnl (average profit over average lost)
-        #self.profit (%of total trades in profits)
 
         self.pl_dict = {}
 
         #No need to change them here- should not
         self.__name_tempor = "_tempo"
         self.__index_nb = 0
-
 
         self.series=self._data_frame()
         self.series = self.ordinal_date(self.series)
@@ -276,22 +273,10 @@ class Initialize():
 
         #Check if differentiated series is stationary
 
-    def reverse_csv(self):
-        """
-        fonction pour inverse l'ordre des lignes dans un csv (dernière devient la première), etc.
-        la première ligne qui contient le nom des colonnes n'est pas touchée
-        """
-
-        with open(self.asset + ".csv") as fr, open(self.asset + self.__name_tempor + ".csv","w") as fw:
-            cr = csv.reader(fr,delimiter=",")
-            cw = csv.writer(fw,delimiter=",")
-            cw.writerow(next(cr))  # write title as-is
-            cw.writerows(reversed(list(cr)))
-
 
     def col_numb(self):
         """
-        Determine column number based on header name in file + header we want to use (in initialize.py)
+        Determine column numbers based on the one we want to use
         """
 
         with open(self.asset + ".csv") as file:
@@ -313,42 +298,35 @@ class Initialize():
         """
 
         self.col_numb()
-
         if self.is_fx:
             dateparse = lambda x: dt.datetime.strptime(x, '%d.%m.%Y %H:%M:%S')
         else :
             dateparse = None
-
         _series = pd.read_csv(self.directory
                                + self.asset + '.csv', usecols=list(self.name.columns),parse_dates=[self.date_name],
                               date_parser=dateparse)
-
         self.series=_series.loc[(_series[self.date_name] >= self.date_debut) & (_series[self.date_name]
-                                                                                        <= self.date_fin)]
-
+                                                                                        < self.date_fin)]
         if self.series.empty:
           raise Exception("Desired range date not available in the current files or not able to read the csv")
-
         self.series=self.series.reset_index(drop=True)
         return self.series
 
     def ordinal_date(self,series_):
         """
-        Add a column to have the dates in numeric format
+        Add an ordinal date column
         """
 
         series_.Date=pd.to_datetime(series_.Date)
         series_[self.date_ordinal_name] = pd.to_datetime(series_[self.date_name]).map(dt.datetime.toordinal)
-
         return series_
 
     def sous_series_(self,series_,point_data=0):
         """
-        Retourne la serie selon la qté de données nécessaires pour la calcul de l'indicateur (itération)
+        Returns the series according to the amount of data needed to calculate the indicator
         """
 
         self.sous_series=series_.iloc[point_data:point_data+self.nb_data,:]
-
         if self.nb_data > len(series_):
             raise Exception("Number of necessary data to calculate the indicator lower than available data")
         return self.sous_series

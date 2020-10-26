@@ -16,10 +16,11 @@ class PnL(tr.RSquareTr):
         self.ann_return_=self.ann_return()
         self.ann_vol()
         self.sharpe_ratio()
+        self.max_draw()
+        self.pour_win()
 
     def annualized_(func):
-        """
-        Decorator to return annualized value
+        """Decorator to return annualized value
         """
         def wrap_diff(self):
             return ((1+func(self))**(1/self.diff_)-1)
@@ -38,8 +39,7 @@ class PnL(tr.RSquareTr):
     def ann_vol(self):
         """Calculate annualized vol
         """
-        self.trades_track = self.trades_track.append({self.trade_return: .01},ignore_index=True)
-        self.trades_track = self.trades_track.append({self.trade_return: .02}, ignore_index=True)
+
         self.ann_vol_ = self.trades_track[self.trade_return].std()
         if not np.isnan(self.ann_vol_):
             self.ann_vol_ = self.ann_vol_ *  math.sqrt(1/self.diff_)
@@ -50,7 +50,22 @@ class PnL(tr.RSquareTr):
         Not using the risk-free rate has it doesn't change the final result
         """
 
-        if ((self.ann_vol_ == 0) or np.isnan(self.ann_vol)):
+        if ((self.ann_vol_ == 0) | np.isnan(self.ann_vol_)):
             self.sharpe_ratio_ = None
         else :
             self.sharpe_ratio_ = self.ann_return_ /self.ann_vol_
+
+    def max_draw(self):
+        """Return lowest value
+        """
+
+        self.max_draw_ = self.trades_track[self.trade_return].min()
+
+    def pour_win(self):
+        """Return the pourcentage of winning trades
+        """
+
+        total_trade = self.trades_track.shape[0]
+        self.pour_win_ = self.trades_track[self.trades_track[self.trade_return] >= 0].shape[0]
+        self.pour_win_ = self.pour_win_ / total_trade
+        print(self.pour_win_)
