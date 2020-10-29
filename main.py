@@ -13,15 +13,11 @@ class Main(pnl.PnL):
         self.cht_ = cht.Charting(self.series, self.default_data, series_test=self.series_test, **self.indicator)
 
     def chart_signal(self):
-        """
-        Marks signal on chart
-        """
+        """Marks signal on chart"""
         self.cht_.chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
 
     def chart_trigger(self):
-        """
-        Marks entry and exit level on chart
-        """
+        """Marks entry and exit level on chart"""
 
         mark_up = mo.pd_tolist(self.trades_track, self.entry_row)
         mark_down = mo.pd_tolist(self.trades_track, self.exit_row)
@@ -29,11 +25,9 @@ class Main(pnl.PnL):
                 'marker_exit': {self.marker_: 'v', self.color_mark: 'r', self.marker_signal: mark_down}}
 
         self.cht_.chart_marker(self.marker_signal, self.marker_, self.color_mark,**marks_)
-
-
+        t = 5
 
 if __name__ == '__main__':
     main_ = Main()
-    main_.chart_signal()
+    #main_.chart_signal()
     main_.chart_trigger()
-    t=5

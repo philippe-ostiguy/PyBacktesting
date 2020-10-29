@@ -1,6 +1,6 @@
 from scipy import stats
 import initialize as init
-
+from manip_data import ManipData as md
 
 class RegressionSlopeStrenght(init.Initialize):
     """
@@ -15,8 +15,8 @@ class RegressionSlopeStrenght(init.Initialize):
     def __init__(self,series_):
         super().__init__()
 
-        init_ = init.Initialize()
-        self.sous_series=init_.sous_series_(series_)
+        #init_ = init.Initialize()
+        self.sous_series=md.sous_series_(series_,self.nb_data)
 
     def __store_stat(self):
 

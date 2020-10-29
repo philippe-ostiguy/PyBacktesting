@@ -6,7 +6,7 @@ import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
 import initialize as init
 import numpy as np
-
+from manip_data import ManipData as md
 
 class Indicator(init.Initialize):
 
@@ -21,7 +21,6 @@ class Indicator(init.Initialize):
 
         self.slope_key=list(self.indicator.keys())[0]
         self.r_square_key=list(self.indicator.keys())[1]
-        #self.calcul_indicator()
 
     def __call__(self):
 
@@ -40,7 +39,7 @@ class Indicator(init.Initialize):
             value.point_data = 0
 
             for row in range(len(self.series_test.index)-self.nb_data+1):
-                value.sous_series = self.sous_series_(self.series_test,point_data=value.point_data)
+                value.sous_series = md.sous_series_(self.series_test,self.nb_data,point_data=value.point_data)
                 value_ = getattr(value,key)()
                 self.series_test.loc[self.series_test.index[row]+self.nb_data-1,key]=value_
                 value.point_data+=1

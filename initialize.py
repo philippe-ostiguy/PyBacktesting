@@ -1,9 +1,10 @@
 import csv
 import pandas as pd
 import numpy as np
-import datetime as dt
 from statsmodels.tsa.stattools import adfuller
 from dateutil.relativedelta import relativedelta
+from date_manip import DateManip as dm
+from manip_data import ManipData as md
 
 class Initialize():
     """
@@ -67,6 +68,7 @@ class Initialize():
             Trades
 
         """
+
         #directory where our data are
         self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 
@@ -86,7 +88,6 @@ class Initialize():
         self.color_mark = 'color_mark'
         self.marker_signal = 'marker_signal'
 
-
         #Decide which data type we need in our testing
         self.name_col={
             self.date_name:[],
@@ -101,24 +102,41 @@ class Initialize():
 
         #Can't touch this
         self.name = pd.DataFrame(self.name_col)
-        self.date_ordinal_name = 'date_ordinal'
+        self.date_ordinal_name = 'Ordinal Date'
         self.point_data=0
         self.end_value = 0 #final value of portfolio
+        self.series = pd.DataFrame()
 
-        period = 1 # nb of period differentiate to remove trend
+        period = 1 # nb of differentiated periods to remove the trend
         p_value_station= .01 #significance level to test for non stationarity with Augmented Dickey-Fuller
 
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
 
         # Set desired value to test the indicator
-        self.date_debut = '2007-03-15'
+        self.date_debut = '2017-03-15'
         self.date_fin = '2017-05-01'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
         self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
+
+        #Tell if we do a walk foward
+        self.is_walkfoward = True #Says if we train and test
+        self.training_name_ = '_training'
+        self.test_name_ =  '_test'
+        self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
+        #String added to the results file name
+        self.training_ = 7 #Lenght in months of training period
+        self.test_ = 15 #Lenght in months of testing period
+        self.min_results = 10 #minimum number of results needed in a training period to consider the results (using an
+                            #optimization process)
+        self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_name_}
+        self.dict_date_ = {}
+        #if self.is_walkfoward:
+         #   self.dict_date_ = dm.date_dict(self.dict_date_,self.date_debut, self.date_fin
+        #                                   **self.dict_name_)
 
         # Indicator value to trigger a signal
         self.r_square_level = .7 #can be .6, .7 and .9 too
@@ -244,12 +262,10 @@ class Initialize():
 
         self.pnl_dict = {}
 
-        #No need to change them here- should not
-        self.__name_tempor = "_tempo"
-        self.__index_nb = 0
+        self.series = md.data_frame(self.date_name, self.date_debut, self.date_fin, self.name, self.series,
+                                self.directory, self.asset, ordinal_name = self.date_ordinal_name, is_fx = self.is_fx)
 
-        self.series=self._data_frame()
-        self.series = self.ordinal_date(self.series)
+        #self.series = md.ordinal_date(self.date_ordinal_name,self.date_name,self.series)
         self.series_test = self.series.copy()
 
         #Differentiate with previous period to transform the series as stationary
@@ -270,61 +286,3 @@ class Initialize():
         #plt.show()
 
         #Check if differentiated series is stationary
-
-
-    def col_numb(self):
-        """
-        Determine column numbers based on the one we want to use
-        """
-
-        with open(self.asset + ".csv") as file:
-            reader = csv.reader(file,delimiter=",")
-            col_name = next(reader)
-
-        for col_number in range(len(self.name.columns)):
-            for col_number_ in range(len(col_name)):
-                if self.name.columns[col_number]==col_name[col_number_]:
-                    self.name.loc[self.__index_nb,self.name.columns[col_number]]=int(col_number_)
-                    break
-
-            if self.name[self.name.columns[col_number]].empty:
-                raise Exception('Column name "{}" odoes not exist in database'.format(self.name.columns[col_number]))
-
-    def _data_frame(self):
-        """
-        Return the csv to a dataframe
-        """
-
-        self.col_numb()
-        if self.is_fx:
-            dateparse = lambda x: dt.datetime.strptime(x, '%d.%m.%Y %H:%M:%S')
-        else :
-            dateparse = None
-        _series = pd.read_csv(self.directory
-                               + self.asset + '.csv', usecols=list(self.name.columns),parse_dates=[self.date_name],
-                              date_parser=dateparse)
-        self.series=_series.loc[(_series[self.date_name] >= self.date_debut) & (_series[self.date_name]
-                                                                                        < self.date_fin)]
-        if self.series.empty:
-          raise Exception("Desired range date not available in the current files or not able to read the csv")
-        self.series=self.series.reset_index(drop=True)
-        return self.series
-
-    def ordinal_date(self,series_):
-        """
-        Add an ordinal date column
-        """
-
-        series_.Date=pd.to_datetime(series_.Date)
-        series_[self.date_ordinal_name] = pd.to_datetime(series_[self.date_name]).map(dt.datetime.toordinal)
-        return series_
-
-    def sous_series_(self,series_,point_data=0):
-        """
-        Returns the series according to the amount of data needed to calculate the indicator
-        """
-
-        self.sous_series=series_.iloc[point_data:point_data+self.nb_data,:]
-        if self.nb_data > len(series_):
-            raise Exception("Number of necessary data to calculate the indicator lower than available data")
-        return self.sous_series

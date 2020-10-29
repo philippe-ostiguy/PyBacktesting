@@ -43,7 +43,6 @@ class MathOp():
 
         cls.series=cls.series.loc[start_point:end_point,cls.default_col]
         cls.series=pd.DataFrame({cls.default_col: cls.series})
-
         cls.series[min_] = cls.series.iloc[argrelextrema(cls.series.values, np.less_equal,
                                                           order=window)[0]][cls.default_col]
         cls.series[max_] = cls.series.iloc[argrelextrema(cls.series.values, np.greater_equal,
@@ -68,8 +67,7 @@ class MathOp():
 
     @classmethod
     def nan_list(cls,list_):
-        """
-        Check if a list has one empty value
+        """Check if a list has one empty value
 
         Return
         ------
@@ -81,9 +79,6 @@ class MathOp():
 
     @classmethod
     def pd_tolist(cls,pd_, row_name):
-        """
-        Transform a pandas column to a list. It makes sure it is an integer
-        """
+        """Transform a pandas column to a list. It makes sure it is an integer"""
         pd__ = pd_.loc[:, row_name].tolist()
         return [int(i) for i in pd__]
-

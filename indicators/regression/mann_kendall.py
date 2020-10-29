@@ -10,6 +10,7 @@ from __future__ import division
 import numpy as np
 from scipy.stats import norm
 import initialize as init
+from manip_data import ManipData as md
 
 class MannKendall(init.Initialize):
     """
@@ -23,7 +24,7 @@ class MannKendall(init.Initialize):
         self.first_iteration=iteration
         self.nb_sign=0
 
-        self.sous_series=self.sous_series_(series_)
+        self.sous_series =md.sous_series_(series_,self.nb_data)
         self.series_mk = series_
 
     def mk(self):
@@ -81,9 +82,8 @@ class MannKendall(init.Initialize):
             for k in range(n-1):
                 self.nb_sign += np.sign(sous_series_.values[n-1] - sous_series_.values[k])
 
-            self.sous_series= self.sous_series_(self.series_mk,point_data=self.point_data-1)
+            self.sous_series= md.sous_series_(self.series_mk,self.nb_data,point_data=self.point_data-1)
 
-            #self.sous_series=idf_.sous_series_(point_data=self.point_data-1)
             sous_series_= self.sous_series.loc[:,self.default_data]
             n = len(sous_series_)
             for k in range(n-1):
