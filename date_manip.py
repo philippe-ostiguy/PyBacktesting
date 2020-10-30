@@ -1,4 +1,6 @@
-import csv
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
+import collections
 
 class DateManip():
     """Class to manipulate date"""
@@ -7,7 +9,7 @@ class DateManip():
         pass
 
     @classmethod
-    def date_dict(cls, dict_date_, begin_date, end_date,**kwargs):
+    def date_dict(cls,begin_date, end_date,**kwargs):
         """ Create a dictionary of dictionary containing start and end date between 2 periods
 
             Contain subdates depending on how many different subcategories we want and the lenght of the original
@@ -29,11 +31,22 @@ class DateManip():
         `dict_date_` : dictionary of n keys in **kwargs
             containing the beginning and ending date of subseries dependin
         """
+        begin_date = datetime.strptime(begin_date, '%Y-%m-%d')
+        end_date =  datetime.strptime(end_date, '%Y-%m-%d')
 
-        count = 0
+        _months = 0
+        for value in kwargs.values():
+            _months+=value
 
-        for key, item in kwargs.items():
-            dict_date_.append{keys:{count:}}
-            count +=1
-
-            writer.writerow([key, item])
+        _test_end = begin_date + relativedelta(months = _months)
+        _date = begin_date
+        _count = 0
+        _dict_date = collections.defaultdict(dict)
+        while (_test_end < end_date):
+            for key, value in kwargs.items():
+                _end_date = _date + relativedelta(months =kwargs[key])
+                _dict_date[_count][key] = [_date, _end_date]
+                _date = _end_date
+            _count +=1
+            _test_end = _test_end + relativedelta(months = _months)
+        return _dict_date

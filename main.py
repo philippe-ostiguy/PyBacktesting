@@ -11,6 +11,10 @@ class Main(pnl.PnL):
         super().__init__()
         super().__call__()
         self.cht_ = cht.Charting(self.series, self.default_data, series_test=self.series_test, **self.indicator)
+        self.marker_ = 'marker_name'
+        self.color_mark = 'color_mark'
+        self.marker_signal = 'marker_signal'
+
 
     def chart_signal(self):
         """Marks signal on chart"""

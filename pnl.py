@@ -2,6 +2,7 @@ import trading_rules as tr
 import numpy as np
 import math
 from manip_data import ManipData as md
+import pandas as pd
 
 class PnL(tr.RSquareTr):
 

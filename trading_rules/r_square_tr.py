@@ -17,7 +17,6 @@ class RSquareTr(ind.Indicator):
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
 
-
     def __call__(self):
 
         """

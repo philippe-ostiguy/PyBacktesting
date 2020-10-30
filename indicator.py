@@ -4,21 +4,21 @@ Return the values of indicator of our choice through the desired timeframe, leng
 
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
+import data_init as di
 import initialize as init
 import numpy as np
 from manip_data import ManipData as md
 
-class Indicator(init.Initialize):
-
+class Indicator(di.DataInit):
 
     def __init__(self):
 
         super().__init__()
-
+        super().__call__()
         rg = lr.RegressionSlopeStrenght(self.series_test)
         mk_ = mk.MannKendall(self.series_test)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
-
+        self.point_data=0
         self.slope_key=list(self.indicator.keys())[0]
         self.r_square_key=list(self.indicator.keys())[1]
 

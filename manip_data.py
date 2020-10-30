@@ -6,25 +6,14 @@ from functools import wraps
 
 def ordinal_date(function):
         """Wrapper to add an ordinal date"""
-
-        #start
         @wraps(function)
-        def wrapper(cls,date_name,date_debut,date_fin, name_,series_,directory,asset, ordinal_name,is_fx):
-            series_ = function(cls,date_name,date_debut,date_fin, name_,series_,directory,asset, ordinal_name,is_fx)
+        def wrapper(cls,date_name,date_debut,date_fin, name_,directory,asset, ordinal_name,is_fx):
+            series_ = function(cls,date_name,date_debut,date_fin, name_,directory,asset, ordinal_name,is_fx)
             series_.Date = pd.to_datetime(series_.Date)
             series_[ordinal_name] = pd.to_datetime(series_[date_name]).map(dt.datetime.toordinal)
             return series_
 
         return wrapper
-
-"""
-    def ordinal_date(date_ordinal_name,date_name,series_):
-        #Add an ordinal date column
-
-        series_.Date=pd.to_datetime(series_.Date)
-        series_[date_ordinal_name] = pd.to_datetime(series_[date_name]).map(dt.datetime.toordinal)
-        return series_
-"""
 
 class ManipData():
     """Class to manipulate data
@@ -80,18 +69,18 @@ class ManipData():
 
     @classmethod
     @ordinal_date
-    def data_frame(cls,date_name,date_debut,date_fin, name_,series_,directory,asset, ordinal_name = '',is_fx = False):
+    def data_frame(cls,date_name,date_debut,date_fin, name_,directory,asset, ordinal_name = '',is_fx = False):
         """Return the csv to a dataframe"""
 
         if is_fx:
             dateparse = lambda x: dt.datetime.strptime(x, '%d.%m.%Y %H:%M:%S')
         else :
             dateparse = None
-
+        series_ = pd.DataFrame()
         _series = pd.read_csv(directory
                                + asset + '.csv', usecols=list(name_.columns),parse_dates=[date_name],
                               date_parser=dateparse)
-        series_ =_series.loc[(_series[date_name] >= date_debut) & (_series[date_name] <= date_fin)]
+        series_ =_series.loc[(_series[date_name] >= date_debut) & (_series[date_name] < date_fin)]
         if series_.empty:
             raise Exception("Desired range date not available in the current files or not able to read the csv")
         series_=series_.reset_index(drop=True)

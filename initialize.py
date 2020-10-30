@@ -1,10 +1,7 @@
-import csv
-import pandas as pd
-import numpy as np
-from statsmodels.tsa.stattools import adfuller
 from dateutil.relativedelta import relativedelta
 from date_manip import DateManip as dm
 from manip_data import ManipData as md
+import pandas as pd
 
 class Initialize():
     """
@@ -20,8 +17,85 @@ class Initialize():
     """
 
     def __init__(self):
+        # directory where our data are
+        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 
-        """ Initialize all the values here we want
+        # Writing data
+        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
+        self.name_out = 'results'
+
+        #PARAMS TO OPTIMIZE STARTS HERE
+        #------------------------------
+        # Set asset and date to optimize
+        self.date_debut = '2017-03-15'
+        self.date_fin = '2017-05-01'
+        self.is_fx = True #Tell if it is forex
+        self.asset = "EURUSD"
+
+        #Value if we decide to optimize the system
+        self.is_walkfoward = True #Says if we train and test
+        self.min_results = 10 #minimum number of results needed in a training period to consider the results
+        self.training_name_ = '_training'
+        self.test_name_ =  '_test'
+        self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
+        #String added to the results file name
+        self.training_ = 15 #Lenght in months of training period
+        self.test_ = 7 #Lenght in months of testing period
+        self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
+
+        # Decide which data type we need in our testing
+        self.date_name = 'Date'
+        self.open_name = 'Open'
+        self.high_name = 'High'
+        self.low_name = 'Low'
+        self.close_name = 'Close'
+        self.adj_close_name = 'Adj Close'
+        self.name_col = {
+            self.date_name: [],
+            self.open_name: [],
+            self.high_name: [],
+            self.low_name: [],
+            self.adj_close_name: []
+        }
+
+        #Number of data (points) we check before and after to find a local min and max
+        self.window = 6
+
+        #Initial value of portfolio
+        self.init_value = 10000
+
+
+        # Metrics used to calculate the strategy performance
+        self.pnl_dict = {}
+        self.sharpe_ratio_ = 'Sharpe ratio'  # Did not substract the risk-free rate, only return divided by vol
+        self.ann_return_ = 'Annualized return'
+        self.ann_vol_ = 'Annualized volatility'
+        self.pour_win_ = '% win'  # pourcentage of winning trades
+        self.max_draw_ = 'Maximum drawdown'
+        # self.sorino_ratio
+
+        # Values used to calculate each trade performance
+        self.entry_row = 'Entry_row'
+        self.entry_level = 'Entry_level'
+        self.exit_row = 'Exit_row'
+        self.exit_level = 'Exit_level'
+        self.trade_return = 'trade_return'
+        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
+                                                  self.trade_return])
+
+        self.default_data = self.adj_close_name  # Value we use by default for chart, extremum, etc.
+
+        # DE-TRENDING
+        # ------------
+        self.is_detrend = False  # Possible to set to yes or no
+        self.p_value = .01  # significance level to test for non stationarity with Augmented Dickey-Fuller
+        self.period = 1
+
+    def __call__(self):
+
+        """ Set values for optimization if we decide to optimize
+
+        The one that we don't actually want to optimize or any default value that has to be initialize
 
         It is the values that are initialized  and used through the system
 
@@ -68,91 +142,16 @@ class Initialize():
             Trades
 
         """
+        if self.is_walkfoward:
+            self.optimize()
 
-        #directory where our data are
-        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-
-        #Writing data
-        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
-        self.name_out = 'results'
-
-        #No need to change them
-        self.date_name = 'Date'
-        self.open_name = 'Open'
-        self.high_name = 'High'
-        self.low_name = 'Low'
-        self.close_name = 'Close'
-        self.adj_close_name = 'Adj Close'
-
-        self.marker_ = 'marker_name'
-        self.color_mark = 'color_mark'
-        self.marker_signal = 'marker_signal'
-
-        #Decide which data type we need in our testing
-        self.name_col={
-            self.date_name:[],
-            self.open_name:[],
-            self.high_name:[],
-            self.low_name:[],
-            self.adj_close_name:[]
-        }
-
-        #Value we use by default for chart, extremum, etc.
-        self.default_data=self.adj_close_name
-
-        #Can't touch this
-        self.name = pd.DataFrame(self.name_col)
-        self.date_ordinal_name = 'Ordinal Date'
-        self.point_data=0
-        self.end_value = 0 #final value of portfolio
-        self.series = pd.DataFrame()
-
-        period = 1 # nb of differentiated periods to remove the trend
-        p_value_station= .01 #significance level to test for non stationarity with Augmented Dickey-Fuller
-
-        #PARAMS TO OPTIMIZE STARTS HERE
-        #------------------------------
-
-        # Set desired value to test the indicator
-        self.date_debut = '2017-03-15'
-        self.date_fin = '2017-05-01'
-        self.is_fx = True #Tell if it is forex
-        self.asset = "EURUSD"
         self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
-        #Tell if we do a walk foward
-        self.is_walkfoward = True #Says if we train and test
-        self.training_name_ = '_training'
-        self.test_name_ =  '_test'
-        self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
-        #String added to the results file name
-        self.training_ = 7 #Lenght in months of training period
-        self.test_ = 15 #Lenght in months of testing period
-        self.min_results = 10 #minimum number of results needed in a training period to consider the results (using an
-                            #optimization process)
-        self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_name_}
-        self.dict_date_ = {}
-        #if self.is_walkfoward:
-         #   self.dict_date_ = dm.date_dict(self.dict_date_,self.date_debut, self.date_fin
-        #                                   **self.dict_name_)
-
         # Indicator value to trigger a signal
         self.r_square_level = .7 #can be .6, .7 and .9 too
-        self.min_data = 100  # nb of data between a signal
-
-        #Number of data (points) we check before and after to find a local min and max
-        #By default, value is 6, but could be optimized between 5 and 7
-        self.window = 6
-
-        #Initial value of portfolio
-        self.init_value = 10000
-
-        # DE-TRENDING
-        #------------
-        # Remove the trend from the series by different with the last value. First value is set to 0
-        self.is_detrend = False #Possible to set to yes or no
+        self.min_data = 100  # (0,50,100 or 150) min nb of data between a signal
 
 
         #ENTRY
@@ -180,7 +179,6 @@ class Initialize():
 
         #STOP TRY ENTER
         #--------------
-
         #These params are conditions to stop trying to enter the market if the current
         # price reach a % of the largest extension
 
@@ -191,7 +189,6 @@ class Initialize():
         self.sec_cdt_ext = 1.382 #% if the system triggers the first condition, then if it reaches this level in the
                                 #opposite direction, the system brings the stop loss closer to the last peak or
                                 # low (default value = adj. close). Can be set to .618, .764, 1 or 1.382
-
 
         #STOP TIGHTENING
         #---------------
@@ -212,10 +209,12 @@ class Initialize():
                                                             #signal and high for sell signal
                                      self.stop_ret_level : 1 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
                                      },
+
                                 self.stop_tight_pour :  #tighten when at 50% of target
                                     {self.is_true : True,
-                                     self.tight_value : .5,  #.5,.618,.764 is possible too
-                                     self.pour_tight : .5 #.5, .618 pourcentage the stop is tighten
+                                     self.tight_value : .5,  #.5,.618,.764 is possible too - % of target reached when
+                                                            #we tight
+                                     self.pour_tight : .5 #.5, .618 possible values, how much we tight
                                     }
                                 }
 
@@ -236,53 +235,8 @@ class Initialize():
                                }
                           }
 
+    def optimize(self):
+        self.dict_date_ = dm.date_dict(self.date_debut, self.date_fin,
+                                       **self.dict_name_)
 
-        #TRADES TRACKER
-        #--------------
-        self.entry_row = 'Entry_row'
-        self.entry_level = 'Entry_level'
-        self.exit_row = 'Exit_row'
-        self.exit_level = 'Exit_level'
-        self.trade_return = 'trade_return'
-
-        self.trades_track = pd.DataFrame(columns=[self.entry_row,self.entry_level,self.exit_row,self.exit_level,\
-                                                  self.trade_return])
-
-
-        #P&L TRACKER
-        #----------
-
-        self.sharpe_ratio_ = 'Sharpe ratio' #Did not substract the risk-free rate, only return divided by vol
-        self.ann_return_ = 'Annualized return'
-        self.ann_vol_ = 'Annualized volatility'
-        self.pour_win_ = '% win' #pourcentage of winning trades
-        self.max_draw_ = 'Maximum drawdown'
-
-        #self.sortino_ratio = 0
-
-        self.pnl_dict = {}
-
-        self.series = md.data_frame(self.date_name, self.date_debut, self.date_fin, self.name, self.series,
-                                self.directory, self.asset, ordinal_name = self.date_ordinal_name, is_fx = self.is_fx)
-
-        #self.series = md.ordinal_date(self.date_ordinal_name,self.date_name,self.series)
-        self.series_test = self.series.copy()
-
-        #Differentiate with previous period to transform the series as stationary
-        if self.is_detrend :
-            self.series_diff = self.series.copy()
-            self.series_diff.drop([self.date_name ,self.date_ordinal_name],axis=1,inplace = True)
-            self.series_diff = self.series_diff.diff(periods=period) #differentiate with previous row
-            self.series_diff.loc[:(period-1),:] = 0
-            self.series_diff.insert(0,self.date_name,self.series[self.date_name])
-            self.series_diff[self.date_ordinal_name] = self.series[self.date_ordinal_name]
-            self.series_test = self.series_diff
-            if adfuller(self.series_diff[self.default_data])[1] > p_value_station:
-                raise Exception("The differentiated series is not stationary")
-
-        #PLOTTING THE DIFFENTIATED TIME SERIES
-        #plt.plot(self.series_diff[self.date_name], self.series_diff[self.default_data])
-        #plt.ion()
-        #plt.show()
-
-        #Check if differentiated series is stationary
+        t = 5
