@@ -14,8 +14,6 @@ class DataInit(init.Initialize):
         self.name = pd.DataFrame(self.name_col)
         self.date_ordinal_name = 'Ordinal Date'
 
-
-
     def __call__(self, *args, **kwargs):
         self.series = md.data_frame(self.date_name, self.date_debut, self.date_fin, self.name,
                                     self.directory, self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx)
@@ -23,8 +21,6 @@ class DataInit(init.Initialize):
         self.series_test = self.series.copy()
         if self.is_detrend:
             self.de_trend(self.period, self.p_value)
-
-
 
     def de_trend(self):
         """Remove the trend from the series by different with the last value. First value is set to 0 to avoid error"""

@@ -238,5 +238,4 @@ class Initialize():
     def optimize(self):
         self.dict_date_ = dm.date_dict(self.date_debut, self.date_fin,
                                        **self.dict_name_)
-
         t = 5
