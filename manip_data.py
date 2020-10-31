@@ -2,7 +2,20 @@ import csv
 import pandas as pd
 import datetime as dt
 from functools import wraps
+from statsmodels.tsa.stattools import adfuller
+import matplotlib.pyplot as plt
 
+
+def plot_diff(func):
+    """Decorator to plot the differentiated series"""
+    @wraps(func)
+    def wrap_diff(cls, series, period, p_value, date_name, date_ordinal_name, default_data):
+        series_diff = func(cls, series, period, p_value, date_name, date_ordinal_name, default_data)
+        plt.plot(series_diff[date_name], series_diff[default_data])
+        plt.ion()
+        plt.show()
+        return series_diff
+    return wrap_diff
 
 def ordinal_date(function):
         """Wrapper to add an ordinal date"""
@@ -16,8 +29,7 @@ def ordinal_date(function):
         return wrapper
 
 class ManipData():
-    """Class to manipulate data
-    """
+    """Class to manipulate data"""
 
     def __init__(self):
         pass
@@ -95,3 +107,19 @@ class ManipData():
         if nb_data > len(series_):
             raise Exception("Number of necessary data to calculate the indicator lower than available data")
         return cls.sous_series
+
+
+    @classmethod
+    @plot_diff
+    def de_trend(cls, series, period, p_value, date_name, date_ordinal_name, default_data):
+        """Remove the trend from the series by different with the last value. First value is set to 0 to avoid error"""
+
+        series_diff = series.copy()
+        series_diff.drop([date_name, date_ordinal_name], axis=1, inplace=True)
+        series_diff = series_diff.diff(periods=period)  # differentiate with previous row
+        series_diff.loc[:(period - 1), :] = 0
+        series_diff.insert(0, date_name, series[date_name])
+        series_diff[date_ordinal_name] = series[date_ordinal_name]
+        if adfuller(series_diff[default_data])[1] > p_value:
+            raise Exception("The differentiated series is not stationary")
+        return series_diff

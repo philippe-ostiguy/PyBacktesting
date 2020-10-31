@@ -1,8 +1,9 @@
+"""Module to calculate results"""
+
 import trading_rules as tr
 import numpy as np
 import math
 from manip_data import ManipData as md
-import pandas as pd
 
 class PnL(tr.RSquareTr):
 
@@ -19,8 +20,6 @@ class PnL(tr.RSquareTr):
         self.pnl_dict[self.sharpe_ratio_] = self.sharpe_ratio()
         self.pnl_dict[self.max_draw_] = self.max_draw()
         self.pnl_dict[self.pour_win_] = self.pour_win()
-        md.write_data(self.dir_output, self.name_out,add_doc=self.doc_name_[self.training_name_],
-                      is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 
     def annualized_(func):
         """Decorator to return annualized value"""
@@ -70,4 +69,4 @@ class PnL(tr.RSquareTr):
 
         total_trade = self.trades_track.shape[0]
         pour_win_ = self.trades_track[self.trades_track[self.trade_return] >= 0].shape[0]
-        return (pour_win_ / total_trade)
+        return 0 if total_trade == 0 else (pour_win_ / total_trade)

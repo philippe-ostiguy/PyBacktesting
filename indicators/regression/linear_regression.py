@@ -1,8 +1,8 @@
 from scipy import stats
-from data_init import DataInit
+from initialize import Initialize
 from manip_data import ManipData as md
 
-class RegressionSlopeStrenght(DataInit):
+class RegressionSlopeStrenght(Initialize):
     """
     Indicateur qui évalue si la "slope" est différente de 0 pour une régression linéaire
     Valeurs retournées sont 1 (pente positive), -1 (pente négative) et 0 (neutre)
@@ -14,6 +14,7 @@ class RegressionSlopeStrenght(DataInit):
 
     def __init__(self,series_):
         super().__init__()
+        super().__call__()
 
         #init_ = init.Initialize()
         self.sous_series=md.sous_series_(series_,self.nb_data)

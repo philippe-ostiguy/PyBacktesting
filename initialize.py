@@ -80,8 +80,6 @@ class Initialize():
         self.exit_row = 'Exit_row'
         self.exit_level = 'Exit_level'
         self.trade_return = 'trade_return'
-        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
-                                                  self.trade_return])
 
         self.default_data = self.adj_close_name  # Value we use by default for chart, extremum, etc.
 
@@ -90,6 +88,13 @@ class Initialize():
         self.is_detrend = False  # Possible to set to yes or no
         self.p_value = .01  # significance level to test for non stationarity with Augmented Dickey-Fuller
         self.period = 1
+
+        #No need to change them
+        self.name = pd.DataFrame(self.name_col)
+        self.date_ordinal_name = 'Ordinal Date'
+        self.marker_ = 'marker_name'
+        self.color_mark = 'color_mark'
+        self.marker_signal = 'marker_signal'
 
     def __call__(self):
 
@@ -142,8 +147,6 @@ class Initialize():
             Trades
 
         """
-        if self.is_walkfoward:
-            self.optimize()
 
         self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
@@ -235,7 +238,12 @@ class Initialize():
                                }
                           }
 
-    def optimize(self):
-        self.dict_date_ = dm.date_dict(self.date_debut, self.date_fin,
-                                       **self.dict_name_)
-        t = 5
+    def init_series(self):
+        self.series = md.data_frame(self.date_name, self.date_debut, self.date_fin, self.name,
+                                    self.directory, self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx)
+
+        if self.is_detrend:
+            self.series_test = md.de_trend(self.series,self.period, self.p_value,self.date_name,
+                                           self.date_ordinal_name,self.default_data)
+        else :
+            self.series_test = self.series.copy()

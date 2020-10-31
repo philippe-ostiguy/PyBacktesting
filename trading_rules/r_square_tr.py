@@ -2,6 +2,7 @@ import indicator as ind
 import entry.entry_fibo as enf
 import exit.exit_fibo as exf
 from math_op import MathOp as mo
+import pandas as pd
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -16,6 +17,8 @@ class RSquareTr(ind.Indicator):
         super().__call__()
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
+        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
+                                                  self.trade_return])
 
     def __call__(self):
 
@@ -28,7 +31,7 @@ class RSquareTr(ind.Indicator):
         buy_signal = False
         sell_signal = False
 
-        init_ = ind.Indicator()
+        init_ = RSquareTr()
 
         for row in range(len(self.series_test)-self.nb_data+1):
             curr_row=row + self.nb_data-1
@@ -61,6 +64,9 @@ class RSquareTr(ind.Indicator):
 
             self.last_long += 1
             self.last_short += 1
+
+        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
+                                                  self.trade_return])
 
         #Check if there is a row with no entry or exit signal
         if mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row)):

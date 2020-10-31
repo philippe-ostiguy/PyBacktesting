@@ -9,9 +9,9 @@ from __future__ import division
 import numpy as np
 from scipy.stats import norm
 from manip_data import ManipData as md
-from data_init import DataInit
+from initialize import Initialize
 
-class MannKendall(DataInit):
+class MannKendall(Initialize):
     """
     Mann-Kendall is a non-parametric test to determine if a trend is present over time (using monotonic function)
 
@@ -19,6 +19,7 @@ class MannKendall(DataInit):
 
     def __init__(self,series_,alpha=0.01,iteration=True):
         super().__init__()
+        super().__call__()
         self.alpha=alpha
         self.first_iteration=iteration
         self.nb_sign=0
