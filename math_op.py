@@ -41,8 +41,11 @@ class MathOp():
             them has a value, return the local min or max with index no)
         """
 
+
+
         cls.series=cls.series.loc[start_point:end_point,cls.default_col]
         cls.series=pd.DataFrame({cls.default_col: cls.series})
+
         cls.series[min_] = cls.series.iloc[argrelextrema(cls.series.values, np.less_equal,
                                                           order=window)[0]][cls.default_col]
         cls.series[max_] = cls.series.iloc[argrelextrema(cls.series.values, np.greater_equal,

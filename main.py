@@ -2,16 +2,17 @@ import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
 import charting as cht
 import pandas as pd
-import optimize as op
+from optimize_ import Optimize
 from math_op import MathOp as mo
 
-class Main(op.Optimize):
+class Main(Optimize):
 
     def __init__(self):
         super().__init__()
         super().__call__()
-        self.cht_ = cht.Charting(self.series, self.default_data, series_test=self.series_test, **self.indicator)
-
+        self.cht_ = cht.Charting(self.series, self.date_name,
+                                 self.default_data, series_test=self.series_test, **self.indicator)
+        t = 5
     def chart_signal(self):
         """Marks signal on chart"""
         self.cht_.chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
@@ -30,4 +31,5 @@ class Main(op.Optimize):
 if __name__ == '__main__':
     main_ = Main()
     #main_.chart_signal()
-    main_.chart_trigger()
+    #main_.chart_trigger()
+

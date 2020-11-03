@@ -1,3 +1,5 @@
+"""Module to declare hyperparamaters and parameters"""
+
 from dateutil.relativedelta import relativedelta
 from date_manip import DateManip as dm
 from manip_data import ManipData as md
@@ -27,20 +29,21 @@ class Initialize():
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
         # Set asset and date to optimize
-        self.date_debut = '2017-03-15'
-        self.date_fin = '2017-05-01'
+        self.date_debut = '2015-10-15'
+        self.date_fin = '2016-12-05'
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
         #Value if we decide to optimize the system
-        self.is_walkfoward = True #Says if we train and test
+        self.is_walkfoward = True #Says if we do walkfoward analysis
+        self.optimize_technique = None #Says the technique used for optimization
         self.min_results = 10 #minimum number of results needed in a training period to consider the results
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
         #String added to the results file name
-        self.training_ = 15 #Lenght in months of training period
-        self.test_ = 7 #Lenght in months of testing period
+        self.training_ = 1 #Lenght in months of training period
+        self.test_ = 1 #Lenght in months of testing period
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
 
         # Decide which data type we need in our testing
@@ -58,6 +61,15 @@ class Initialize():
             self.adj_close_name: []
         }
 
+        #Columns we use to check if there are duplicate values
+        self.dup_col = {
+            self.open_name: [],
+            self.high_name: [],
+            self.low_name: [],
+            self.adj_close_name: []
+
+        }
+
         #Number of data (points) we check before and after to find a local min and max
         self.window = 6
 
@@ -67,11 +79,13 @@ class Initialize():
 
         # Metrics used to calculate the strategy performance
         self.pnl_dict = {}
+        self.range_date_ = 'Date range from '
         self.sharpe_ratio_ = 'Sharpe ratio'  # Did not substract the risk-free rate, only return divided by vol
         self.ann_return_ = 'Annualized return'
         self.ann_vol_ = 'Annualized volatility'
         self.pour_win_ = '% win'  # pourcentage of winning trades
         self.max_draw_ = 'Maximum drawdown'
+        self.nb_trades_ = 'nb_trade'
         # self.sorino_ratio
 
         # Values used to calculate each trade performance
@@ -95,6 +109,7 @@ class Initialize():
         self.marker_ = 'marker_name'
         self.color_mark = 'color_mark'
         self.marker_signal = 'marker_signal'
+        self.end_format_ = "%Y-%m-%d" #format when printing date range in csv files with results
 
     def __call__(self):
 
@@ -148,7 +163,7 @@ class Initialize():
 
         """
 
-        self.nb_data = 200  # nb of data on which data are tested, can be 150, 200, 300
+        self.nb_data = 200  # nb of data on which data are tested, can be 100, 200, 300
         self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
                                               #the global max or min (half of self.nb_data by default)
 
@@ -170,12 +185,12 @@ class Initialize():
                                     #largest setback from current trend in term of time
 
         self.enter_dict = {self.enter_ext_name :
-                              {self.enter_bool : True,
+                              {self.enter_bool : True, #At the moment, it has to be `True`, no other method
                                self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
                                                   #the system enters the market
                                },
                            self.enter_time:
-                               {self.enter_bool : True,
+                               {self.enter_bool : True, #Can be set tp
                                 self.time_ext : 0.618 #could be .5, .764,1
                                 }
                           }
@@ -206,11 +221,9 @@ class Initialize():
         self.pour_tight = 'pour_tight'
         self.stop_tight_dict = {self.stop_tight_ret :
                                     {self.is_true : True, #can be optimized (possible value is True or False)
-                                                            #True if the system use this technique
-                                     self.default_data_ : True, #can be optimized (True or False)
-                                                            #True it uses the adj. close. False it uses low for buy
-                                                            #signal and high for sell signal
-                                     self.stop_ret_level : 1 #can be optimized at .618, .764, 1, 1.382, 1.618 or 2
+
+                                     self.default_data_ : True,
+                                     self.stop_ret_level : 1 #can be optimized at .618, .882, 1, 1.618 or 2
                                      },
 
                                 self.stop_tight_pour :  #tighten when at 50% of target
@@ -232,18 +245,14 @@ class Initialize():
         self.stop_ext = 'stop_ext'
 
         self.exit_dict = {self.exit_name :
-                              {self.exit_ext_bool : True,
+                              {self.exit_ext_bool : True, #It has to be `True` has it the only way for now to exit the
+                                                            #market
                                self.profit_ext : 3.382, #also try 2.618, 3.382, 4.236
                                self.stop_ext : 1.618    #also try 1.382, 2
                                }
                           }
 
-    def init_series(self):
-        self.series = md.data_frame(self.date_name, self.date_debut, self.date_fin, self.name,
-                                    self.directory, self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx)
 
-        if self.is_detrend:
-            self.series_test = md.de_trend(self.series,self.period, self.p_value,self.date_name,
-                                           self.date_ordinal_name,self.default_data)
-        else :
-            self.series_test = self.series.copy()
+    def return_value(self,first_val,sec_val):
+        """ Return first value if True, second if False"""
+        return first_val if self.is_walkfoward else sec_val

@@ -1,25 +1,30 @@
-"""Module to calculate results"""
+"""Module to calculate trading strategy results"""
 
 import trading_rules as tr
 import numpy as np
 import math
-from manip_data import ManipData as md
+from date_manip import DateManip
 
 class PnL(tr.RSquareTr):
 
     def __init__(self):
         super().__init__()
+
+    def __call__(self):
         super().__call__()
         self.start_date_ = self.series.iloc[0, self.series.columns.get_loc(self.date_name)]
         self.end_date_ = self.series.iloc[-1, self.series.columns.get_loc(self.date_name)]
+        self.calcul_pnl()
 
-    def __call__(self):
+    def calcul_pnl(self):
         self.diff_ = ((self.end_date_ - self.start_date_).days / 365) #diff in term of year with decimal
+        self.pnl_dict[self.range_date_] = self.range_date()
         self.pnl_dict[self.ann_return_] = self.ann_return()
         self.pnl_dict[self.ann_vol_] = self.ann_vol()
         self.pnl_dict[self.sharpe_ratio_] = self.sharpe_ratio()
         self.pnl_dict[self.max_draw_] = self.max_draw()
         self.pnl_dict[self.pour_win_] = self.pour_win()
+        self.pnl_dict[self.nb_trades_] = self.nb_trades()
 
     def annualized_(func):
         """Decorator to return annualized value"""
@@ -63,10 +68,23 @@ class PnL(tr.RSquareTr):
 
         return self.trades_track[self.trade_return].min()
 
+    def nb_trades(self):
+        """Return the number of trades"""
+        return self.trades_track.shape[0]
+
+    def range_date(self):
+        """ Return the range date tested in a desired format
+
+        Using "%Y-%m-%d" as Timestamp format
+        """
+        dm_begin_ = DateManip(self.date_debut).end_format(self.end_format_)
+        dm_end_ = DateManip(self.date_fin).end_format(self.end_format_)
+        return f"{dm_begin_} to {dm_end_}"
+
     def pour_win(self):
         """Return the pourcentage of winning trades
         """
 
-        total_trade = self.trades_track.shape[0]
+        total_trade = self.nb_trades()
         pour_win_ = self.trades_track[self.trades_track[self.trade_return] >= 0].shape[0]
         return 0 if total_trade == 0 else (pour_win_ / total_trade)

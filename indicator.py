@@ -1,36 +1,34 @@
-"""
-Return the values of indicator of our choice through the desired timeframe, lenght test
-"""
+"""Return the values of the indicator of our choice through the desired timeframe and lenght"""
 
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
-import initialize as init
 import numpy as np
 from manip_data import ManipData as md
+from init_operations import InitOp
 
-class Indicator(init.Initialize):
+class Indicator(InitOp):
 
     def __init__(self):
-
         super().__init__()
+
+    def __call__(self):
         super().__call__()
-        super().init_series()
         rg = lr.RegressionSlopeStrenght(self.series_test)
         mk_ = mk.MannKendall(self.series_test)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
         self.point_data=0
         self.slope_key=list(self.indicator.keys())[0]
         self.r_square_key=list(self.indicator.keys())[1]
+        self.calcul_indicator()
 
-    def __call__(self):
+    def calcul_indicator(self):
 
-        """
-        Function that return the value of an indicator through desired period, lenght calculation of the
+        """Function that return the value of an indicator through desired period and the calculation lenght of the
         indicator
 
         The indicator always take into account the value of price for the same row. Ex: We are at row 99, the indicator
-        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or exit
-        the market (or exit) on the next row (value)
+        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or
+        exit the market (or exit) on the next row (value)
         """
         nb_columns=len(self.series_test.columns)
 

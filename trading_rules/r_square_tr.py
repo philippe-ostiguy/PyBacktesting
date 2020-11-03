@@ -1,8 +1,11 @@
+"""Module that detect buy and sell signal with r_square and if there is a trend"""
+
 import indicator as ind
 import entry.entry_fibo as enf
 import exit.exit_fibo as exf
 from math_op import MathOp as mo
 import pandas as pd
+import copy
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -11,14 +14,11 @@ it trigers a signal to get long (slope is positive) or to get short (slope is ne
 """
 
 class RSquareTr(ind.Indicator):
+    """Class that trigger entry signal based on r_square """
+
 
     def __init__(self):
         super().__init__()
-        super().__call__()
-        self.last_long = self.nb_data #last time we had a long signal
-        self.last_short = self.nb_data  #last time we had a short signal
-        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
-                                                  self.trade_return])
 
     def __call__(self):
 
@@ -28,10 +28,17 @@ class RSquareTr(ind.Indicator):
         on each row (data), so we enter or exit in the market on the next row (data)
         """
 
+        super().__call__()
+        self.last_long = self.nb_data #last time we had a long signal
+        self.last_short = self.nb_data  #last time we had a short signal
+        self.trig_signal()
+
+    def trig_signal(self):
+
         buy_signal = False
         sell_signal = False
 
-        init_ = RSquareTr()
+        init_ = copy.deepcopy(self)
 
         for row in range(len(self.series_test)-self.nb_data+1):
             curr_row=row + self.nb_data-1
@@ -64,9 +71,6 @@ class RSquareTr(ind.Indicator):
 
             self.last_long += 1
             self.last_short += 1
-
-        self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
-                                                  self.trade_return])
 
         #Check if there is a row with no entry or exit signal
         if mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row)):

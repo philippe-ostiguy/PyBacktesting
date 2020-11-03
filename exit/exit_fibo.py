@@ -22,6 +22,7 @@ class ExitFibo(ef.EntFibo):
 
         """
         new_obj = init_
+        #new_obj.__call__()
         self.__dict__.update(new_obj.__dict__) #replacing self object with Initialise object
 
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):

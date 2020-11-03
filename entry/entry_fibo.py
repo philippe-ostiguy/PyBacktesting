@@ -378,8 +378,8 @@ class EntFibo():
             if self.bol_st_ext & self.fst_ext_cdt & (self.relative_extreme != None) :
                 if self.fif_op(self.series.loc[self.curr_row,self.default_data],self.fth_op(self.relative_extreme,\
                             self.inv*(op.sub(self.relative_extreme, self.extreme[self.fst_data])*self.sec_cdt_ext))) :
-                    print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension"
-                          f"and then retrace in the opposite direction of {self.sec_cdt_ext}")
+                    #print(f"The market hits previously the required {self.fst_cdt_ext} % of the largest extension"
+                    #      f"and then retrace in the opposite direction of {self.sec_cdt_ext}")
                     self.is_entry = False
                     break
                 pass

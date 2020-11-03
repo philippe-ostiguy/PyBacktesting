@@ -5,8 +5,9 @@ import collections
 class DateManip():
     """Class to manipulate date"""
 
-    def __init__(self):
-        pass
+    @classmethod
+    def __init__(cls,date):
+        cls.date_ = date
 
     @classmethod
     def date_dict(cls,begin_date, end_date,**kwargs):
@@ -50,3 +51,13 @@ class DateManip():
             _count +=1
             _test_end = _test_end + relativedelta(months = _months)
         return _dict_date
+
+    @classmethod
+    def end_format(cls,format_):
+        """Return a datetime to a desired TimeStamp
+
+        `format` : str
+            Format code in which we want to return the datetime
+        """
+        return cls.date_.strftime(format_)
+
