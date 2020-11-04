@@ -7,6 +7,7 @@ class DateManip():
 
     @classmethod
     def __init__(cls,date):
+
         cls.date_ = date
 
     @classmethod
@@ -18,10 +19,10 @@ class DateManip():
 
         Parameters
         ----------
-        `begin_date` : str
+        `begin_date` : datetime
             Must be in datetime format, it's the first date of the original serie
 
-        `end_date` : str
+        `end_date` : datetime
             Must be in datetime format, it's the last date of the original serie
 
         `**kwargs` : kw argument
@@ -32,9 +33,6 @@ class DateManip():
         `dict_date_` : dictionary of n keys in **kwargs
             containing the beginning and ending date of subseries dependin
         """
-        begin_date = datetime.strptime(begin_date, '%Y-%m-%d')
-        end_date =  datetime.strptime(end_date, '%Y-%m-%d')
-
         _months = 0
         for value in kwargs.values():
             _months+=value
@@ -54,9 +52,11 @@ class DateManip():
 
     @classmethod
     def end_format(cls,format_):
-        """Return a datetime to a desired TimeStamp
+        """Return a datetime to the desired TimeStamp in str
 
-        `format` : str
+        Parameters
+        ----------
+        `format_` : str
             Format code in which we want to return the datetime
         """
         return cls.date_.strftime(format_)

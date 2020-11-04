@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from date_manip import DateManip as dm
 from manip_data import ManipData as md
 import pandas as pd
+from datetime import datetime
 
 class Initialize():
     """
@@ -29,13 +30,14 @@ class Initialize():
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
         # Set asset and date to optimize
-        self.date_debut = '2015-10-15'
-        self.date_fin = '2016-12-05'
+        self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2016-03-15',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
         #Value if we decide to optimize the system
-        self.is_walkfoward = True #Says if we do walkfoward analysis
+        self.is_walkfoward = False #Says if we do walkfoward analysis
+        self.is_optimize = True
         self.optimize_technique = None #Says the technique used for optimization
         self.min_results = 10 #minimum number of results needed in a training period to consider the results
         self.training_name_ = '_training'
@@ -248,11 +250,12 @@ class Initialize():
                               {self.exit_ext_bool : True, #It has to be `True` has it the only way for now to exit the
                                                             #market
                                self.profit_ext : 3.382, #also try 2.618, 3.382, 4.236
-                               self.stop_ext : 1.618    #also try 1.382, 2
+                               self.stop_ext : self.return_value([1,382,1.618,2],1.618)   #1.382, 1.618, 2
                                }
                           }
+        t = 5
 
 
     def return_value(self,first_val,sec_val):
         """ Return first value if True, second if False"""
-        return first_val if self.is_walkfoward else sec_val
+        return first_val if self.is_optimize else sec_val
