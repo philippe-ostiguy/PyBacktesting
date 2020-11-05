@@ -31,7 +31,7 @@ class Initialize():
         #------------------------------
         # Set asset and date to optimize
         self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
-        self.date_fin = datetime.strptime('2016-03-15',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2016-01-15',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
@@ -165,13 +165,11 @@ class Initialize():
 
         """
 
-        self.nb_data = 200  # nb of data on which data are tested, can be 100, 200, 300
-        self.buffer_extremum = self.nb_data/2  #when trying to enter in the market, we give a buffer trying to find the
-                                              #the global max or min (half of self.nb_data by default)
+        self.nb_data = self.return_value([100,200,300],200) # nb of data on which data are tested, can be 100, 200, 300
 
         # Indicator value to trigger a signal
-        self.r_square_level = .7 #can be .6, .7 and .9 too
-        self.min_data = 100  # (0,50,100 or 150) min nb of data between a signal
+        self.r_square_level =  self.return_value([.6,.7,.8,.9],.7) #can be .6 , .7, .8 and .9 too
+        self.min_data = self.return_value([1,50,100,150],100)  # (1,50,100 or 150) min nb of data between a signal
 
 
         #ENTRY
@@ -188,27 +186,28 @@ class Initialize():
 
         self.enter_dict = {self.enter_ext_name :
                               {self.enter_bool : True, #At the moment, it has to be `True`, no other method
-                               self.enter_ext: 1, #could be .882 or .764, this is the % of largest extension at which
-                                                  #the system enters the market
+                               self.enter_ext: self.return_value([.764,.882,1],1) #could be .882 or .764 or 1
+                                            # this is the % of largest extension at which the system enters the market
                                },
                            self.enter_time:
-                               {self.enter_bool : True, #Can be set tp
-                                self.time_ext : 0.618 #could be .5, .764,1
+                               {self.enter_bool : self.return_value([False,True],True), #Can be set to False
+                                self.time_ext : self.return_value([.5,.618,.882,1],.618) #could be .5, .764,1
                                 }
                           }
 
-        #STOP TRY ENTER
+        #STOP TRY ENTERING
         #--------------
         #These params are conditions to stop trying to enter the market if the current
         # price reach a % of the largest extension
 
-        self.bol_st_ext = True  #Tells the system if it has to stop trying to enter the market using
+        self.bol_st_ext = self.return_value([True,False],True)  #Tells the system if it has to stop trying to enter the market using
                                 # Fibonacci extension techniques. Can be optimized to True or False
-        self.fst_cdt_ext = .764 #% of the largest extension that if the market reaches, the system
+        self.fst_cdt_ext = self.return_value([.618,.764,.882],.764)  #% of the largest extension that if the market reaches, the system
                                 # stops trying to enter the market. Can be optimized to .618, .764 or .882
-        self.sec_cdt_ext = 1.382 #% if the system triggers the first condition, then if it reaches this level in the
-                                #opposite direction, the system brings the stop loss closer to the last peak or
-                                # low (default value = adj. close). Can be set to .618, .764, 1 or 1.382
+        self.sec_cdt_ext = self.return_value([.618,.764,1,1.382],1)
+        #% if the system triggers the first condition, then if it reaches this level in the opposite direction, the
+        # system brings the stop loss closer to the last peak or low (default value = adj. close). Can be set to .618,
+        # .764, 1 or 1.382
 
         #STOP TIGHTENING
         #---------------
@@ -222,17 +221,20 @@ class Initialize():
         self.tight_value = 'tight_value'
         self.pour_tight = 'pour_tight'
         self.stop_tight_dict = {self.stop_tight_ret :
-                                    {self.is_true : True, #can be optimized (possible value is True or False)
+                                    {self.is_true : self.return_value([True,False],True),
+                                     #can be optimized (possible value is True or False)
 
                                      self.default_data_ : True,
-                                     self.stop_ret_level : 1 #can be optimized at .618, .882, 1, 1.618 or 2
+                                     self.stop_ret_level : self.return_value([.618,.882,1,1.618,2],1)
+                                     #can be optimized at .618, .882, 1, 1.618 or 2
                                      },
 
                                 self.stop_tight_pour :  #tighten when at 50% of target
-                                    {self.is_true : True,
-                                     self.tight_value : .5,  #.5,.618,.764 is possible too - % of target reached when
-                                                            #we tight
-                                     self.pour_tight : .5 #.5, .618 possible values, how much we tight
+                                    {self.is_true : self.return_value([True,False],True), #True or False
+                                     self.tight_value : self.return_value([.5,.618,.764],.5),
+                                                   #.5,.618,.764 are possible- % of target reached when we tight
+                                     self.pour_tight : self.return_value([.5,.618],.5)
+                                     #.5, .618 possible values, how much we tight
                                     }
                                 }
 
@@ -249,13 +251,35 @@ class Initialize():
         self.exit_dict = {self.exit_name :
                               {self.exit_ext_bool : True, #It has to be `True` has it the only way for now to exit the
                                                             #market
-                               self.profit_ext : 3.382, #also try 2.618, 3.382, 4.236
-                               self.stop_ext : self.return_value([1,382,1.618,2],1.618)   #1.382, 1.618, 2
+                               self.profit_ext :self.return_value([2,2.618,3.382,4.236],3.382),
+                               #also try 2 2.618, 3.382, 4.236
+                               self.stop_ext : self.return_value([1,382,1.618,2],1.618)   #1,1.382, 1.618, 2
                                }
                           }
-        t = 5
-
 
     def return_value(self,first_val,sec_val):
         """ Return first value if True, second if False"""
         return first_val if self.is_optimize else sec_val
+
+    def optimize_param(self):
+        """ Tell the parameters we want to optimize.
+
+        Store the paramaters to optimize in a list with the name of the parameter to optimize
+        """
+
+        self.op_param = [[self.exit_dict[self.exit_name],'stop_ext'],
+                          [self.exit_dict[self.exit_name],'profit_ext'],
+                          [self.stop_tight_dict[self.stop_tight_ret],'is_true'],
+                          [self.stop_tight_dict[self.stop_tight_ret], 'stop_ret_level'],
+                          [self.stop_tight_dict[self.stop_tight_pour], 'is_true'],
+                          [self.stop_tight_dict[self.stop_tight_pour], 'tight_value'],
+                          [self.stop_tight_dict[self.stop_tight_pour], 'pour_tight'],
+                          ['bol_st_ext'],
+                          ['fst_cdt_ext'],
+                          ['sec_cdt_ext'],
+                          [self.enter_dict[self.enter_ext_name], 'enter_ext'],
+                          [self.enter_dict[self.enter_time], 'enter_bool'],
+                          [self.enter_dict[self.enter_time], 'time_ext'],
+                          ['nb_data'],
+                          ['r_square_level'],
+                          ['min_data']]

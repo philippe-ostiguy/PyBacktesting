@@ -9,14 +9,14 @@ class InitOp(Initialize):
 
     def __init__(self):
         super().__init__()
+        super().__call__()
 
     def __call__(self):
-        super().__call__()
         self.reset_value()
         self.init_series()
 
     def reset_value(self):
-        """Value that must be reseted if we run optimization"""
+        """Value that must be reseted if we run walk-foward analysis"""
         self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
                                                   self.trade_return])
 

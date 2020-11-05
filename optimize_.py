@@ -2,6 +2,8 @@
 from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
+from optimize.genetic_algorithm import GenAlgo as ga
+import copy
 
 class Optimize(PnL):
 
@@ -10,7 +12,8 @@ class Optimize(PnL):
 
     def __call__(self):
 
-        if self.is_walkfoward: #If we do walkfoward analysis
+        # If the systeme do a walkfoward analysis
+        if self.is_walkfoward:
             self.walf_foward()
         else :
             self.execute_()
@@ -20,10 +23,32 @@ class Optimize(PnL):
 
          Load data (and clean), calculate indicators, check for signal, calculate pnl + write to results to file
          """
-        super().__call__()
+
+        # If the systeme optimize the parameters
+        if self.is_optimize:
+            self.optimize()
+
+        else :
+            super().__call__()
+
         md.write_csv_(self.dir_output, self.name_out, add_doc=add_doc,
                       is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 
+    def optimize(self):
+        """ This function return the actual parameters to be tested
+        """
+
+        super().optimize_param()
+        class_copy_ = copy.deepcopy(self)
+        ga(class_copy_).__call__()
+
+        for value in self.op_param:
+            if len(value) > 1 :
+                t = value[0][getattr(self,value[1])]
+            else:
+                setattr(self,value[0],5)
+
+                self.is_optimize
 
     def walf_foward(self):
         md_ = md
@@ -43,4 +68,3 @@ class Optimize(PnL):
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
                 self.execute_(add_doc=key_)
             _first_time = False
-

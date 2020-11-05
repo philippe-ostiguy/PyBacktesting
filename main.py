@@ -26,7 +26,6 @@ class Main(Optimize):
                 'marker_exit': {self.marker_: 'v', self.color_mark: 'r', self.marker_signal: mark_down}}
 
         self.cht_.chart_marker(self.marker_signal, self.marker_, self.color_mark,**marks_)
-        t = 5
 
 if __name__ == '__main__':
     main_ = Main()

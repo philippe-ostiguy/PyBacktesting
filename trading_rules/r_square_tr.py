@@ -16,7 +16,6 @@ it trigers a signal to get long (slope is positive) or to get short (slope is ne
 class RSquareTr(ind.Indicator):
     """Class that trigger entry signal based on r_square """
 
-
     def __init__(self):
         super().__init__()
 
