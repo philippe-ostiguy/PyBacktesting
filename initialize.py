@@ -31,15 +31,17 @@ class Initialize():
         #------------------------------
         # Set asset and date to optimize
         self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
-        self.date_fin = datetime.strptime('2016-01-15',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2016-03-30',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
-        #Value if we decide to optimize the system
-        self.is_walkfoward = False #Says if we do walkfoward analysis
+        #Value for optimization
         self.is_optimize = True
         self.optimize_technique = None #Says the technique used for optimization
-        self.min_results = 10 #minimum number of results needed in a training period to consider the results
+        #minimum number of results needed in a training period to consider the results when optimizing
+
+        #Value if we do a walf-foward analysis
+        self.is_walkfoward = False #Says if we do walkfoward analysis
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
@@ -47,6 +49,7 @@ class Initialize():
         self.training_ = 1 #Lenght in months of training period
         self.test_ = 1 #Lenght in months of testing period
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
+
 
         # Decide which data type we need in our testing
         self.date_name = 'Date'
@@ -267,19 +270,19 @@ class Initialize():
         Store the paramaters to optimize in a list with the name of the parameter to optimize
         """
 
-        self.op_param = [[self.exit_dict[self.exit_name],'stop_ext'],
-                          [self.exit_dict[self.exit_name],'profit_ext'],
+        self.op_param = [[self.exit_dict[self.exit_name],'profit_ext'],
+                          [self.exit_dict[self.exit_name],'stop_ext'],
                           [self.stop_tight_dict[self.stop_tight_ret],'is_true'],
-                          [self.stop_tight_dict[self.stop_tight_ret], 'stop_ret_level'],
-                          [self.stop_tight_dict[self.stop_tight_pour], 'is_true'],
-                          [self.stop_tight_dict[self.stop_tight_pour], 'tight_value'],
-                          [self.stop_tight_dict[self.stop_tight_pour], 'pour_tight'],
-                          ['bol_st_ext'],
+                          [self.stop_tight_dict[self.stop_tight_ret],'stop_ret_level'],
+                          [self.stop_tight_dict[self.stop_tight_pour],'is_true'],
+                          [self.stop_tight_dict[self.stop_tight_pour],'tight_value'],
+                          [self.stop_tight_dict[self.stop_tight_pour],'pour_tight'],
+                          ['bol_st_ext',],
                           ['fst_cdt_ext'],
                           ['sec_cdt_ext'],
-                          [self.enter_dict[self.enter_ext_name], 'enter_ext'],
-                          [self.enter_dict[self.enter_time], 'enter_bool'],
-                          [self.enter_dict[self.enter_time], 'time_ext'],
+                          [self.enter_dict[self.enter_ext_name],'enter_ext'],
+                          [self.enter_dict[self.enter_time],'enter_bool'],
+                          [self.enter_dict[self.enter_time],'time_ext'],
                           ['nb_data'],
                           ['r_square_level'],
                           ['min_data']]

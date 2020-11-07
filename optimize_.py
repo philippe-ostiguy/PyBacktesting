@@ -29,6 +29,7 @@ class Optimize(PnL):
             self.optimize()
 
         else :
+            self.init_series()
             super().__call__()
 
         md.write_csv_(self.dir_output, self.name_out, add_doc=add_doc,
@@ -38,17 +39,8 @@ class Optimize(PnL):
         """ This function return the actual parameters to be tested
         """
 
-        super().optimize_param()
-        class_copy_ = copy.deepcopy(self)
-        ga(class_copy_).__call__()
-
-        for value in self.op_param:
-            if len(value) > 1 :
-                t = value[0][getattr(self,value[1])]
-            else:
-                setattr(self,value[0],5)
-
-                self.is_optimize
+        self.optimize_param()
+        ga(self).__call__()
 
     def walf_foward(self):
         md_ = md

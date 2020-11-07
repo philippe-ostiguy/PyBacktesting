@@ -55,6 +55,9 @@ class PnL(tr.RSquareTr):
 
         Not using the risk-free rate has it doesn't change the final result
         """
+        if not bool(self.pnl_dict):
+            return None
+
         if self.pnl_dict[self.ann_vol_] == None:
             return None
 
