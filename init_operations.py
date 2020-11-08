@@ -23,7 +23,9 @@ class InitOp(Initialize):
         """Function to get the data as Dataframe"""
 
         self.series = md.csv_to_pandas(self.date_name, self.date_debut, self.date_fin, self.name,self.directory,
-                                self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx, dup_col = self.dup_col)
+                            self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx, dup_col = self.dup_col)
+
+        t = 5
 
         """
         if self.is_detrend:

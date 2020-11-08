@@ -3,6 +3,7 @@ from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
 from optimize.genetic_algorithm import GenAlgo as ga
+import copy
 
 class Optimize(PnL):
 
@@ -38,6 +39,7 @@ class Optimize(PnL):
         if (len(self.dict_date_)) == 0:
             raise Exception("Total period not long enough for optimization")
 
+
         for key,value in self.dict_date_.items():
             for key_, value_ in self.dict_name_.items():
                 self.date_debut = self.dict_date_[key][key_][0]
@@ -48,5 +50,4 @@ class Optimize(PnL):
                 self.optimize_param()
                 ga(self).__call__()
 
-                #self.execute_(add_doc=key_)
             _first_time = False

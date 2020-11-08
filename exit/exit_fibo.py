@@ -3,11 +3,12 @@ import sys
 import operator as op
 import math
 import copy
+import pandas as pd
 
 class ExitFibo(ef.EntFibo):
 
     
-    def __init__(self,self_):
+    def __init__(self,init_):
         """
         Class that uses Fibonnacci strategy to exit the market.
 
@@ -23,10 +24,12 @@ class ExitFibo(ef.EntFibo):
             current price or the next desired price
 
         """
-        new_obj = copy.deepcopy(self_)
 
+        new_obj = init_
         self.__dict__.update(new_obj.__dict__) #replacing self object with Initialise object
-        del self_,new_obj
+        del init_,new_obj
+        self.trades_track_ = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
+                                                  self.trade_return])
 
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
 
@@ -57,7 +60,7 @@ class ExitFibo(ef.EntFibo):
         if not self.is_entry:
             return None
 
-        _entry_level = self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.entry_level)]
+        _entry_level = self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.entry_level)]
 
         #stop tightening using extension
         _is_stop_ext = self.stop_tight_dict[self.stop_tight_ret][self.is_true]
@@ -82,16 +85,17 @@ class ExitFibo(ef.EntFibo):
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
             self.six_op(self.series.loc[self.curr_row,self.stop],self.stop_value):
             self.is_entry = False
-            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
-            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+            self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_row)] = self.curr_row
+            self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_level)] = \
                 self.stop_value  # exit level
-            self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+            self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.trade_return)] = \
                 self.inv * ((_entry_level - self.stop_value) / _entry_level)
-            return self.trades_track
+            return self.trades_track_
 
         data_test = len(self.series) - self.curr_row - 1
 
         for curr_row_ in range(data_test):
+
             self.curr_row += 1
             _curent_value = self.series.loc[self.curr_row, self.default_data] #curent value with default data type
             _current_stop = self.series.loc[self.curr_row, self.stop] #current stop value with data stop type
@@ -113,10 +117,10 @@ class ExitFibo(ef.EntFibo):
             if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
                     self.six_op(_current_stop, self.stop_value):
                 self.is_entry = False
-                self.trades_track.iloc[-1,self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
-                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+                self.trades_track_.iloc[-1,self.trades_track_.columns.get_loc(self.exit_row)] = self.curr_row
+                self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_level)] = \
                     self.stop_value #exit level
-                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+                self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.trade_return)] = \
                     self.inv*((_entry_level-self.stop_value)/_entry_level)
                 break
 
@@ -135,10 +139,10 @@ class ExitFibo(ef.EntFibo):
             #Taking profit
             if self.exit_dict[self.exit_name][self.exit_ext_bool] & self.fif_op(_curent_value,_profit_value):
                 self.is_entry = False
-                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_row)] = self.curr_row
-                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)] = \
+                self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_row)] = self.curr_row
+                self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_level)] = \
                     _profit_value  # exit level
-                self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.trade_return)] = \
+                self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.trade_return)] = \
                     self.inv * ((_entry_level - _profit_value) / _entry_level )
                 break
 
@@ -154,8 +158,8 @@ class ExitFibo(ef.EntFibo):
                         (self.fst_op(_tight_pour_level, self.stop_value)):
                     self.stop_value = _tight_pour_level
 
-        if math.isnan(self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)]):
-            self.trades_track = self.trades_track[:-1]
+        if math.isnan(self.trades_track_.iloc[-1, self.trades_track_.columns.get_loc(self.exit_level)]):
+            self.trades_track_ = self.trades_track_[:-1]
 
-        return self.trades_track
+        return self.trades_track_
 

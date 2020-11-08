@@ -357,7 +357,7 @@ class EntFibo():
                         _entry_level = _entry_tentative
 
                     self.is_entry = True
-                    self.trades_track = self.trades_track.append({self.entry_row: self.curr_row,\
+                    self.trades_track_ = self.trades_track_.append({self.entry_row: self.curr_row,\
                                                             self.entry_level:_entry_level},ignore_index=True)
 
                     if self.sec_op(_current_value, self.relative_extreme):

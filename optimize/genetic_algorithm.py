@@ -6,12 +6,12 @@ import copy
 
 class GenAlgo(PnL):
 
-    def __init__(self,self_, min_results = 10, size_population = 20, generations = 20, co_rate = .65,
+    def __init__(self,self_, min_results = 5, size_population = 20, generations = 20, co_rate = .65,
                  mutation_rate = .04):
         super().__init__()
-        new_obj = copy.deepcopy(self_)
+        new_obj =  copy.deepcopy(self_)
         self.__dict__.update(new_obj.__dict__)
-        del new_obj, self_
+        del new_obj,self_
         self.min_results = min_results
         self.size_population = size_population
         self.generations = generations
@@ -27,20 +27,25 @@ class GenAlgo(PnL):
         self.create_chromosome()
         self.fitness_selection()
 
-        t = 5
-
     def iterate_population(func):
         """ Decorator to run each chromosome with the size of the population"""
 
         def wrapper_(self):
             items_ = 0
             while (items_ < self.size_population):
+                self.reset_value()
+                self.pnl_dict = {}
                 func(self)
                 self.pnl_()
+                if (self.pnl_dict[self.nb_trades_] == None):
+                    continue
                 if self.pnl_dict[self.nb_trades_] < self.min_results:
                     continue
+                    print("Not enough trade")
                 else:
                     self.population.append(self.pnl_dict)
+                    if (self.population[items_][self.nb_trades_] > 150):
+                        raise Exception("Error with the number of trades")
                     print(self.population[items_][self.ann_return_])
                     print(self.population[items_][self.sharpe_ratio_])
                     print(self.population[items_][self.nb_trades_])
