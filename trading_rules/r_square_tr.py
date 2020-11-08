@@ -6,6 +6,7 @@ import exit.exit_fibo as exf
 from math_op import MathOp as mo
 import pandas as pd
 import copy
+import math
 
 """
 Tell us if we should entry market. For now, it checked if r2 is above the desired level 
@@ -37,20 +38,18 @@ class RSquareTr(ind.Indicator):
         buy_signal = False
         sell_signal = False
 
-        init_ = copy.deepcopy(self)
-
-        for row in range(len(self.series_test)-self.nb_data+1):
+        for row in range(len(self.series)-self.nb_data+1):
             curr_row=row + self.nb_data-1
 
-            slope_value=self.series_test.loc[curr_row, self.slope_key]
-            r_value=self.series_test.loc[curr_row,self.r_square_key]
+            slope_value=self.series.loc[curr_row, self.slope_key]
+            r_value=self.series.loc[curr_row,self.r_square_key]
             #Buy signal
             if slope_value > 0 :
                 if r_value > self.r_square_level:
                     if self.last_long >= self.min_data :
                         buy_signal = True
                         self.last_short = self.min_data
-                        trades_track = exf.ExitFibo(init_).__call__(curr_row=curr_row,buy_signal=buy_signal)
+                        trades_track = exf.ExitFibo(self).__call__(curr_row=curr_row,buy_signal=buy_signal)
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_long = 0
 
@@ -61,7 +60,7 @@ class RSquareTr(ind.Indicator):
                     if self.last_short >= self.min_data :
                         sell_signal=True
                         self.last_long = self.min_data
-                        trades_track = exf.ExitFibo(init_).__call__(curr_row=curr_row,sell_signal=sell_signal)
+                        trades_track = exf.ExitFibo(self).__call__(curr_row=curr_row,sell_signal=sell_signal)
                         self.trades_track = self.trades_track.append(trades_track,ignore_index = True)
                     self.last_short=0
 

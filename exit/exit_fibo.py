@@ -2,11 +2,12 @@ import entry.entry_fibo as ef
 import sys
 import operator as op
 import math
+import copy
 
 class ExitFibo(ef.EntFibo):
 
     
-    def __init__(self,init_):
+    def __init__(self,self_):
         """
         Class that uses Fibonnacci strategy to exit the market.
 
@@ -22,8 +23,10 @@ class ExitFibo(ef.EntFibo):
             current price or the next desired price
 
         """
-        new_obj = init_
+        new_obj = copy.deepcopy(self_)
+
         self.__dict__.update(new_obj.__dict__) #replacing self object with Initialise object
+        del self_,new_obj
 
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
 

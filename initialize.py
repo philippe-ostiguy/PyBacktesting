@@ -31,7 +31,7 @@ class Initialize():
         #------------------------------
         # Set asset and date to optimize
         self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
-        self.date_fin = datetime.strptime('2017-11-18',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2019-11-18',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
@@ -44,8 +44,8 @@ class Initialize():
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         #String added to the results file name
-        self.training_ = 15 #Lenght in months of training period
-        self.test_ = 7 #Lenght in months of testing period
+        self.training_ = 12 #Lenght in months of training period (put 15)
+        self.test_ = 6 #Lenght in months of testing period (put 7)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period
 
@@ -170,7 +170,7 @@ class Initialize():
 
         # Indicator value to trigger a signal
         self.r_square_level =  self.return_value([.6,.7,.8,.9],.7) #can be .6 , .7, .8 and .9 too
-        self.min_data = self.return_value([1,50,100,150],100)  # (1,50,100 or 150) min nb of data between a signal
+        self.min_data = self.return_value([100,200,300],100)
 
 
         #ENTRY
@@ -252,9 +252,9 @@ class Initialize():
         self.exit_dict = {self.exit_name :
                               {self.exit_ext_bool : True, #It has to be `True` has it the only way for now to exit the
                                                             #market
-                               self.profit_ext :self.return_value([2,2.618,3.382,4.236],3.382),
+                               self.profit_ext :self.return_value([1.618,2,2.618,3.382,4.236],3.382),
                                #also try 2 2.618, 3.382, 4.236
-                               self.stop_ext : self.return_value([1,382,1.618,2],1.618)   #1,1.382, 1.618, 2
+                               self.stop_ext : self.return_value([1,1.382,1.618,2],1.618)   #1,1.382, 1.618, 2
                                }
                           }
 

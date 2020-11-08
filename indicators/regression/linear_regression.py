@@ -20,6 +20,7 @@ class RegressionSlopeStrenght(Initialize):
         new_obj = copy.deepcopy(self_)
         self.__dict__.update(new_obj.__dict__)
         io.init_series(self)
+        del new_obj, self_
 
         #init_ = init.Initialize()
         self.sous_series=md.sous_series_(series_,self.nb_data)

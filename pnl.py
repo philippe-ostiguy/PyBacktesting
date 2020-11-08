@@ -10,7 +10,7 @@ class PnL(tr.RSquareTr):
     def __init__(self):
         super().__init__()
 
-    def __call__(self):
+    def pnl_(self):
         super().__call__()
         self.start_date_ = self.series.iloc[0, self.series.columns.get_loc(self.date_name)]
         self.end_date_ = self.series.iloc[-1, self.series.columns.get_loc(self.date_name)]
@@ -25,6 +25,15 @@ class PnL(tr.RSquareTr):
         self.pnl_dict[self.max_draw_] = self.max_draw()
         self.pnl_dict[self.pour_win_] = self.pour_win()
         self.pnl_dict[self.nb_trades_] = self.nb_trades()
+
+        if (self.pnl_dict[self.nb_trades_] != None):
+            if (self.pnl_dict[self.nb_trades_] >= 2):
+                if self.pnl_dict[self.sharpe_ratio_] == None:
+                    raise Exception("Error in Sharpe Ratio calculation...")
+                if math.isnan(self.pnl_dict[self.sharpe_ratio_]):
+                    raise Exception("Error in Sharpe Ratio calculation...")
+
+
 
     def annualized_(func):
         """Decorator to return annualized value"""

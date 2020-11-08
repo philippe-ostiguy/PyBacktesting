@@ -25,6 +25,7 @@ class MannKendall(Initialize):
         super().__call__()
         new_obj = copy.deepcopy(self_)
         self.__dict__.update(new_obj.__dict__)
+        del self_, new_obj
         io.init_series(self)
         self.alpha=alpha
         self.first_iteration=iteration

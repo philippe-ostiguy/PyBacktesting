@@ -8,7 +8,7 @@ class Optimize(PnL):
 
     def __init__(self):
         super().__init__()
-        super().init_series()
+        self.init_series()
         self.reset_value()
 
     def __call__(self):
@@ -24,7 +24,7 @@ class Optimize(PnL):
 
          Load data (and clean), calculate indicators, check for signal, calculate pnl + write results to file
          """
-        super().__call__()
+        self.pnl_()
         md.write_csv_(self.dir_output, self.name_out, add_doc=add_doc,
                       is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 

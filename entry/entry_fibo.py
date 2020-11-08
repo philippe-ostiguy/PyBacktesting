@@ -107,6 +107,9 @@ class EntFibo():
         self.local_extremum_ = self.local_extremum_.reset_index(drop=True)
 
         self.largest_extension() #finding the largest extension used for potential entry and/or exit
+        if not hasattr(self, 'largest_extension_'): #in case it doesn't find a largest_extension,
+            self.is_entry = False                    # exit and just do nothing to avoid error
+            return
         self.set_value()
         self.try_entry()
 

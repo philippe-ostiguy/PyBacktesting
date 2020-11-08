@@ -11,7 +11,7 @@ class Main(Optimize):
         super().__init__()
         super().__call__()
         self.cht_ = cht.Charting(self.series, self.date_name,
-                                 self.default_data, series_test=self.series_test, **self.indicator)
+                                 self.default_data, series_test=self.series, **self.indicator)
         t = 5
     def chart_signal(self):
         """Marks signal on chart"""
