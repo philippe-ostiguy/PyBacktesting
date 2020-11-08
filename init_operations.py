@@ -3,14 +3,12 @@
 from initialize import Initialize
 from manip_data import ManipData as md
 import pandas as pd
-from datetime import datetime
 
 class InitOp(Initialize):
 
     def __init__(self):
         super().__init__()
         super().__call__()
-        self.init_series()
 
     def __call__(self):
         self.reset_value()

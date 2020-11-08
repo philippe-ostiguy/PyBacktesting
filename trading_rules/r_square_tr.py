@@ -72,8 +72,12 @@ class RSquareTr(ind.Indicator):
             self.last_short += 1
 
         #Check if there is a row with no entry or exit signal
-        if mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row)):
+        try:
+            mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row))
+        except:
             raise Exception("Nan value in entry row")
 
-        if mo.nan_list(mo.pd_tolist(self.trades_track, self.exit_row)):
+        try:
+            mo.nan_list(mo.pd_tolist(self.trades_track, self.exit_row))
+        except:
             raise Exception("Nan value in exit row")

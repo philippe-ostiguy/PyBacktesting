@@ -13,8 +13,8 @@ class Indicator(InitOp):
 
     def __call__(self):
         super().__call__()
-        rg = lr.RegressionSlopeStrenght(self.series_test)
-        mk_ = mk.MannKendall(self.series_test)
+        rg = lr.RegressionSlopeStrenght(self.series_test,self)
+        mk_ = mk.MannKendall(self.series_test,self)
         self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
         self.point_data=0
         self.slope_key=list(self.indicator.keys())[0]

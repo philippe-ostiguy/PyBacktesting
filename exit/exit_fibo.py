@@ -1,6 +1,7 @@
 import entry.entry_fibo as ef
 import sys
 import operator as op
+import math
 
 class ExitFibo(ef.EntFibo):
 
@@ -149,6 +150,9 @@ class ExitFibo(ef.EntFibo):
                 if self.fst_op(_curent_value,_tight_pour_trig) & \
                         (self.fst_op(_tight_pour_level, self.stop_value)):
                     self.stop_value = _tight_pour_level
+
+        if math.isnan(self.trades_track.iloc[-1, self.trades_track.columns.get_loc(self.exit_level)]):
+            self.trades_track = self.trades_track[:-1]
 
         return self.trades_track
 

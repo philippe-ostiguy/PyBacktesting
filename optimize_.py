@@ -3,46 +3,32 @@ from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
 from optimize.genetic_algorithm import GenAlgo as ga
-import copy
 
 class Optimize(PnL):
 
     def __init__(self):
         super().__init__()
+        super().init_series()
+        self.reset_value()
 
     def __call__(self):
 
-        # If the systeme do a walkfoward analysis
+        # If we optimize
         if self.is_walkfoward:
-            self.walf_foward()
+            self.walk_foward()
         else :
             self.execute_()
 
     def execute_(self,add_doc=""):
-        """ Just runs the whole program
+        """ Just runs the whole program without optimization
 
-         Load data (and clean), calculate indicators, check for signal, calculate pnl + write to results to file
+         Load data (and clean), calculate indicators, check for signal, calculate pnl + write results to file
          """
-
-        # If the systeme optimize the parameters
-        if self.is_optimize:
-            self.optimize()
-
-        else :
-            self.init_series()
-            super().__call__()
-
+        super().__call__()
         md.write_csv_(self.dir_output, self.name_out, add_doc=add_doc,
                       is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 
-    def optimize(self):
-        """ This function return the actual parameters to be tested
-        """
-
-        self.optimize_param()
-        ga(self).__call__()
-
-    def walf_foward(self):
+    def walk_foward(self):
         md_ = md
 
         _first_time = True
@@ -58,5 +44,9 @@ class Optimize(PnL):
                 self.date_fin = self.dict_date_[key][key_][1]
                 if _first_time :
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
-                self.execute_(add_doc=key_)
+                self.init_series()
+                self.optimize_param()
+                ga(self).__call__()
+
+                #self.execute_(add_doc=key_)
             _first_time = False

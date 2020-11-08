@@ -84,4 +84,9 @@ class MathOp():
     def pd_tolist(cls,pd_, row_name):
         """Transform a pandas column to a list. It makes sure it is an integer"""
         pd__ = pd_.loc[:, row_name].tolist()
-        return [int(i) for i in pd__]
+        try:
+           t = [int(i) for i in pd__]
+        except:
+            raise Exception("Mistake happened in pd_tolist")
+        else :
+            return [int(i) for i in pd__]

@@ -31,25 +31,23 @@ class Initialize():
         #------------------------------
         # Set asset and date to optimize
         self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
-        self.date_fin = datetime.strptime('2016-03-30',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2017-11-18',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
         #Value for optimization
-        self.is_optimize = True
         self.optimize_technique = None #Says the technique used for optimization
         #minimum number of results needed in a training period to consider the results when optimizing
 
         #Value if we do a walf-foward analysis
-        self.is_walkfoward = False #Says if we do walkfoward analysis
+        self.is_walkfoward = True #Says if we do walkfoward analysis (optimize)
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
-        self.doc_name_ = {self.training_name_ : self.training_name_,self.test_name_:self.test_name_}
         #String added to the results file name
-        self.training_ = 1 #Lenght in months of training period
-        self.test_ = 1 #Lenght in months of testing period
+        self.training_ = 15 #Lenght in months of training period
+        self.test_ = 7 #Lenght in months of testing period
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
-
+        self.train_param= [] #Optimized training parameters used for the test period
 
         # Decide which data type we need in our testing
         self.date_name = 'Date'
@@ -262,7 +260,7 @@ class Initialize():
 
     def return_value(self,first_val,sec_val):
         """ Return first value if True, second if False"""
-        return first_val if self.is_optimize else sec_val
+        return first_val if self.is_walkfoward else sec_val
 
     def optimize_param(self):
         """ Tell the parameters we want to optimize.

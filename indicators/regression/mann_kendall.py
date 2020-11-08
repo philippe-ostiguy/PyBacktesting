@@ -10,6 +10,9 @@ import numpy as np
 from scipy.stats import norm
 from manip_data import ManipData as md
 from initialize import Initialize
+from init_operations import InitOp as io
+import copy
+
 
 class MannKendall(Initialize):
     """
@@ -17,9 +20,12 @@ class MannKendall(Initialize):
 
     """
 
-    def __init__(self,series_,alpha=0.01,iteration=True):
+    def __init__(self,series_,self_,alpha=0.01,iteration=True):
         super().__init__()
         super().__call__()
+        new_obj = copy.deepcopy(self_)
+        self.__dict__.update(new_obj.__dict__)
+        io.init_series(self)
         self.alpha=alpha
         self.first_iteration=iteration
         self.nb_sign=0
