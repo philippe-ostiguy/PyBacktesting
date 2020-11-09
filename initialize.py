@@ -44,8 +44,8 @@ class Initialize():
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         #String added to the results file name
-        self.training_ = 12 #Lenght in months of training period (put 12)
-        self.test_ = 6 #Lenght in months of testing period (put 6)
+        self.training_ = 1 #Lenght in months of training period (put 12)
+        self.test_ = 1 #Lenght in months of testing period (put 6)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period
 

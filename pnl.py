@@ -28,7 +28,7 @@ class PnL(tr.RSquareTr):
 
         #Possible to have some trades but not real trades (0 return) when largest_extension is 0
         if (self.pnl_dict[self.nb_trades_] != None):
-            if (self.pnl_dict[self.nb_trades_] >= 2):
+            if (self.pnl_dict[self.nb_trades_] > 0):
                 if self.pnl_dict[self.sharpe_ratio_] == None:
                     self.pnl_dict[self.nb_trades_] = 0
                 if math.isnan(self.pnl_dict[self.sharpe_ratio_]):
