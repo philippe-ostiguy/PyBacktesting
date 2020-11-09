@@ -44,8 +44,8 @@ class Initialize():
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         #String added to the results file name
-        self.training_ = 1 #Lenght in months of training period (put 12)
-        self.test_ = 1 #Lenght in months of testing period (put 6)
+        self.training_ = 12 #Lenght in months of training period (put 12)
+        self.test_ = 6 #Lenght in months of testing period (put 6)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period
 
@@ -166,7 +166,7 @@ class Initialize():
 
         """
 
-        self.nb_data = self.return_value([100,200,300],200) # nb of data on which data are tested, can be 100, 200, 300
+        self.nb_data = 100 # nb of data on which data are tested, can be 100, 200, 300
 
         # Indicator value to trigger a signal
         self.r_square_level =  self.return_value([.6,.7,.8,.9],.7) #can be .6 , .7, .8 and .9 too
@@ -281,6 +281,5 @@ class Initialize():
                           [self.enter_dict[self.enter_ext_name],'enter_ext'],
                           [self.enter_dict[self.enter_time],'enter_bool'],
                           [self.enter_dict[self.enter_time],'time_ext'],
-                          ['nb_data'],
                           ['r_square_level'],
                           ['min_data']]

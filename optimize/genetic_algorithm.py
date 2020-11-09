@@ -41,7 +41,6 @@ class GenAlgo(PnL):
                     continue
                 if self.pnl_dict[self.nb_trades_] < self.min_results:
                     continue
-                    print("Not enough trade")
                 else:
                     self.population.append(self.pnl_dict)
                     if (self.population[items_][self.nb_trades_] > 150):

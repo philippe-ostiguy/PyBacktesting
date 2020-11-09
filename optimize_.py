@@ -3,7 +3,7 @@ from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
 from optimize.genetic_algorithm import GenAlgo as ga
-import copy
+from indicator import Indicator
 
 class Optimize(PnL):
 
@@ -47,6 +47,7 @@ class Optimize(PnL):
                 if _first_time :
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
                 self.init_series()
+                Indicator.calcul_indicator(self)
                 self.optimize_param()
                 ga(self).__call__()
 
