@@ -3,10 +3,11 @@ from pnl import PnL
 import numpy as np
 from initialize import Initialize
 import copy
+import random
 
 class GenAlgo(PnL):
 
-    def __init__(self,self_, min_results = 5, size_population = 20, generations = 20, co_rate = .65,
+    def __init__(self,self_, min_results = 3, size_population = 2, generations = 25, co_rate = .65,
                  mutation_rate = .04):
         super().__init__()
         new_obj =  copy.deepcopy(self_)
@@ -15,6 +16,7 @@ class GenAlgo(PnL):
         self.min_results = min_results
         self.size_population = size_population
         self.generations = generations
+        self.nb_chromosomes = 2
         self.co_rate = co_rate
         self.mutation_rate = mutation_rate
         self.fitness_function = self.sharpe_ratio_ #string name of the fitness function
@@ -48,12 +50,11 @@ class GenAlgo(PnL):
                     print(self.population[items_][self.ann_return_])
                     print(self.population[items_][self.sharpe_ratio_])
                     print(self.population[items_][self.nb_trades_])
-
                     items_+=1
         return wrapper_
 
     def fitness_selection(self):
-        """Decorator to set probability to select each chromosome using the wheel selection.
+        """Decorator to select two new chromosomes for the next generations
 
         We truncate the Put the smallest performance evaluator to 0 and raise by some amount the others evaluators. It makes
         sure all values are equal or above 0
@@ -65,11 +66,32 @@ class GenAlgo(PnL):
                 min_val = 0
             self.fitt_total = 0
             for item in self.population:
-                item[self.fitness_function] += min_val  # Truncated fitness function. Put the smalles
+                item[self.fitness_function] -= min_val  # Truncated fitness function.
                 self.fitt_total += item[self.fitness_function]
                 item[self.fitness_function] = self.fitt_total
+
+            father = self.fitt_total * random.random()
+            mother = self.fitt_total * random.random()
+
+
             func(self)
         return wrapper_
+
+
+    @iterate_population
+    def create_gen(self):
+        """ Create a new chromosome in the new generation"""
+        rand_number = random.random()
+        if rand_number < self.mutation_rate:
+            #self.mutate
+            pass
+        elif rand_number < (self.mutation_rate + self.co_rate) :
+            #self.crossover
+            pass
+        else:
+            #self.selection
+            pass
+
 
     @iterate_population
     def create_chromosome(self):
@@ -83,27 +105,3 @@ class GenAlgo(PnL):
                     np.random.choice(self.op_param[item][0][self.op_param[item][1]])
             else:
                 setattr(self, self.op_param[item][0], np.random.choice(getattr(self, self.op_param[item][0])))
-
-    @iterate_population
-    def create_gen(self):
-        """ Create a new chromosome in the new generation"""
-
-
-        pass
-
-
-    @fitness_selection
-    def fitness_selection_(self):
-        """ Selection 2 chromosomes for next generation
-
-        Using the roulette wheel selection
-        """
-        sum_ = 0
-        for item in self.population:
-            item[self.prob] = item[self.fitness_function]/self.fitt_total
-
-
-
-
-
-
