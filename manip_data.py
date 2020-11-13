@@ -43,7 +43,7 @@ class ManipData():
             dictionary with keys and items to be written in the file
         """
 
-        if is_walkfoward :
+        if is_walkfoward:
             write_type = 'a'
             func = 'writer.writerow'
         else :
@@ -55,6 +55,7 @@ class ManipData():
             eval(func)('')
             for key, item in kwargs.items():
                 writer.writerow([key,item])
+
 
     @classmethod
     def erase_content(cls):

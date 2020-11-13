@@ -30,7 +30,7 @@ class PnL(tr.RSquareTr):
         if (self.pnl_dict[self.nb_trades_] != None):
             if (self.pnl_dict[self.nb_trades_] > 0):
                 if self.pnl_dict[self.sharpe_ratio_] is None or math.isnan(self.pnl_dict[self.sharpe_ratio_]):
-                    self.pnl_dict[self.nb_trades_] = 0
+                    self.pnl_dict = {}
 
     def annualized_(func):
         """Decorator to return annualized value"""

@@ -5,6 +5,7 @@ from date_manip import DateManip as dm
 from manip_data import ManipData as md
 import pandas as pd
 from datetime import datetime
+import random
 
 class Initialize():
     """
@@ -26,7 +27,6 @@ class Initialize():
         # Writing data
         self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
         self.name_out = 'results'
-        self.nb_chromosomes = 2
 
         #PARAMS TO OPTIMIZE STARTS HERE
         #------------------------------
@@ -46,7 +46,7 @@ class Initialize():
         self.test_name_ =  '_test'
         #String added to the results file name
 
-        self.training_ = 2 #Lenght in months of training period (put 18)
+        self.training_ = 3 #Lenght in months of training period (put 18)
         self.test_ = 1 #Lenght in months of testing period (put 9)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period

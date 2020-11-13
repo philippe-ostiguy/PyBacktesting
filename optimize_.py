@@ -18,16 +18,16 @@ class Optimize(PnL):
         if self.is_walkfoward:
             self.walk_foward()
         else :
-            self.execute_()
+            self.pnl_()
+            self.first_write = md.write_csv_(self.dir_output, self.name_out, self.first_write, add_doc="",
+                                             is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 
     def execute_(self,add_doc=""):
         """ Just runs the whole program without optimization
 
          Load data (and clean), calculate indicators, check for signal, calculate pnl + write results to file
          """
-        self.pnl_()
-        md.write_csv_(self.dir_output, self.name_out, add_doc=add_doc,
-                      is_walkfoward=self.is_walkfoward, **self.pnl_dict)
+
 
     def walk_foward(self):
         md_ = md
@@ -39,7 +39,6 @@ class Optimize(PnL):
         if (len(self.dict_date_)) == 0:
             raise Exception("Total period not long enough for optimization")
 
-
         for key,value in self.dict_date_.items():
             for key_, value_ in self.dict_name_.items():
                 self.date_debut = self.dict_date_[key][key_][0]
@@ -49,6 +48,10 @@ class Optimize(PnL):
                 self.init_series()
                 Indicator.calcul_indicator(self)
                 self.optimize_param()
-                ga(self).__call__()
+                self.pnl_dict,self.op_param = ga(self).__call__()
+                md.write_csv_(self.dir_output, self.name_out, add_doc="",
+                              is_walkfoward=self.is_walkfoward, **self.pnl_dict)
+                md.write_csv_(self.dir_output, self.name_out, add_doc="",
+                              is_walkfoward=self.is_walkfoward, **self.op_param)
 
             _first_time = False
