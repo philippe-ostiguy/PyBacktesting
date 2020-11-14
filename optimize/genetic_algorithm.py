@@ -9,9 +9,8 @@ class GenAlgo(PnL):
     """ Genetic algo that return the parameter `self.op_param` and pnl `self.pnl_dict` for the best chromosome
     """
 
-
-    def __init__(self,self_, min_results = 3, size_population = 2, generations = 0, co_rate = 0.65,
-                 mutation_rate = 0.04, fitness_level = 3):
+    def __init__(self,self_, min_results = 3, size_population = 2, generations = 1, co_rate = 0,
+                 mutation_rate = 1, fitness_level = 3):
         """ Setting the parameters here
         """
 
@@ -31,7 +30,10 @@ class GenAlgo(PnL):
         self.population = []
 
     def __call__(self):
-        """Function that runs the genetic algo. This is the "main" function """
+        """Function that runs the genetic algo. This is the "main" function
+
+        First, it creates
+        """
         self.create_chromosome()
         self.run_generations()
         return self.return_results()
@@ -60,7 +62,7 @@ class GenAlgo(PnL):
                 #    return self.pnl_dict,self.op_param
                 else:
                     self.results_pop.append(self.pnl_dict)
-                    self.population.append(self.op_param)
+                    self.population.append(self.list_to_dict(self.op_param))
                     if (self.results_pop[items_][self.nb_trades_] > 150):
                         raise Exception("Error with the number of trades")
                     print(self.results_pop[items_][self.ann_return_])
@@ -68,6 +70,16 @@ class GenAlgo(PnL):
                     print(self.results_pop[items_][self.nb_trades_])
                     items_+=1
         return wrapper_
+
+    def list_to_dict(self,list_):
+        new_dict = {}
+        for item in list_:
+            if len(item) > 1:
+                new_dict[item[1]] = item[0][item[1]]
+            else:
+                new_dict[item[0]] = getattr(self, item[0])
+
+        return new_dict
 
     @iterate_population
     def create_chromosome(self):
@@ -109,7 +121,13 @@ class GenAlgo(PnL):
                 return parent
 
             func(self, parent(),parent())
+
         return wrapper_
+
+    def run_generations(self):
+        """ Function that run generations"""
+        for generation in range(self.generations):
+            self.new_chromosomes()
 
     @iterate_population
     @fitness_selection
@@ -134,56 +152,38 @@ class GenAlgo(PnL):
         """
         for item in range(len(self.op_param)):
             if len(self.op_param[item]) > 1:
-                self.op_param[item][0][self.op_param[item][1]] = parent[item][0][parent[item][1]]
+                self.op_param[item][0][self.op_param[item][1]] = parent[self.op_param[item][1]]
             else:
-                setattr(self, self.op_param[item][0], getattr(self, parent[item][0]))
-        t= 5
+                setattr(self, self.op_param[item][0], parent[self.op_param[item][0]])
 
     def mutation(self, parent):
         """ Function that mutate one gene of one parent
 
          It changes randomly the value of one gene with the possible in `initialize.py`"""
         item = random.randint(0,self.nb_genes -1 )
-        if len(parent[item]) > 1:
+        if len(self.op_param[item]) > 1:
             new_val = np.random.choice(self.op_param[item][0][self.op_param[item][1]])
-            while (parent[item][0][parent[item][1]] == new_val):
+            while (parent[self.op_param[item][1]] == new_val):
                 new_val = np.random.choice(self.op_param[item][0][self.op_param[item][1]])
-            parent[item][0][parent[item][1]] = new_val
+            parent[self.op_param[item][1]] = new_val
             self.assign_value(parent)  # assign father's value to new chromosome to be tested
 
         else:
             new_val = np.random.choice(getattr(self, self.op_param[item][0]))
-            while (parent[item][0] == new_val):
+            while (parent[self.op_param[item][0]] == new_val):
                 new_val = np.random.choice(getattr(self, self.op_param[item][0]))
-            parent[item][0] == new_val
+            parent[self.op_param[item][0]] = new_val
             self.assign_value(parent)  # assign father's value to new chromosome to be tested
 
     def cross_over(self,father,mother):
         """ Function that cross-over one gene of one parent to the other parent"""
 
         item = random.randint(0,self.nb_genes -1 )
-        if len(father[item]) > 1:
-            father[item][0][father[item][1]] = mother[item][0][mother[item][1]]
+        if self.op_param(father[item]) > 1:
+            father[self.op_param[item][1]] = mother[self.op_param[item][1]]
         else :
-            father[item][0] = mother[item][0]
+            father[self.op_param[item][0]] = mother[self.op_param[item][0]]
         self.assign_value(father) #assign father value to new chromosome to be tested
-
-    def run_generations(self):
-        """ Function that run generations"""
-
-        for generation in range(self.generations):
-            self.new_chromosomes()
-
-
-    def list_to_dict(self,list_):
-        new_dict = {}
-        for item in list_:
-            if len(item) > 1:
-                new_dict[item[1]] = item[0][item[1]]
-            else:
-                new_dict[item[0]] = getattr(self, item[0])
-
-        return new_dict
 
     def return_results(self):
         """Return the results of the best chromosome
@@ -205,5 +205,4 @@ class GenAlgo(PnL):
                 max_val = item[self.fitness_function]
                 max_idx = index
 
-        _dict_pop = self.list_to_dict(self.population[max_idx])
-        return self.results_pop[max_idx], _dict_pop
+        return self.results_pop[max_idx], self.population[max_idx]

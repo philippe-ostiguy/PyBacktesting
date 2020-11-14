@@ -39,19 +39,23 @@ class Optimize(PnL):
         if (len(self.dict_date_)) == 0:
             raise Exception("Total period not long enough for optimization")
 
-        for key,value in self.dict_date_.items():
-            for key_, value_ in self.dict_name_.items():
+        for key,_ in self.dict_date_.items():
+            for key_, _ in self.dict_name_.items():
                 self.date_debut = self.dict_date_[key][key_][0]
                 self.date_fin = self.dict_date_[key][key_][1]
                 if _first_time :
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
                 self.init_series()
                 Indicator.calcul_indicator(self)
-                self.optimize_param()
-                self.pnl_dict,self.op_param = ga(self).__call__()
-                md.write_csv_(self.dir_output, self.name_out, add_doc="",
+                if key_ == self.training_name_: #we only optimize for the training period
+                    self.optimize_param()
+                    self.pnl_dict,self.op_param = ga(self).__call__()
+                else : #test period, we use the optimized parameters in the training period
+                    self.pnl_()
+
+                md.write_csv_(self.dir_output, self.name_out, add_doc=key_,
                               is_walkfoward=self.is_walkfoward, **self.pnl_dict)
-                md.write_csv_(self.dir_output, self.name_out, add_doc="",
+                md.write_csv_(self.dir_output, self.name_out, add_doc=key_,
                               is_walkfoward=self.is_walkfoward, **self.op_param)
 
             _first_time = False

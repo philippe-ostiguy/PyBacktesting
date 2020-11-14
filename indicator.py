@@ -31,6 +31,7 @@ class Indicator(InitOp):
         self.point_data=0
         self.slope_key=list(self.indicator.keys())[0]
         self.r_square_key=list(self.indicator.keys())[1]
+        self.mk_key = list(self.indicator.keys())[2]
 
         self.point_data = 0
         nb_columns=len(self.series.columns)

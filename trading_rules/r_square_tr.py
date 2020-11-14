@@ -42,10 +42,10 @@ class RSquareTr(ind.Indicator):
         for row in range(len(self.series)-self.nb_data+1):
             curr_row=row + self.nb_data-1
 
-            slope_value=self.series.loc[curr_row, self.slope_key]
+            mk_value=self.series.loc[curr_row, self.mk_key]
             r_value=self.series.loc[curr_row,self.r_square_key]
             #Buy signal
-            if slope_value > 0 :
+            if mk_value > 0 :
                 if r_value > self.r_square_level:
                     if self.last_long >= self.min_data :
                         buy_signal = True
@@ -55,7 +55,7 @@ class RSquareTr(ind.Indicator):
                     self.last_long = 0
 
             #Sell signal
-            if slope_value < 0 :
+            if mk_value < 0 :
                 if r_value > self.r_square_level:
                     self.last_short -= 1
                     if self.last_short >= self.min_data :

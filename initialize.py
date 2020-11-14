@@ -277,7 +277,7 @@ class Initialize():
                           [self.stop_tight_dict[self.stop_tight_pour],'is_true'],
                           [self.stop_tight_dict[self.stop_tight_pour],'tight_value'],
                           [self.stop_tight_dict[self.stop_tight_pour],'pour_tight'],
-                          ['bol_st_ext',],
+                          ['bol_st_ext'],
                           ['fst_cdt_ext'],
                           ['sec_cdt_ext'],
                           [self.enter_dict[self.enter_ext_name],'enter_ext'],
