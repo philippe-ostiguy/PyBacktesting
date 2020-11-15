@@ -32,7 +32,7 @@ class Initialize():
         #------------------------------
         # Set asset and date to optimize
         self.date_debut = datetime.strptime('2015-10-15',"%Y-%m-%d")
-        self.date_fin = datetime.strptime('2019-11-18',"%Y-%m-%d")
+        self.date_fin = datetime.strptime('2020-10-18',"%Y-%m-%d")
         self.is_fx = True #Tell if it is forex
         self.asset = "EURUSD"
 
@@ -47,7 +47,7 @@ class Initialize():
         #String added to the results file name
 
         self.training_ = 3 #Lenght in months of training period (put 18)
-        self.test_ = 1 #Lenght in months of testing period (put 9)
+        self.test_ = 3 #Lenght in months of testing period (put 9)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period
 

@@ -11,6 +11,7 @@ class Optimize(PnL):
         super().__init__()
         self.init_series()
         self.reset_value()
+        self.params = {}
 
     def __call__(self):
 
@@ -18,6 +19,7 @@ class Optimize(PnL):
         if self.is_walkfoward:
             self.walk_foward()
         else :
+            Indicator.calcul_indicator(self)
             self.pnl_()
             self.first_write = md.write_csv_(self.dir_output, self.name_out, self.first_write, add_doc="",
                                              is_walkfoward=self.is_walkfoward, **self.pnl_dict)
@@ -49,13 +51,24 @@ class Optimize(PnL):
                 Indicator.calcul_indicator(self)
                 if key_ == self.training_name_: #we only optimize for the training period
                     self.optimize_param()
-                    self.pnl_dict,self.op_param = ga(self).__call__()
+                    self.pnl_dict,self.params = ga(self).__call__()
                 else : #test period, we use the optimized parameters in the training period
+                    self.assign_value()
                     self.pnl_()
 
                 md.write_csv_(self.dir_output, self.name_out, add_doc=key_,
                               is_walkfoward=self.is_walkfoward, **self.pnl_dict)
                 md.write_csv_(self.dir_output, self.name_out, add_doc=key_,
-                              is_walkfoward=self.is_walkfoward, **self.op_param)
+                              is_walkfoward=self.is_walkfoward, **self.params)
 
             _first_time = False
+
+    def assign_value(self):
+        """ Function to assign the value to each optimized parameters obtained in the optimization function"""
+
+        for item in range(len(self.op_param)):
+            if len(self.op_param[item]) > 1:
+                self.op_param[item][0][self.op_param[item][1]] = self.params[self.op_param[item][1]]
+            else:
+                setattr(self, self.op_param[item][0], self.params[self.op_param[item][0]])
+        t =5

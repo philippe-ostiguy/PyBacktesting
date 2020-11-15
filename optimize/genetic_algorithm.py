@@ -9,10 +9,9 @@ class GenAlgo(PnL):
     """ Genetic algo that return the parameter `self.op_param` and pnl `self.pnl_dict` for the best chromosome
     """
 
-    def __init__(self,self_, min_results = 3, size_population = 2, generations = 1, co_rate = 0,
-                 mutation_rate = 1, fitness_level = 3):
-        """ Setting the parameters here
-        """
+    def __init__(self,self_, min_results = 3, size_population = 10, generations = 3, co_rate = .6,
+                 mutation_rate = .10, fitness_level = 3):
+        """ Setting the parameters here"""
 
         super().__init__()
         new_obj =  copy.deepcopy(self_)
@@ -26,7 +25,7 @@ class GenAlgo(PnL):
         self.fitness_level = fitness_level
         self.fitness_function = self.sharpe_ratio_ #string name of the fitness function
         self.nb_genes = len(self.op_param)
-        self.results_pop = []
+        self.results_pop = [] #pnl for the population
         self.population = []
 
     def __call__(self):
@@ -47,6 +46,8 @@ class GenAlgo(PnL):
 
         def wrapper_(self):
             items_ = 0
+            results_tempo = []
+            population_tempo = []
             while (items_ < self.size_population):
                 self.reset_value()
                 self.pnl_dict = {}
@@ -60,15 +61,15 @@ class GenAlgo(PnL):
                     continue
                # if self.pnl_dict[self.fitness_function] > self.fitness_level:
                 #    return self.pnl_dict,self.op_param
-                else:
-                    self.results_pop.append(self.pnl_dict)
-                    self.population.append(self.list_to_dict(self.op_param))
-                    if (self.results_pop[items_][self.nb_trades_] > 150):
+                elif bool(self.pnl_dict) and self.pnl_dict[self.nb_trades_] >= self.min_results:
+                    results_tempo.append(self.pnl_dict)
+                    population_tempo.append(self.list_to_dict(self.op_param))
+                    if (results_tempo[items_][self.nb_trades_] > 150):
                         raise Exception("Error with the number of trades")
-                    print(self.results_pop[items_][self.ann_return_])
-                    print(self.results_pop[items_][self.sharpe_ratio_])
-                    print(self.results_pop[items_][self.nb_trades_])
                     items_+=1
+            self.results_pop = results_tempo.copy()
+            self.population = population_tempo.copy()
+
         return wrapper_
 
     def list_to_dict(self,list_):
@@ -96,7 +97,7 @@ class GenAlgo(PnL):
         """Decorator to select two new chromosomes for the next generations
 
         We truncate the Put the smallest performance evaluator to 0 and raise by some amount the others evaluators. It makes
-        sure all values are equal or above 0
+        sure all values are equal or above 0. The function makes sure
         """
 
         def wrapper_(self):
@@ -108,19 +109,42 @@ class GenAlgo(PnL):
                 item[self.fitness_function] -= min_val  # Truncated fitness function.
                 self.fitt_total += item[self.fitness_function]
 
-            def parent():
-                random_nb = self.fitt_total * random.random()
-                for item in range(len(self.results_pop)):
-                    if random_nb < self.results_pop[item][self.fitness_function]:
-                        parent = self.population[item]
-                        break
-                try:
-                    parent
-                except :
-                    raise Exception("Parent has no value")
-                return parent
+            if all(item[self.fitness_function] == 0 for item in self.results_pop): #if all sharpe ratio are the same
+                                                                                    # at 0, it avoids mistake later
+                for item in self.results_pop:
+                    item[self.fitness_function]+=1
 
-            func(self, parent(),parent())
+            def parent():
+
+                nb_parent = 2
+                parent_ = []
+                parent_item = None
+                for j in range(nb_parent):
+                    item = 0
+                    random_nb = self.fitt_total * random.random()
+                    sum_results = 0
+                    while( item < len(self.results_pop)):
+                        sum_results += self.results_pop[item][self.fitness_function]
+                        if random_nb <= sum_results:
+                            if (parent_item is not None) and (parent_item == item):
+                                random_nb = self.fitt_total * random.random()
+                                sum_results = 0
+                                item = 0
+                                continue
+                            else :
+                                parent_.insert(item,self.population[item])
+                                parent_item = item
+                                break
+                        item+=1
+
+                if not bool(parent_):
+                    raise Exception("Parent has no value")
+
+                if len(parent_) != 2:
+                    raise Exception("Don't have a father and mother")
+
+                return parent_
+            func(self, parent())
 
         return wrapper_
 
@@ -131,7 +155,7 @@ class GenAlgo(PnL):
 
     @iterate_population
     @fitness_selection
-    def new_chromosomes(self, father, mother):
+    def new_chromosomes(self, parent):
         """ Create a new chromosome in the new generation
 
         The function only keep one chromosome in `self.op_param` for evaluation
@@ -139,13 +163,13 @@ class GenAlgo(PnL):
 
         rand_number = random.random()
         if rand_number < self.mutation_rate:
-            self.mutation(father)
+            self.mutation(parent[0])
 
         elif rand_number < (self.mutation_rate + self.co_rate) :
-            self.cross_over(father,mother)
+            self.cross_over(parent[0],parent[1])
 
         else:
-            self.assign_value(father)
+            self.assign_value(parent[0])
 
     def assign_value(self, parent):
         """ Function to assign the new value to each each gene in the chromosome
@@ -162,26 +186,32 @@ class GenAlgo(PnL):
          It changes randomly the value of one gene with the possible in `initialize.py`"""
         item = random.randint(0,self.nb_genes -1 )
         if len(self.op_param[item]) > 1:
-            new_val = np.random.choice(self.op_param[item][0][self.op_param[item][1]])
-            while (parent[self.op_param[item][1]] == new_val):
+            while True:
                 new_val = np.random.choice(self.op_param[item][0][self.op_param[item][1]])
-            parent[self.op_param[item][1]] = new_val
+                if parent[self.op_param[item][1]] != new_val:
+                    parent[self.op_param[item][1]] = new_val
+                    break
             self.assign_value(parent)  # assign father's value to new chromosome to be tested
 
         else:
             new_val = np.random.choice(getattr(self, self.op_param[item][0]))
-            while (parent[self.op_param[item][0]] == new_val):
+            while True:
                 new_val = np.random.choice(getattr(self, self.op_param[item][0]))
-            parent[self.op_param[item][0]] = new_val
+                if parent[self.op_param[item][0]] != new_val:
+                    parent[self.op_param[item][0]] = new_val
+                    break
             self.assign_value(parent)  # assign father's value to new chromosome to be tested
+
 
     def cross_over(self,father,mother):
         """ Function that cross-over one gene of one parent to the other parent"""
 
         item = random.randint(0,self.nb_genes -1 )
-        if self.op_param(father[item]) > 1:
+        if len(self.op_param[item]) > 1:
+
             father[self.op_param[item][1]] = mother[self.op_param[item][1]]
         else :
+
             father[self.op_param[item][0]] = mother[self.op_param[item][0]]
         self.assign_value(father) #assign father value to new chromosome to be tested
 
@@ -204,5 +234,6 @@ class GenAlgo(PnL):
             elif item[self.fitness_function] > max_val:
                 max_val = item[self.fitness_function]
                 max_idx = index
+
 
         return self.results_pop[max_idx], self.population[max_idx]
