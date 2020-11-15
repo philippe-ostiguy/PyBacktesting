@@ -9,7 +9,7 @@ class GenAlgo(PnL):
     """ Genetic algo that return the parameter `self.op_param` and pnl `self.pnl_dict` for the best chromosome
     """
 
-    def __init__(self,self_, min_results = 3, size_population = 10, generations = 3, co_rate = .6,
+    def __init__(self,self_, min_results = 10, size_population = 20, generations = 25, co_rate = .6,
                  mutation_rate = .10, fitness_level = 3):
         """ Setting the parameters here"""
 
