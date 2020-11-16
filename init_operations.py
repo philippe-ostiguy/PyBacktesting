@@ -1,4 +1,4 @@
-"""Class with functions that initialize the program"""
+"""Module to easily reinitiliaze values when needed """
 
 from initialize import Initialize
 from manip_data import ManipData as md
@@ -15,17 +15,17 @@ class InitOp(Initialize):
 
 
     def reset_value(self):
-        """Value that must be reseted if we run walk-foward analysis"""
+        """Function to reset the dictionary that contains the trading journal (entry, exit, return).
+
+         We need to do that when we optimize, ie when `self.is_walkfoward` is `True` """
         self.trades_track = pd.DataFrame(columns=[self.entry_row, self.entry_level, self.exit_row, self.exit_level, \
                                                   self.trade_return])
 
     def init_series(self):
-        """Function to get the data as Dataframe"""
+        """Function that extract data from csv to a pandas Dataframe"""
 
-        self.series = md.csv_to_pandas(self.date_name, self.date_debut, self.date_fin, self.name,self.directory,
+        self.series = md.csv_to_pandas(self.date_name, self.start_date, self.end_date, self.name, self.directory,
                             self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx, dup_col = self.dup_col)
-
-        t = 5
 
         """
         if self.is_detrend:

@@ -35,7 +35,7 @@ class Optimize(PnL):
         md_ = md
 
         _first_time = True
-        self.dict_date_ = dm.date_dict(self.date_debut, self.date_fin,
+        self.dict_date_ = dm.date_dict(self.start_date, self.end_date,
                                        **self.dict_name_)
 
         if (len(self.dict_date_)) == 0:
@@ -43,8 +43,8 @@ class Optimize(PnL):
 
         for key,_ in self.dict_date_.items():
             for key_, _ in self.dict_name_.items():
-                self.date_debut = self.dict_date_[key][key_][0]
-                self.date_fin = self.dict_date_[key][key_][1]
+                self.start_date = self.dict_date_[key][key_][0]
+                self.end_date = self.dict_date_[key][key_][1]
                 if _first_time :
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
                 self.init_series()

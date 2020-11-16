@@ -1,4 +1,4 @@
-"""Return the values of the indicator of our choice through the desired timeframe and lenght"""
+"""Return the values of the indicator of our choice through the desired timeframe and interval"""
 
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
@@ -11,19 +11,22 @@ class Indicator(InitOp):
     def __init__(self):
         super().__init__()
 
-
     def __call__(self):
         super().__call__()
 
     def calcul_indicator(self):
-
         """Function that return the value of an indicator through desired period and the calculation lenght of the
         indicator
 
-        The indicator always take into account the value of price for the same row. Ex: We are at row 99, the indicator
-        will take into account the data for row 99 then write the value on row 99. Basically, we have to enter or
-        exit the market (or exit) on the next row (value)
+        The indicator always take into account the value of the price for the same row.
+        Ex: We are at row 99, the indicator will take into account the data for row 99 then write the value on row 99.
+        Basically, we have to enter or exit the market (or exit) on the next row (value)
+
+        The function iterate through the indicators in `self.indicator` and through the range of `self.series`,defined
+        in `init_operations.py` and function `init_series()`. Then it calculates the value of the indicator using
+        the subseries `self.sous_series`.
         """
+
         super().__call__()
         rg = lr.RegressionSlopeStrenght(self.series,self)
         mk_ = mk.MannKendall(self.series,self)

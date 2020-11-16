@@ -86,8 +86,8 @@ class PnL(tr.RSquareTr):
 
         Using "%Y-%m-%d" as Timestamp format
         """
-        dm_begin_ = DateManip(self.date_debut).end_format(self.end_format_)
-        dm_end_ = DateManip(self.date_fin).end_format(self.end_format_)
+        dm_begin_ = DateManip(self.start_date).end_format(self.end_format_)
+        dm_end_ = DateManip(self.end_date).end_format(self.end_format_)
         return f"{dm_begin_} to {dm_end_}"
 
     def pour_win(self):
