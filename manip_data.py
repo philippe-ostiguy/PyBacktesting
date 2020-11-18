@@ -5,6 +5,7 @@ import datetime as dt
 from functools import wraps
 from statsmodels.tsa.stattools import adfuller
 import os.path
+import numpy as np
 
 
 def ordinal_date(function):
@@ -94,7 +95,7 @@ class ManipData():
 
         cls.sous_series=series_.iloc[point_data:point_data + nb_data,:]
         if nb_data > len(series_):
-            raise Exception("Number of necessary data to calculate the indicator lower than available data")
+            raise Exception("Not enough necessary data to calculate the indicator")
         return cls.sous_series
 
     @classmethod
@@ -110,3 +111,26 @@ class ManipData():
         if adfuller(series_diff[default_data])[1] > p_value:
             raise Exception("The differentiated series is not stationary")
         return series_diff
+
+    @classmethod
+    def nan_list(cls,list_):
+        """Check if a list has one empty value
+
+        Return
+        ------
+        Bool : `True` or `False`
+            Return `True` if at least one value in the list is `nan` and `False otherwise
+        """
+
+        return True if True in np.isnan(list_) else False
+
+    @classmethod
+    def pd_tolist(cls,pd_, row_name):
+        """Transform a pandas column to a list. It makes sure it is an integer"""
+        pd__ = pd_.loc[:, row_name].tolist()
+        try:
+           t = [int(i) for i in pd__]
+        except:
+            raise Exception("Mistake happened in pd_tolist")
+        else :
+            return [int(i) for i in pd__]

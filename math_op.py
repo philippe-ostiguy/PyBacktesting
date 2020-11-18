@@ -1,5 +1,5 @@
 """
-Basic math operations
+Module for mathematical operation support
 """
 from scipy.signal import argrelextrema
 import matplotlib.pyplot as plt
@@ -33,15 +33,12 @@ class MathOp():
         max_ : str
             Name given to max data column
 
-
         Return
         ------
         DataFrame list : Return a pandas dataframe `cls.series` with the none empty min or max value
             (if both are empty, nothing is returned. If one of
             them has a value, return the local min or max with index no)
         """
-
-
 
         cls.series=cls.series.loc[start_point:end_point,cls.default_col]
         cls.series=pd.DataFrame({cls.default_col: cls.series})
@@ -67,26 +64,3 @@ class MathOp():
         cls.series=cls.series.loc[(cls.series[min_].isna())==False | (cls.series[max_].isna() == False)]
 
         return cls.series
-
-    @classmethod
-    def nan_list(cls,list_):
-        """Check if a list has one empty value
-
-        Return
-        ------
-        Bool : `True` or `False`
-            Return `True` if at least one value in the list is `nan` and `False otherwise
-        """
-
-        return True if True in np.isnan(list_) else False
-
-    @classmethod
-    def pd_tolist(cls,pd_, row_name):
-        """Transform a pandas column to a list. It makes sure it is an integer"""
-        pd__ = pd_.loc[:, row_name].tolist()
-        try:
-           t = [int(i) for i in pd__]
-        except:
-            raise Exception("Mistake happened in pd_tolist")
-        else :
-            return [int(i) for i in pd__]

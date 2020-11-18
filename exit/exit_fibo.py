@@ -1,3 +1,5 @@
+"""Module that will try to exit the market when we are in """
+
 import entry.entry_fibo as ef
 import sys
 import operator as op
@@ -6,24 +8,12 @@ import copy
 import pandas as pd
 
 class ExitFibo(ef.EntFibo):
+    """ Class that uses Fibonnacci strategy to exit the market.
 
+        It first uses the `EntFibo()` class in `entry_fibo.py` to enter in the market.
+        """
     
     def __init__(self,init_):
-        """
-        Class that uses Fibonnacci strategy to exit the market.
-
-        It first uses the EntFibo to enter the market (inheritance)
-        Then it tries to exit the market with Fibonacci retracement and extension. 1 type at the moment:
-            1- Extension from a previous wave (largest one in the last trend)
-
-        Notes
-        -----
-        Need to use also Fibonnacci retracements to exit the market
-
-        No slippage included in `try_exit()`. If the price reached the desired level, we just exit at either the
-            current price or the next desired price
-
-        """
 
         new_obj = init_
         self.__dict__.update(new_obj.__dict__) #replacing self object with Initialise object
@@ -32,15 +22,25 @@ class ExitFibo(ef.EntFibo):
                                                   self.trade_return])
 
     def __call__(self,curr_row,buy_signal=False,sell_signal=False):
-
+        """ Method that will first try to enter the market with `self.ent_fibo` then it will try to exit with
+        `self.try_exit()` whenever we have a position
+        """
         super().__init__()
         self.ent_fibo(curr_row=curr_row, buy_signal=buy_signal, sell_signal=sell_signal)
         return self.try_exit()
-
     
     def try_exit(self):
         """
-        Method which try to exit the market.
+        This is the ethod that tries to exit the market when wr have a position with `entry_fibo.py`
+
+        Then it tries to exit
+        the market using Fibonacci retracement and extension. 1 type at the moment:
+            1- Largest extension `self.largest_extension_` from the current trend
+
+        There is no slippage included in `try_exit()`. If the price reached the desired level, we just exit at
+        either the current price or the next desired price
+
+
 
         This method will make the system exit the market when a close or a stop loss signal is triggered
 

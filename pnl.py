@@ -1,4 +1,4 @@
-"""Module to calculate trading strategy results"""
+"""Module to calculate the trading strategy results"""
 
 import trading_rules as tr
 import numpy as np
@@ -11,13 +11,9 @@ class PnL(tr.RSquareTr):
         super().__init__()
 
     def pnl_(self):
+        """Function that calculate the different metrics to evalute the trading strategy performance"""
         super().__call__()
-        self.start_date_ = self.series.iloc[0, self.series.columns.get_loc(self.date_name)]
-        self.end_date_ = self.series.iloc[-1, self.series.columns.get_loc(self.date_name)]
-        self.calcul_pnl()
-
-    def calcul_pnl(self):
-        self.diff_ = ((self.end_date_ - self.start_date_).days / 365) #diff in term of year with decimal
+        self.diff_ = ((self.end_date - self.start_date).days / 365) #diff in term of year with decimal
         self.pnl_dict[self.range_date_] = self.range_date()
         self.pnl_dict[self.ann_return_] = self.ann_return()
         self.pnl_dict[self.ann_vol_] = self.ann_vol()
@@ -59,7 +55,9 @@ class PnL(tr.RSquareTr):
     def sharpe_ratio(self):
         """Sharpe ratio
 
-        Not using the risk-free rate has it doesn't change the final result
+        Not using the risk-free rate has it doesn't change the final result. We could trade on margin and just
+        totally distort the return. Also, depending on the time intervals, the return are larger or smaller
+        (expected higher volatility on daily than hourly basis).
         """
         if not bool(self.pnl_dict):
             return None
@@ -73,7 +71,7 @@ class PnL(tr.RSquareTr):
             return (self.pnl_dict[self.ann_return_] /self.pnl_dict[self.ann_vol_])
 
     def max_draw(self):
-        """Return lowest value """
+        """Return lowest return value """
 
         return self.trades_track[self.trade_return].min()
 
@@ -91,7 +89,7 @@ class PnL(tr.RSquareTr):
         return f"{dm_begin_} to {dm_end_}"
 
     def pour_win(self):
-        """Return the pourcentage of winning trades
+        """Return the percentage of winning trades
         """
 
         total_trade = self.nb_trades()

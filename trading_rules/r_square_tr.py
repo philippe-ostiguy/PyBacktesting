@@ -1,39 +1,54 @@
-"""Module that detect buy and sell signal with r_square and if there is a trend"""
+"""Module that detect buy and sell signal with r_square and mk (Mann Kendall)"""
 
 import indicator as ind
-import entry.entry_fibo as enf
 import exit.exit_fibo as exf
 from math_op import MathOp as mo
+from manip_data import ManipData as md
 import pandas as pd
 import copy
-import math
 
-"""
-Tell us if we should entry market. For now, it checked if r2 is above the desired level 
-and then depending if the price's slope is negative or positive,
-it trigers a signal to get long (slope is positive) or to get short (slope is negative)
-"""
 
 class RSquareTr(ind.Indicator):
-    """Class that trigger entry signal based on r_square """
+    """Class that trigger entry signal based on r_square and Menn Kendall
+
+    The signal is trigggered if `r_value` is above `self.r_square_level` define in `initialize.py` and if `mk_`value
+    is 1 (buying signal) or -1 (selling signal)"""
 
     def __init__(self):
         super().__init__()
 
     def __call__(self):
-
-        """
-        Take 2 key-word args : r2 level to triger a signal + minimum nb of data (self.min_data) between each
-        signal before trigerring a new signal telling us to try to enter in the market. It gives the signal
-        on each row (data), so we enter or exit in the market on the next row (data)
-        """
-
         super().__call__()
         self.last_long = self.nb_data #last time we had a long signal
         self.last_short = self.nb_data  #last time we had a short signal
         self.trig_signal()
 
     def trig_signal(self):
+        """Function that iterates through each data of the selected serie `self.series` to check if there is a
+        signal.
+
+        `mk_value` and `r_value` are the evaluated value to check if there is a signal. When there is a signal in a
+        direction, the system needs to run through a minimum of `self.min_data` (defines or optimize in `initialize.py`)
+        to enter in the market in the same direction.
+
+        The function call the `exit_fibo.py` module anytime there is a signal which will then try to enter and exit the
+        market. It could be set to another entry and exit types.
+
+        Parameters
+        ----------
+        `self.r_square_level` : float
+            If the current r2 is above this level, it means we have a trend. Important to set the good level, because
+            it's one of the conditions that trigger a signal. It's set in `initialize.py`
+        `self.min_data` : int
+            If there is a signal, it's the minimum number of data needed before it can trigger another signal
+            in the same direction
+
+        Return
+        ------
+        The function doesn't return anything in itself, but it stores the trading entry and exit in dictionary
+        `self.trades_track`
+        """
+
 
         buy_signal = False
         sell_signal = False
@@ -74,11 +89,11 @@ class RSquareTr(ind.Indicator):
         #Check if there is a row with no entry or exit signal
         del init_
         try:
-            mo.nan_list(mo.pd_tolist(self.trades_track, self.entry_row))
+            md.nan_list(md.pd_tolist(self.trades_track, self.entry_row))
         except:
             raise Exception("Nan value in entry row")
 
         try:
-            mo.nan_list(mo.pd_tolist(self.trades_track, self.exit_row))
+            md.nan_list(md.pd_tolist(self.trades_track, self.exit_row))
         except:
             raise Exception("Nan value in exit row")

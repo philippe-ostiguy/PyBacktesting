@@ -1,37 +1,52 @@
-"""Module to run the program - use optimization tool if asked"""
+"""Module to run the program - use optimization tools if desired"""
+
 from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
 from optimize.genetic_algorithm import GenAlgo as ga
-from indicator import Indicator
 
 class Optimize(PnL):
 
     def __init__(self):
+        """Function that initializes stuff.
+
+        It resets the `self.series` with `self.init_series()` and dictionary that track the pnl
+        `self.trades_track` with `reset_value()` when we optimize.
+        """
         super().__init__()
         self.init_series()
         self.reset_value()
         self.params = {}
 
     def __call__(self):
+        """Function do different things dependent if we optimize or not"""
 
-        # If we optimize
         if self.is_walkfoward:
             self.walk_foward()
         else :
-            Indicator.calcul_indicator(self)
+            self.calcul_indicator()
             self.pnl_()
-            self.first_write = md.write_csv_(self.dir_output, self.name_out, self.first_write, add_doc="",
-                                             is_walkfoward=self.is_walkfoward, **self.pnl_dict)
-
-    def execute_(self,add_doc=""):
-        """ Just runs the whole program without optimization
-
-         Load data (and clean), calculate indicators, check for signal, calculate pnl + write results to file
-         """
-
+            md.write_csv_(self.dir_output, self.name_out, add_doc="", is_walkfoward=self.is_walkfoward, **self.pnl_dict)
 
     def walk_foward(self):
+        """Function that do the walk-foward analysis (optimization).
+
+        First it runs through the divided period (1 period interval for training and testing). We have to choose
+        properly `self.start_date` and `self.end_date` as they set the numbers of period.
+
+        Then the program runs through each training and testing period (in `self.dict_name_`). The program optimizes
+        only in the training period `self.training_name_`. The results are store in the folder results and
+        results_training for the training period and results_test for the testing period.
+
+        Parameters
+        ----------
+        `self.start_date` : datetime object
+            Set in `initialize.py`. Beginning date of training and testing.
+        `self.end_date` : datetime object
+            Set in `initialize.py`. End date of training and testing.
+
+        """
+
         md_ = md
 
         _first_time = True
@@ -48,7 +63,7 @@ class Optimize(PnL):
                 if _first_time :
                     md_(self.dir_output,self.name_out,extension = key_).erase_content()
                 self.init_series()
-                Indicator.calcul_indicator(self)
+                self.calcul_indicator()
                 if key_ == self.training_name_: #we only optimize for the training period
                     self.optimize_param()
                     self.pnl_dict,self.params = ga(self).__call__()
@@ -64,11 +79,13 @@ class Optimize(PnL):
             _first_time = False
 
     def assign_value(self):
-        """ Function to assign the value to each optimized parameters obtained in the optimization function"""
+        """ Function to assign the value to each optimized parameters obtained in the optimization module.
+
+        The `genetic_algorithm.py` return the dictionary with the value and when we test in `r_square_tr.py` they are
+        in a different format"""
 
         for item in range(len(self.op_param)):
             if len(self.op_param[item]) > 1:
                 self.op_param[item][0][self.op_param[item][1]] = self.params[self.op_param[item][1]]
             else:
                 setattr(self, self.op_param[item][0], self.params[self.op_param[item][0]])
-        t =5

@@ -25,6 +25,20 @@ class Indicator(InitOp):
         The function iterate through the indicators in `self.indicator` and through the range of `self.series`,defined
         in `init_operations.py` and function `init_series()`. Then it calculates the value of the indicator using
         the subseries `self.sous_series`.
+
+
+        Parameters
+        ----------
+        `self.series` : pandas Dataframe
+            It contains the series used to build the model.
+        `self.indicator` : dictionary
+            It contains the indicator we are using for the strategy.
+
+        Return
+        ------
+        The function doesn't return anything in itself, but it calculates and stores the value of the desired indicator
+        in `self.indicator` with new columns in `self.series` (pandas Dataframe)
+
         """
 
         super().__call__()

@@ -13,11 +13,9 @@ from initialize import Initialize
 from init_operations import InitOp as io
 import copy
 
-
 class MannKendall(Initialize):
     """
-    Mann-Kendall is a non-parametric test to determine if a trend is present over time (using monotonic function)
-
+    Mann-Kendall is a non-parametric test to determine if there is a trend in a time-series
     """
 
     def __init__(self,series_,self_,alpha=0.01,iteration=True):
@@ -40,6 +38,10 @@ class MannKendall(Initialize):
         I'm not the original writer of this function, it comes from github :
 
         https://github.com/mps9506/Mann-Kendall-Trend/blob/master/mk_test.py
+
+        The goal here is to calculate the Mann Kendall value at data point, so to
+        save time, we just substract the first value and add the last value when
+        we go to a new data point.
 
         This function is derived from code originally posted by Sat Kumar Tomer
         (satkumartomer@gmail.com)
