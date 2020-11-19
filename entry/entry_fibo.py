@@ -1,34 +1,15 @@
+"""Module that will try to enter the market using Fibonnacci techniques"""
+
 import math_op as mo
 import initialize as init
 import operator as op
 import math
 
 class EntFibo():
-
+    """
+    Class that uses Fibonnacci strategies to enter the market """
     
     def __init__(self):
-        """
-        Class that uses Fibonnacci strategy to enter the market
-
-
-        Trying to enter the market with Fibonacci retracement and extension. 3 types:
-            Retracement from the last wave
-            Retracement from beginning of the trend
-            Extension from a previous wave (largest one in the last trend)
-
-
-        Notes
-        -----
-
-        No slippage included in `try_entry()`. If the price reached the desired level, we just exit at either the
-            current price or the next desired price
-
-        The system doesn't check on a shorter time frame if it reaches an entry point and a stop at the same time
-            or even an exit point and stop at the same time (in case of high volatility) in `try_entry()`
-            Taking into account the system, those are really rare cases. However it could be tested by using a
-            shorter time every time an entry or exit signal
-
-        """
         self.extreme = {}
         self.high="max"
         self.low="min"
@@ -45,8 +26,64 @@ class EntFibo():
 
     
     def ent_fibo(self,curr_row,buy_signal=False,sell_signal=False):
-        """
-        Default function called to determine the entry level
+        """This the main method that uses Fibonnacci strategies to enter the market
+
+        Trying to enter the market with Fibonacci retracement and extension. 3 types:
+            Retracement from the last wave
+            Retracement from beginning of the trend
+            Extension from the current trend (largest one in the last trend)
+
+        At the moment, it is possible to enter the market only with extensions from the current wave.
+
+        Parameters
+        ----------
+        `self.buy_signal` and `self.sell_signal` : bool
+            
+
+        Notes
+        -----
+
+        No slippage included in `self.try_entry()`. If the price reached the desired level, we just exit at either the
+            current price or the next desired price
+
+        The system doesn't check on a shorter time frame if it reaches an entry point and a stop at the same time
+            or even an exit point and stop at the same time (in case of high volatility) in `self.try_entry()`
+            Taking into account the system, those are really rare cases. However it could be tested by using a
+            shorter time every time an entry or exit signal
+                We first get an entry confirmation with the function `self.ent_fibo()` in `entry_fibo.py`. Then we run through
+        the remaining data (according to the determined data range). We have an profit, stop loss and the method
+        even tighten the stop under certain circumstances.
+
+
+        Then it tries to exit the market using Fibonacci retracement and extension. 1 type at the moment:
+            1- Largest extension `self.largest_extension_` from the current trend. The `self.largest_extension_` is set
+            in `entry_fibo.py`. It is in fact the largest setback in the current trend. This method uses
+            `self.profit_ext` to calculate the profit level and `self.stop_ext` for the stop level
+
+        There is no slippage included in `try_exit()`. If the price reached the desired level, we just exit at
+        either the current price or the next desired price
+
+        Parameters
+        ----------
+        `self.profit_ext` : float
+             % of the largest extension from previous trend that the system uses to exit the market to take profit
+             Default value is 2.618. Possible values are 1.618, 2 , 2.618, 3.382, 4.236.
+        `self.stop_ext` : float
+             % of the largest extension from previous trend that the system uses as a stop loss.
+             Default value is 1.618. Possible values are 1, 1.382, 1.618, 2.
+        `self.is_entry` : bool
+            The value comes from `entry_fibo.py`. It says if we have a position.
+
+        Notes
+        -----
+        The stops may be tightened (see "stop tightening" in `initialize.py`)
+
+        The system doesn't check on a shorter time frame if it reaches an exit point and a stop in `try_exit()`
+            in case of high volatility. Really rare cases
+
+
+
+
         """
 
         #ENTRY TRACKER
@@ -113,7 +150,6 @@ class EntFibo():
         self.set_value()
         self.try_entry()
 
-    
     def largest_extension(self):
         """
         Find largest extension (setback) from current trend (Fibonacci) in size + largest in time

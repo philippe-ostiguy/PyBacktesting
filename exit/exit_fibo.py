@@ -25,24 +25,37 @@ class ExitFibo(ef.EntFibo):
         """ Method that will first try to enter the market with `self.ent_fibo` then it will try to exit with
         `self.try_exit()` whenever we have a position
         """
+
         super().__init__()
         self.ent_fibo(curr_row=curr_row, buy_signal=buy_signal, sell_signal=sell_signal)
         return self.try_exit()
     
     def try_exit(self):
         """
-        This is the ethod that tries to exit the market when wr have a position with `entry_fibo.py`
+        This is the method that tries to exit the market when we have a position with `entry_fibo.py`
 
-        Then it tries to exit
-        the market using Fibonacci retracement and extension. 1 type at the moment:
-            1- Largest extension `self.largest_extension_` from the current trend
+        We first get an entry confirmation with the function `self.ent_fibo()` in `entry_fibo.py`. Then we run through
+        the remaining data (according to the determined data range). We have an profit, stop loss and the method
+        even tighten the stop under certain circumstances.
+
+        Then it tries to exit the market using Fibonacci retracement and extension. 1 type at the moment:
+            1- Largest extension `self.largest_extension_` from the current trend. The `self.largest_extension_` is set
+            in `entry_fibo.py`. It is in fact the largest setback in the current trend. This method uses
+            `self.profit_ext` to calculate the profit level and `self.stop_ext` for the stop level
 
         There is no slippage included in `try_exit()`. If the price reached the desired level, we just exit at
         either the current price or the next desired price
 
-
-
-        This method will make the system exit the market when a close or a stop loss signal is triggered
+        Parameters
+        ----------
+        `self.profit_ext` : float
+             % of the largest extension from previous trend that the system uses to exit the market to take profit
+             Default value is 2.618. Possible values are 1.618, 2 , 2.618, 3.382, 4.236.
+        `self.stop_ext` : float
+             % of the largest extension from previous trend that the system uses as a stop loss.
+             Default value is 1.618. Possible values are 1, 1.382, 1.618, 2.
+        `self.is_entry` : bool
+            The value comes from `entry_fibo.py`. It says if we have a position.
 
         Notes
         -----
@@ -50,9 +63,6 @@ class ExitFibo(ef.EntFibo):
 
         The system doesn't check on a shorter time frame if it reaches an exit point and a stop in `try_exit()`
             in case of high volatility. Really rare cases
-
-        No slippage included in `try_exit()`. If the price reached the desired level, we just exit at either the
-            current price.
 
         """
 
@@ -80,7 +90,7 @@ class ExitFibo(ef.EntFibo):
             _tight_value = self.stop_tight_dict[self.stop_tight_pour][self.tight_value]
             _pour_tight = self.stop_tight_dict[self.stop_tight_pour][self.pour_tight]
 
-    #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
+        #Check if the first row (where the signal is trigerred) is already below the stop loss (for buy)
         # and vice versa for sell signal. If yes, stop loss trigerred
         if self.exit_dict[self.exit_name][self.exit_ext_bool] & \
             self.six_op(self.series.loc[self.curr_row,self.stop],self.stop_value):
@@ -94,6 +104,7 @@ class ExitFibo(ef.EntFibo):
 
         data_test = len(self.series) - self.curr_row - 1
 
+        #This is the part where we run through the data to try to exit the market
         for curr_row_ in range(data_test):
 
             self.curr_row += 1
