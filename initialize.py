@@ -196,7 +196,7 @@ class Initialize():
                 Telling if we use this technic or not. Can be set to `True` or `False`
             `self.time_ext` : float
                 Proportion in term in time needed that the current setback most do compared to the largest extension
-                 in the current trend to enter the market. It can be .5, .618 .884,1
+                in therm of time in the current trend to enter the market. It can be .5, .618 .884,1
         Exit
         Extension
         `self.exit_dict` : dict

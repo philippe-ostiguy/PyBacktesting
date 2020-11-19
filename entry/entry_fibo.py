@@ -23,72 +23,40 @@ class EntFibo():
         self.row_rel_extreme = 0
         self.largest_time = 0 #extension in time
         self.index_name = 'index'
-
     
     def ent_fibo(self,curr_row,buy_signal=False,sell_signal=False):
         """This the main method that uses Fibonnacci strategies to enter the market
+
+        First, the method finds local minimum and maximum in the current trend with function `self.local_extremum_()`.
+        Then using `self.largest_extension()`, it finds the largest setback which is stored in the attribute
+        `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`.
+        Then in method `self.try_entry()`, the system will try to enter the market..
 
         Trying to enter the market with Fibonacci retracement and extension. 3 types:
             Retracement from the last wave
             Retracement from beginning of the trend
             Extension from the current trend (largest one in the last trend)
 
-        At the moment, it is possible to enter the market only with extensions from the current wave.
+        At the moment, it is possible to enter the market only with extensions from the current trend.
 
         Parameters
         ----------
         `self.buy_signal` and `self.sell_signal` : bool
-            
+            The module `r_aquare_ty.py` (or package `trading_rules`) tells us if there a buy or sell signal. Then,
+            just not to have the code twice, we set some variable depending on if `self.buy_signal` or
+            `self.sell_signal` is `True`.
 
         Notes
         -----
-
         No slippage included in `self.try_entry()`. If the price reached the desired level, we just exit at either the
-            current price or the next desired price
+        current price or the next desired price
 
         The system doesn't check on a shorter time frame if it reaches an entry point and a stop at the same time
-            or even an exit point and stop at the same time (in case of high volatility) in `self.try_entry()`
-            Taking into account the system, those are really rare cases. However it could be tested by using a
-            shorter time every time an entry or exit signal
-                We first get an entry confirmation with the function `self.ent_fibo()` in `entry_fibo.py`. Then we run through
-        the remaining data (according to the determined data range). We have an profit, stop loss and the method
-        even tighten the stop under certain circumstances.
-
-
-        Then it tries to exit the market using Fibonacci retracement and extension. 1 type at the moment:
-            1- Largest extension `self.largest_extension_` from the current trend. The `self.largest_extension_` is set
-            in `entry_fibo.py`. It is in fact the largest setback in the current trend. This method uses
-            `self.profit_ext` to calculate the profit level and `self.stop_ext` for the stop level
-
-        There is no slippage included in `try_exit()`. If the price reached the desired level, we just exit at
-        either the current price or the next desired price
-
-        Parameters
-        ----------
-        `self.profit_ext` : float
-             % of the largest extension from previous trend that the system uses to exit the market to take profit
-             Default value is 2.618. Possible values are 1.618, 2 , 2.618, 3.382, 4.236.
-        `self.stop_ext` : float
-             % of the largest extension from previous trend that the system uses as a stop loss.
-             Default value is 1.618. Possible values are 1, 1.382, 1.618, 2.
-        `self.is_entry` : bool
-            The value comes from `entry_fibo.py`. It says if we have a position.
-
-        Notes
-        -----
-        The stops may be tightened (see "stop tightening" in `initialize.py`)
-
-        The system doesn't check on a shorter time frame if it reaches an exit point and a stop in `try_exit()`
-            in case of high volatility. Really rare cases
-
-
-
+        or even an exit point and stop at the same time (in case of high volatility) in `self.try_entry()`
+        Taking into account how the system works, those are really rare cases. However it could be tested by using a
+        shorter time every time there is an entry or exit signal
 
         """
-
-        #ENTRY TRACKER
-        #----------------
-        # Entry level, tells if the system has a position in the market, buy or sell signal
 
         self.curr_row=curr_row
         self.buy_signal=buy_signal
@@ -151,8 +119,8 @@ class EntFibo():
         self.try_entry()
 
     def largest_extension(self):
-        """
-        Find largest extension (setback) from current trend (Fibonacci) in size + largest in time
+        """ Find largest extension (setback) from current trend (Fibonacci) in size which is stored in
+        `self.largest_extension_` and largest in term of time stored in `self.largest_time`.
         """
 
         if self.buy_signal:
@@ -248,9 +216,7 @@ class EntFibo():
     
     def set_extremum(self):
         """
-        Set the global max and min for the given range (from first_data to curr_row).
-
-        """
+        Set the global max and min for the given range (from first_data to curr_row)."""
 
         data_range = self.series.loc[self.first_data:self.curr_row,self.default_data]
         self.extreme = {self.high : data_range.max(),
@@ -258,12 +224,9 @@ class EntFibo():
                        self.high_idx : data_range.idxmax(),
                        self.low_idx : data_range.idxmin()
                        }
-
     
     def set_value(self):
-        """
-        Method to set some values that are used in class and sublcass
-        """
+        """Method to set some values that are used in this class and sublcass """
 
         # extension level if condition in initialize.py is True
         if self.exit_dict[self.exit_name][self.exit_ext_bool]:
@@ -273,10 +236,10 @@ class EntFibo():
 
             if self.extension_lost < 0:
                 raise Exception(
-                    f"Houston, we've got a problem, Extension lost in enter_fibo.py is {self.extension_lost} "
+                    f"Houston, we've got a problem, `self.extension_lost` in enter_fibo.py is {self.extension_lost} "
                     f"and should not be negative")
             if self.extension_profit < 0:
-                raise Exception(f"Houston, we've got a problem, Extension profit in enter_fibo.py is "
+                raise Exception(f"Houston, we've got a problem, `self.extension_profit` in enter_fibo.py is "
                                 f"{self.extension_profit} and should not be negative")
 
     
@@ -286,36 +249,52 @@ class EntFibo():
 
         Function that will try to enter in the market :
                 Until the system hit the desired extension and/or retracement. At the moment, only using extension (the
-                    largest), which is `self.largest_extension_` set in function
-                    `self.largest_extension()`. We can decide the proportion of the largest extension we want the system
-                    to use in module `initialize.py` within dictionary `self.enter_dict{}` and variable `self.enter_ext`
-                    (default value is 1)
-                Stop trying to enter in the market when a condition is met.
+                largest), which is `self.largest_extension_`. We can decide the proportion of the largest
+                extension we want the system to use in module `initialize.py` within dictionary `self.enter_dict{}`
+                and variable `self.enter_ext` (default value is 1)
+                It can also enter in the market only if the market retraces (or setback) above a certain amount of time
+                `self.time_ext` (set in `initialize.py`) the largest setback in term of time from the current
+                trend `self.largest_time`
+
+                Possibility to stop trying to enter in the market when a condition is met.
                     At the moment, the only condition is when the price during a setback hits  a
                     percentage `self.fst_cdt_ext` (0.618 by default) of the largest extension `self.largest_extension_`
                     (low for a buy signal and high for a sell signal which is `self.entry`)
                     AND hits the minimum retracement in the other direction `self.sec_cdt_ext` (.882 by default)
-                    Set true with this `self.bol_st_ext` in `initialize.py.
+                    Set to `True` with `self.bol_st_ext` in `initialize.py to have this condition.
 
+        Parameters
+        ----------
+        `self.largest_extension_` : float
+            the largest extension or setback (in point) from the the current trend
+        `self.enter_ext` : float
+            This is the % of largest extension at which the system enters the market. Can be .882 or .764 or 1
+        `self.largest_time` :
+            the largest setback from the current trend
+        `self.time_ext` : float
+            Proportion in term in time needed that the current setback most do compared to the largest extension
+            in therm of time in the current trend to enter the market. It can be .5, .618 .884,1. Set in `initialize.py`
+        `self.bol_st_ext` : bool
+            Tells the system if it has to stop trying to enter the market using Fibonacci extension techniques.
+            Can be optimized to `True` or `False`. Set in `initialize.py`
+        `self.fst_cdt_ext` : float
+            % of the largest extension that if the market reaches, the system stops trying to enter the market.
+            Possible values are .618, .764 or .882. Set in `initialize.py`
+        `self.sec_cdt_ext` : float
+             if the market triggers the first condition, then if it reaches this level in the opposite direction, the
+            # system stops trying to enter in the market. Can be set to .618, .764, 1 or 1.382. Set in `initialize.py`
 
-        NOTES
+        Notes
         -----
         Note that the system will priorise an entry over a new high or new low (to be more conservative). To solve
         this issue (rare cases, only with high volatility) :
-            Check simulateneously if a new high or low is reached &  (if a buy/sell level is trigerred |
-                market hits minimum required extension (if this condition is tested))
-            Then, on a shorter timeframe, check if an entry | minimum required extension is reached before the
+            Check simulateneously if a new high or low is reached &  (if a buy/sell level is trigerred or
+                if the market hits minimum required extension (if this condition is tested))
+            Then, on a shorter timeframe, check if an entry or minimum required extension is reached before the
                 market makes new low or high, vice versa
 
-        The entry signal are based on extension at the moment. We could check if it true or false
-        for different entry type
-
         If the price of the current row on which the signal is trigerred is below the buying level or above the
-        selling level, the system just don't execute it and end it. CHECK THIS... Maybe the system could enter unless
-        the price goes below the stop loss (buy) or above the stop loss (sell)
-
-        At the moment, the system uses ONLY the extension to try to enter in the market. We may have to change a bit
-        of the code if we want the flexibility of using other stuff
+        selling level, the system just don't execute it and end it.
         """
 
         data_test = len(self.series) - self.curr_row - 1
