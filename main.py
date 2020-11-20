@@ -1,3 +1,5 @@
+""" This is the main module which execute the program """
+
 import indicators.regression.linear_regression as lr
 import indicators.regression.mann_kendall as mk
 import charting as cht
@@ -14,7 +16,7 @@ class Main(Optimize):
                                  self.default_data, series_test=self.series, **self.indicator)
         t = 5
     def chart_signal(self):
-        """Marks signal on chart"""
+        """Marks signal on chart (no entry, only when the indicators trigger a signal)"""
         self.cht_.chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
 
     def chart_trigger(self):

@@ -1,4 +1,4 @@
-"""Module that act as a helper to manipulate csv and pandas Dataframe"""
+"""Helper module to manipulate csv and pandas Dataframe"""
 import csv
 import pandas as pd
 import datetime as dt

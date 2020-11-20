@@ -1,3 +1,6 @@
+""" Module with chart functions
+"""
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -70,6 +73,7 @@ class Charting():
         **marker : keyword arguments
             contains the place we want mark, the color of the mark and the type of mark
         """
+
         cls.series.set_index(cls.x_axis,inplace = True)
         fig = plt.figure()
 

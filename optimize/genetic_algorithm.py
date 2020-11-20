@@ -10,8 +10,29 @@ class GenAlgo(PnL):
     """
 
     def __init__(self,self_, min_results = 10, size_population = 20, generations = 25, co_rate = .6,
-                 mutation_rate = .10, fitness_level = 3):
-        """ Setting the parameters here"""
+                 mutation_rate = .10):
+        """ Setting the parameters here
+
+        Parameters
+        ----------
+        `self_` : class instance
+            This is the instance of the class where GenAlgo() class is called. We copy it in the constructor here
+        `self.min_results` : int
+            Minimum numbers of results needed to consider a chromosome in the training period. If we have under this
+            number, the chromosome is not considerd
+        `self.population` : int
+            Size of a population (number of chromosomes_
+        `self.generations` : int
+            Number of generations
+        `self.co_rate` : float
+            Cross-over rate
+        `self.mutation_rate` : float
+            Mutation rate
+        `self.fitness_function` : str
+            Name of the fitness function. Ex: `self.sharpe_ratio_` name is defined in `initialize.py` and function
+            is defined in `pnl.py`
+
+        """
 
         super().__init__()
         new_obj =  copy.deepcopy(self_)
@@ -22,17 +43,27 @@ class GenAlgo(PnL):
         self.generations = generations
         self.co_rate = co_rate
         self.mutation_rate = mutation_rate
-        self.fitness_level = fitness_level
         self.fitness_function = self.sharpe_ratio_ #string name of the fitness function
-        self.nb_genes = len(self.op_param)
+        self.nb_genes = len(self.op_param) #nb of genes per chromosome
         self.results_pop = [] #pnl for the population
         self.population = []
 
     def __call__(self):
         """Function that runs the genetic algo. This is the "main" function
 
-        First, it creates
+        First it creates the initial population in `self.create_chromosome()`. Then it optimize, run through each
+        population and new generations in `self.run_generations()`. Finally the results are return with function
+        `self.return_results()`
+
+        Return
+        ------
+        `self.pnl_dict` : dict
+            pnl of the best chromosome
+
+        `self.op_param` : list
+            parameters of the best chromosome
         """
+
         self.create_chromosome()
         self.run_generations()
         return self.return_results()
@@ -216,7 +247,7 @@ class GenAlgo(PnL):
         self.assign_value(father) #assign father value to new chromosome to be tested
 
     def return_results(self):
-        """Return the results of the best chromosome
+        """Return the results of the best chromosome (1 chromosome)
 
         Return
         ------

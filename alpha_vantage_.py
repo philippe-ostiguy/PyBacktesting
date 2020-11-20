@@ -11,8 +11,7 @@ size = 'full'
 
 class AlphaVantage():
     """
-    Class to get the data from alphavantage
-    """
+    Class to get the data from alphavantage"""
 
     @classmethod
     def intraday_fx(cls):
@@ -32,4 +31,3 @@ class AlphaVantage():
 
 av_ = AlphaVantage()
 data_ = av_.intraday_fx()
-t = 5
