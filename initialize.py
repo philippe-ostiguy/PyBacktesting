@@ -125,7 +125,7 @@ class Initialize():
         self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
         self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
 
-        self.is_walkfoward = True
+        self.is_walkfoward = False
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
         self.training_ = 2 #Lenght in months of training period (put 18)

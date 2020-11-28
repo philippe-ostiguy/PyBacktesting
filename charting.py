@@ -82,6 +82,7 @@ class Charting():
             candle.plot(cls.x_axis, cls.y_axis, markevery=cls.mark_, marker="o", data=series_)
             for key, _ in cls.indicator.items():
                 cls.indicator_dict[key].plot(cls.x_axis, key, data=cls.series_test)
+            plt.savefig('test.png')
 
         _plot(cls.series_test)
         if not (cls.series[cls.y_axis] == cls.series_test[cls.y_axis]).all():

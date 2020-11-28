@@ -57,6 +57,7 @@ class Main(Optimize):
 
 if __name__ == '__main__':
     main_ = Main()
-    #main_.chart_signal()
+    main_.chart_signal()
+    t= 5
     #main_.chart_trigger()
 
