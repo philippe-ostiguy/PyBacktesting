@@ -2,6 +2,7 @@
 [WIP] Library to find trend (using regression analysis and Mann-Kendall), then buy/sell setback using Fibonacci retracements and extension
 
 1- A clear explanation of the problem your're trying to solve and why it's important 
+
 2- A summary of your data cleaning and exploration. including visualizations
 3- How you created a baseline model
 4- Your logic for selecting models to test, tuning models and measuring their efficacy (Share Ratio in this case)
