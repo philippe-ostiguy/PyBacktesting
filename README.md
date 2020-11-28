@@ -38,7 +38,7 @@ The goal of this project is to model the Elliott Wave Theory to forecast the fin
 
 There is no real technique at the moment to model the Elliott Wave Theory as it is difficult to model and the modeling is highly subjective. To understand the concept of Elliott Wave Theory, refer to this [post](https://www.investopedia.com/articles/technical/111401.asp).
 
-As there 
+We
 
 
 
