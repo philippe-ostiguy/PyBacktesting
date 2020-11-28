@@ -2,7 +2,10 @@
 
 # Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
-## Introduction
+
+For questions or comments, please feel free to reach out on [LinkedIn](https://www.linkedin.com/in/philippe-ostiguy/?locale=en_US)
+
+
 
 [WIP] Library to find trend (using regression analysis and Mann-Kendall), then buy/sell setback using Fibonacci retracements and extension
 
