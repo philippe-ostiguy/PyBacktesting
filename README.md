@@ -18,7 +18,7 @@ import pandas as pd
 import sklearn as sk
 #etc
 
-__author__ = "Philippe Ostiguy
+__author__ = "Philippe Ostiguy"
 __email__ = "ostiguyphilippe@gmail.com"
 ```
 
