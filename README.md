@@ -1,6 +1,9 @@
 ![test](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
 
 # Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
+
+##Introduction
+
 [WIP] Library to find trend (using regression analysis and Mann-Kendall), then buy/sell setback using Fibonacci retracements and extension
 
 1- A clear explanation of the problem your're trying to solve and why it's important<br />
