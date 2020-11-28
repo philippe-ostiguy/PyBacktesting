@@ -12,4 +12,4 @@ __author__ = "your name here"
 __email__ = "your email here"
 ```
 
-!(https://github.com/philos123/PyBacktesting/blob/master/images/test.png)
+![test](https://github.com/philos123/PyBacktesting/blob/master/images/test.png)
