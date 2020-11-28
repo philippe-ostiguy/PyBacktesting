@@ -7,7 +7,7 @@
 2- A summary of your data cleaning and exploration. including visualizations<br />
 3- How you created a baseline model<br />
 4- Your logic for selecting models to test, tuning models and measuring their efficacy (Share Ratio in this case)<br />
-5- The results that you got for each model and making predictions<br />
+5- The results that you got for each model and making predictions, including vizualisations here<br />
 6- Your approach to training the final model and making predictions<br />
 7- A summary of the projects, results, findings and area that could be improved or explored in the future<br />
 
