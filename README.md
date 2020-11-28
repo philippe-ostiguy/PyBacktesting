@@ -40,7 +40,7 @@ There is no real technique at the moment to model the Elliott Wave Theory as it 
 
 Since the optimization space of a trading strategy can be complex, genetic algorithms are efficient are efficient machine learning technique for this kind of optimization. They mimic the biological process of evolution. 
 
-![]https://github.com/philos123/PyBacktesting/blob/master/images/genetic.jpg
+![](https://github.com/philos123/PyBacktesting/blob/master/images/genetic.jpg)
 
 
 
