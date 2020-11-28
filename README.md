@@ -2,6 +2,11 @@
 
 # Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
+Hi! 
+
+My name is Philippe. In this project, I'm modeling the Elliott Wave Theory to forecast the financial markets. 
+
+To see the list of the hyperparameters and parameters to optimize, go in this [file :](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 
 For questions or comments, please feel free to reach out on [LinkedIn](https://www.linkedin.com/in/philippe-ostiguy/?locale=en_US)
 
