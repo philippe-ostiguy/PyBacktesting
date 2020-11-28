@@ -1,18 +1,20 @@
 ![test](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
 
-# Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
+# [WIP] Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
 Hi! 
 
-My name is Philippe. In this project, I'm modeling the Elliott Wave Theory to forecast the financial markets. 
+My name is Philippe. In this project, I'm modeling the Elliott Wave Theory to forecast the financial markets. There is no real technique at the moment to model the Elliott Wave Theory as it is difficult to model and can be highly subjective.
 
-To see the list of the hyperparameters and parameters to optimize, go in this [file :](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
+WRITE THE SUMMARY HERE
+
+To find about this project, just scroll down
+
+To see the list of the hyperparameters and parameters to optimize, go to this [file](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 
 For questions or comments, please feel free to reach out on [LinkedIn](https://www.linkedin.com/in/philippe-ostiguy/?locale=en_US)
 
 
-
-[WIP] Library to find trend (using regression analysis and Mann-Kendall), then buy/sell setback using Fibonacci retracements and extension
 
 1- A clear explanation of the problem your're trying to solve and why it's important<br />
 2- A summary of your data cleaning and exploration. including visualizations<br />
@@ -33,7 +35,7 @@ __author__ = "Philippe Ostiguy"
 __email__ = "ostiguyphilippe@gmail.com"
 ```
 
-![test](https://github.com/philos123/PyBacktesting/blob/master/images/test.png)
 
-END
+
+AT THE END
 What we would like to improve : - test on other market, using retracements
