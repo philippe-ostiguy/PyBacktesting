@@ -44,10 +44,10 @@ class Initialize():
         """
         Initialize the hyperparameters and other parameters that won't be optimized.
 
-        Attributes
+        Parameters
         ----------
         `self.directory` : str
-            Where the the data are for training and testing (price)
+            Where the the data are located for training and testing periods
         `self.asset` : str
             Name of the file where we get the data
         `self.is_fx` : bool
@@ -56,11 +56,13 @@ class Initialize():
         `self.dir_output` : str
             Where we store the results
         `self.name_out` : str
-            Name of the results file (csv)
+            Name of the results file name (csv)
         `self.start_date` : datetime object
-            Beginning date of training and testing. The variable is already transformed from a str to a Datetime object
+            Beginning date of training and testing period. The variable is already transformed from a str to a
+            Datetime object
         `self.end_date` : datetime object
-            Ending date of training and testing. The variable is already transformed from a str to a Datetime object
+            Ending date of training and testing period. The variable is already transformed from a str to a
+            Datetime object
         `self.is_walkfoward` : bool
             Tells if we do an optimization (training and testing) or only a test on the whole period
         `self.training_name` : str
@@ -123,13 +125,13 @@ class Initialize():
         self.is_fx = True
         self.asset = "EURUSD"
         self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
-        self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
+        self.end_date = datetime.strptime('2020-04-15', "%Y-%m-%d")
 
         self.is_walkfoward = False
         self.training_name_ = '_training'
         self.test_name_ =  '_test'
-        self.training_ = 2 #Lenght in months of training period (put 18)
-        self.test_ = 1 #Lenght in months of testing period (put 9)
+        self.training_ = 18 #Lenght in months of training period (put 18)
+        self.test_ = 9 #Lenght in months of testing period (put 9)
         self.dict_name_ = {self.training_name_:self.training_,self.test_name_:self.test_}
         self.train_param= [] #Optimized training parameters used for the test period
 
@@ -196,7 +198,7 @@ class Initialize():
 
         It is the values that are initialized  and used through the system
 
-        Attributes
+        Parameters
         ----------
         `self.nb_data` : int
             Number of data needed to calculate the indicators. Default is 100 but can be 100, 200, 300.
