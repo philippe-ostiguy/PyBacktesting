@@ -17,7 +17,9 @@ To find more details about this project, scroll down
 
 To see the list of the hyperparameters and parameters to optimize, go to this [file](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 
-Every .py file has its docstring, so make sure to check it out to understand the details of the program. 
+Each .py file has its docstring, so make sure to check it out to understand the details of the project. 
+
+To find out more about [me](https://github.com/philos123)
 
 For questions or comments, please feel free to reach out on [LinkedIn](https://www.linkedin.com/in/philippe-ostiguy/?locale=en_US)
 
