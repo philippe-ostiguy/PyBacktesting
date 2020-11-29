@@ -52,9 +52,29 @@ The experiment was carried out on the EUR/USD currency pair on hourly basis data
 
 
 
-The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in `initialize.py`
+The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). The 
 
 ```
+Attributes
+----------
+`self.directory` : str
+    Where the the data are located for training and testing periods
+`self.asset` : str
+    Name of the file where we get the data
+`self.is_fx` : bool
+    Tell if `self.asset` is forex (the data don't have the same format for forex and stocks because they are
+    from different providers).
+`self.dir_output` : str
+    Where we store the results
+`self.name_out` : str
+    Name of the results file name (csv)
+`self.start_date` : datetime object
+    Beginning date of training and testing period. The variable is already transformed from a str to a 
+    Datetime object
+`self.end_date` : datetime object
+    Ending date of training and testing period. The variable is already transformed from a str to a 
+    Datetime object
+
 self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
 self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
 self.name_out = 'results'
