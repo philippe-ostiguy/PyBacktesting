@@ -119,8 +119,9 @@ class Initialize():
 
         """
 
-        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
+        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/genetic_programming/Trading/'
+        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/' \
+                          'Programmation_python/genetic_programming/Trading/results/'
         self.name_out = 'results'
         self.is_fx = True
         self.asset = "EURUSD"
