@@ -115,11 +115,11 @@ series_.info()
 In [manip_data.py](https://github.com/philos123/PyBacktesting/blob/master/manip_data.py), we drop the nan value, if any (none) and remove the data when the market is closed with `series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))`
 
 ```
-        series_ = series_.dropna() #drop nan values
-        if dup_col != None:
-            #If all values in column self.dup_col are the same, we erase them
-            series_ = series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))
-        series_=series_.reset_index(drop=True)
+series_ = series_.dropna() #drop nan values
+if dup_col != None:
+    #If all values in column self.dup_col are the same, we erase them
+    series_ = series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))
+series_=series_.reset_index(drop=True)
 ```
 
 We can see that it removed 172 data.
@@ -133,11 +133,34 @@ We can see that it removed 172 data.
 | 4 | Adj Close | 28024 non-null | float64        |
 
 
-
+Here is the split of the 
 
 SPLIT THE TEST/TRAINING DATA
 
+The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). We can see the split on chart below.
 
+```
+x = np.linspace(pd.Timestamp(self.start_date), pd.Timestamp(self.end_date),len(self.series))
+y = self.series.loc[:,self.default_data]
+
+segment1 = (x < pd.Timestamp('2017-04-15').value)
+segment2 = (x >= pd.Timestamp('2017-04-15').value) & (x < pd.Timestamp('2018-01-15').value)
+segment3 = (x >= pd.Timestamp('2018-01-15').value) & (x < pd.Timestamp('2019-07-15').value)
+segment4 = (x >= pd.Timestamp('2019-07-15').value)
+
+x = pd.to_datetime(x)
+
+plt.plot(x[segment1], y[segment1], '-b', lw=1)
+plt.plot(x[segment2], y[segment2], '-g', lw=1)
+plt.plot(x[segment3], y[segment3], '-b', lw=1)
+plt.plot(x[segment4], y[segment4], '-g', lw=1)
+
+plt.show()
+```
+
+The blue represents the 2 training periods and the green represents the 2 testing periods
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/period_split.png)
 
 
 AT THE END
