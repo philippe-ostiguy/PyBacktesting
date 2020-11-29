@@ -52,17 +52,17 @@ The experiment was carried out on the EUR/USD currency pair on hourly basis data
 
 
 
-The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load 
+The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in `initialize.py`
 
-
-        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
-        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
-        self.name_out = 'results'
-        self.is_fx = True
-        self.asset = "EURUSD"
-        self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
-        self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
-
+```
+self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
+self.dir_output = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/results/'
+self.name_out = 'results'
+self.is_fx = True
+self.asset = "EURUSD"
+self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
+self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
+```
 
 
 If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). There is a great article on the Alpha Vantage API, [here](https://algotrading101.com/learn/alpha-vantage-guide/)
