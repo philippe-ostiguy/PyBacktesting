@@ -48,14 +48,14 @@ Since the optimization space of a trading strategy can be complex, genetic algor
 
 ### ---- 2 Load the data ----
 
-The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). SPLIT THE TEST
+The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). CHECK FOR NAN, DUPLICATES, SPLIT THE TEST
 
 
 
-The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). The 
+The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). 
 
 ```
-Attributes
+Parameters
 ----------
 `self.directory` : str
     Where the the data are located for training and testing periods
@@ -86,6 +86,8 @@ self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
 
 
 If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). There is a great article on the Alpha Vantage API, [here](https://algotrading101.com/learn/alpha-vantage-guide/)
+
+
 
 AT THE END
 What we would like to improve : - test on other market, using retracements
