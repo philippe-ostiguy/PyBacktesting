@@ -50,7 +50,6 @@ Since the optimization space of a trading strategy can be complex, genetic algor
 
 The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). 
 
-
 The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). 
 
 ```
@@ -82,8 +81,6 @@ self.asset = "EURUSD"
 self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
 self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
 ```
-
-
 
 
 CHECK FOR NAN, DUPLICATES, SPLIT THE TEST/TRAINING DATA
