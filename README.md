@@ -52,6 +52,8 @@ The experiment was carried out on the EUR/USD currency pair on hourly basis data
 
 The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load the data in the folder of your choice and change the path with the variable `self.directory` in [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). 
 
+If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). [This](https://algotrading101.com/learn/alpha-vantage-guide/) is a great article on the Alpha Vantage API.
+
 ```
 Parameters
 ----------
@@ -95,7 +97,7 @@ series_.head()
 | 99   | 2015-10-15 03:00:00 | 1.14802 | 1.14826 | 1.14254 | 1.14375   |
 | 100  | 2015-10-15 04:00:00 | 1.14372 | 1.14596 | 1.14335 | 1.14417   |
 
-And see the lenght, value type and if there are empty values (none) :
+And see the lenght, value types and if there are empty values (none) :
 
 ```
 series_.info()
@@ -133,11 +135,8 @@ We can see that it removed 172 data.
 
 
 
-CHECK FOR NAN, DUPLICATES, SPLIT THE TEST/TRAINING DATA
+SPLIT THE TEST/TRAINING DATA
 
-
-
-If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). [This](https://algotrading101.com/learn/alpha-vantage-guide/) is a great article on the Alpha Vantage API.
 
 
 
