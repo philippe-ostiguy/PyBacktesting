@@ -50,7 +50,7 @@ The experiment was carried out on the EUR/USD currency pair on hourly basis data
 
 
 
-The data source for this experiment was ![Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load 
+The data source for this experiment was [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) as a lot of data was needed on an hourly basis. The program read the data in a csv format. If you want to do an experiment on a different asset and/or timeframe, make sure to load 
 
 
         self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/Trading/'
@@ -63,7 +63,7 @@ The data source for this experiment was ![Dukascopy](https://www.dukascopy.com/s
 
 
 
-If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). There is a great article on the Alpha Vantage API, ![here](https://algotrading101.com/learn/alpha-vantage-guide/)
+If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). There is a great article on the Alpha Vantage API, [here](https://algotrading101.com/learn/alpha-vantage-guide/)
 
 AT THE END
 What we would like to improve : - test on other market, using retracements
