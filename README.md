@@ -48,7 +48,7 @@ Since the optimization space of a trading strategy can be complex, genetic algor
 
 ### ---- 2 Load the data ----
 
-The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). CHECK FOR NAN, DUPLICATES, SPLIT THE TEST
+The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). CHECK FOR NAN, DUPLICATES, SPLIT THE TEST/TRAINING DATA
 
 
 
