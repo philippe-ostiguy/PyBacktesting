@@ -82,21 +82,59 @@ self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
 self.end_date = datetime.strptime('2016-02-18', "%Y-%m-%d")
 ```
 
+We can examine our data : 
+
+```
+series_.head()
+```
+| #    | Date                | Open    | High    | Low     | Adj Close |
+|------|---------------------|---------|---------|---------|-----------|
+| 96   | 2015-10-15 00:00:00 | 1.14809 | 1.14859 | 1.14785 | 1.14801   |
+| 97   | 2015-10-15 01:00:00 | 1.14802 | 1.14876 | 1.14788 | 1.14828   |
+| 98   | 2015-10-15 02:00:00 | 1.14831 | 1.14950 | 1.14768 | 1.14803   |
+| 99   | 2015-10-15 03:00:00 | 1.14802 | 1.14826 | 1.14254 | 1.14375   |
+| 100  | 2015-10-15 04:00:00 | 1.14372 | 1.14596 | 1.14335 | 1.14417   |
+
+And see the lenght, value type and if there are empty values (none) :
+
+```
+series_.info()
+```
+
+| # | Column    | Non-Null Count | Dtype          |
+|---|-----------|----------------|----------------|
+| 0 | Date      | 28176 non-null | datetime64[ns] |
+| 1 | Open      | 28176 non-null | float64        |
+| 2 | High      | 28176 non-null | float64        |
+| 3 | Low       | 28176 non-null | float64        |
+| 4 | Adj Close | 28176 non-null | float64        |
+
+
+In [manip_data.py](https://github.com/philos123/PyBacktesting/blob/master/manip_data.py), we drop the nan value, if any (none) and remove the data when the market is closed with `series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))`
+
+```
+        series_ = series_.dropna() #drop nan values
+        if dup_col != None:
+            #If all values in column self.dup_col are the same, we erase them
+            series_ = series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))
+        series_=series_.reset_index(drop=True)
+```
+
+We can see that it removed 172 data.
+
+| # | Column    | Non-Null Count | Dtype          |
+|---|-----------|----------------|----------------|
+| 0 | Date      | 28024 non-null | datetime64[ns] |
+| 1 | Open      | 28024 non-null | float64        |
+| 2 | High      | 28024 non-null | float64        |
+| 3 | Low       | 28024 non-null | float64        |
+| 4 | Adj Close | 28024 non-null | float64        |
+
+
+
 
 CHECK FOR NAN, DUPLICATES, SPLIT THE TEST/TRAINING DATA
 
-<class 'pandas.core.frame.DataFrame'>
-Int64Index: 28176 entries, 96 to 28271
-Data columns (total 5 columns):
- #   Column     Non-Null Count  Dtype         
----  ------     --------------  -----         
- 0   Date       28176 non-null  datetime64[ns]
- 1   Open       28176 non-null  float64       
- 2   High       28176 non-null  float64       
- 3   Low        28176 non-null  float64       
- 4   Adj Close  28176 non-null  float64       
-dtypes: datetime64[ns](1), float64(4)
-memory usage: 1.3 MB
 
 
 If less data is needed for an experiment or the experiment is carried on daily basis data, the Alpha Vantage API is a great source to get free and quality data (with certain restrictions, like a maximum API call per minute). [This](https://algotrading101.com/learn/alpha-vantage-guide/) is a great article on the Alpha Vantage API.
