@@ -1,5 +1,4 @@
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Elliott%20Wave%20Theory.eps)
 
 # [WIP] Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
