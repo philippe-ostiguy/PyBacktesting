@@ -164,6 +164,5 @@ The blue represents the 2 training periods and the green represents the 2 testin
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/period_split.png)
 
-
 AT THE END
 What we would like to improve : - test on other market, using retracements
