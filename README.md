@@ -197,9 +197,9 @@ plt.show()
 
 To make it simple and as a first version, this strategy is meant to try to enter the market when a trend is found. Note that we might be violating the assumption that there is no autocorrelation and that the error terms should follow a normal distribution, but for for the sake of simplicity, we'll assume the absence of serial correlation and that the error terms follow a normal distribution. Also, the statistical tests are used to determine if there is a trend, not to forecast the financial market. A ways around this would be to make the serie stationary.
 
-First using the Mann-Kendall test (non-parametric methods), we check if there is a trend in the market. It's better than linear regression as it does not require the data to be normally distributed or linear. It returns a 1 when there is a upward trend, -1 when there is a downward trend and 0 when there is no trend. More explanations and details about the code ![here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/mann_kendall.py)
+First using the Mann-Kendall test (non-parametric methods), we check if there is a trend in the market. It's better than linear regression as it does not require the data to be normally distributed or linear. It returns a 1 when there is a upward trend, -1 when there is a downward trend and 0 when there is no trend. More explanations and details about the code [here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/mann_kendall.py)
 
-Then using the coefficient of determination (R^2), we assess the strenght of the trend. By default, the thresold value `self.r_square_level` in `initialize.py` to say that the trend is significant is 0.7.  More explanations and details about the code ![here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/linear_regression.py) 
+Then using the coefficient of determination (R^2), we assess the strenght of the trend. By default, the thresold value `self.r_square_level` in `initialize.py` to say that the trend is significant is 0.7.  More explanations and details about the code [here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/linear_regression.py) 
 
 
 
