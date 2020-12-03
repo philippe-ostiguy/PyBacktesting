@@ -199,8 +199,11 @@ To make it simple and as a first version, this strategy is meant to try to enter
 
 First using the Mann-Kendall test (non-parametric methods), we check if there is a trend in the market. It's better than linear regression as it does not require the data to be normally distributed or linear. It returns a 1 when there is a upward trend, -1 when there is a downward trend and 0 when there is no trend. More explanations and details about the code [here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/mann_kendall.py)
 
-Then using the coefficient of determination (R^2), we assess the strenght of the trend. By default, the thresold value `self.r_square_level` in `initialize.py` to say that the trend is significant is 0.7.  More explanations and details about the code [here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/linear_regression.py) 
+Then using the coefficient of determination (R^2), we assess the strenght of the trend. By default, the thresold value `self.r_square_level` in `initialize.py` to say that the trend is significant is 0.7.  More explanations and details about the code [here](https://github.com/philos123/PyBacktesting/blob/master/indicators/regression/linear_regression.py)
 
+Example below with dots on chart when the r^2 is above 0.7 and Mann-Kendall is -1 or 1
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Trading_rules.png)
 
 
 More on that in the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). This file contains all the parameters that can be optimized using a genetic algorithm and their default value.
