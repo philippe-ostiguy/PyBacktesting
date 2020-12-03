@@ -135,10 +135,6 @@ We can see that it removed 172 data.
 | 4 | Adj Close | 28024 non-null | float64        |
 
 
-Here is the split of the 
-
-SPLIT THE TEST/TRAINING DATA
-
 The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). We can see the split on chart below.
 
 ```
@@ -163,6 +159,8 @@ plt.show()
 The blue represents the 2 training periods and the green represents the 2 testing periods
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/period_split.png)
+
+
 
 AT THE END
 What we would like to improve : - test on other market, using retracements
