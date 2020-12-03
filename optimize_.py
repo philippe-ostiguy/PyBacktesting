@@ -30,6 +30,9 @@ from pnl import PnL
 from manip_data import ManipData as md
 from date_manip import DateManip as dm
 from optimize.genetic_algorithm import GenAlgo as ga
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
 class Optimize(PnL):
 
@@ -84,6 +87,7 @@ class Optimize(PnL):
 
         for key,_ in self.dict_date_.items():
             for key_, _ in self.dict_name_.items():
+
                 self.start_date = self.dict_date_[key][key_][0]
                 self.end_date = self.dict_date_[key][key_][1]
                 if _first_time :

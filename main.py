@@ -40,6 +40,7 @@ class Main(Optimize):
         super().__call__()
         self.cht_ = cht.Charting(self.series, self.date_name,
                                  self.default_data, series_test=self.series, **self.indicator)
+
         t = 5
     def chart_signal(self):
         """Marks signal on chart (no entry, only when the indicators trigger a signal)"""
@@ -57,6 +58,8 @@ class Main(Optimize):
 
 if __name__ == '__main__':
     main_ = Main()
+
+
     main_.chart_signal()
     t= 5
     main_.chart_trigger()

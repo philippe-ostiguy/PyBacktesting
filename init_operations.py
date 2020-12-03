@@ -29,6 +29,8 @@
 from initialize import Initialize
 from manip_data import ManipData as md
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 class InitOp(Initialize):
 

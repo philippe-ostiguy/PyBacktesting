@@ -292,5 +292,4 @@ class GenAlgo(PnL):
                 max_val = item[self.fitness_function]
                 max_idx = index
 
-
         return self.results_pop[max_idx], self.population[max_idx]

@@ -34,6 +34,7 @@ import os.path
 import numpy as np
 
 
+
 def ordinal_date(function):
         """Wrapper to add an ordinal date"""
         @wraps(function)
@@ -96,7 +97,11 @@ class ManipData():
     @ordinal_date
     def csv_to_pandas(cls, date_name,date_debut,date_fin, name_,directory,asset, ordinal_name = '',is_fx = False,
                       dup_col = None):
-        """Return the csv to a pandas Dataframe"""
+        """Return the csv to a pandas Dataframe
+
+        The function remove nan value with `series_.dropna()` and remove the data when the market is closed with
+        `series_.drop_duplicates()`
+        """
 
         if is_fx:
             dateparse = lambda x: dt.datetime.strptime(x, '%d.%m.%Y %H:%M:%S')
@@ -108,11 +113,14 @@ class ManipData():
                               date_parser=dateparse)
         series_ =_series.loc[(_series[date_name] >= date_debut) & (_series[date_name] < date_fin)]
         if series_.empty:
-            raise Exception("Desired range date not available in the current files or not able to read the csv")
-        series_ = series_.dropna()
+            raise Exception("Desired date range not available in the current files")
+
+        series_ = series_.dropna() #drop nan values
         if dup_col != None:
-           series_ = series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))
+            #If all values in column self.dup_col are the same, we erase them
+            series_ = series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))
         series_=series_.reset_index(drop=True)
+
         return series_
 
     @classmethod
