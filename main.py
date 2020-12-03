@@ -39,7 +39,7 @@ class Main(Optimize):
         super().__init__()
         super().__call__()
         self.cht_ = cht.Charting(self.series, self.date_name,
-                                 self.default_data, series_test=self.series, **self.indicator)
+                                 self.default_data, **self.indicator)
 
         t = 5
     def chart_signal(self):

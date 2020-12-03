@@ -29,7 +29,6 @@
 from initialize import Initialize
 from manip_data import ManipData as md
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
 class InitOp(Initialize):
@@ -60,10 +59,6 @@ class InitOp(Initialize):
         self.series = md.csv_to_pandas(self.date_name, self.start_date, self.end_date, self.name, self.directory,
                             self.asset, ordinal_name=self.date_ordinal_name, is_fx=self.is_fx, dup_col = self.dup_col)
 
-        """
         if self.is_detrend:
-            self.series_test = md.de_trend(self.series,self.period, self.p_value,self.date_name,
-                                           self.date_ordinal_name,self.default_data)
-        else :
-            self.series_test = self.series.copy()
-        """
+            self.series_diff = md.de_trend(self.series,self.date_name, self.date_ordinal_name,self.default_data,
+                                           period=self.period,p_value= self.p_value)

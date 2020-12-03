@@ -33,8 +33,6 @@ from statsmodels.tsa.stattools import adfuller
 import os.path
 import numpy as np
 
-
-
 def ordinal_date(function):
         """Wrapper to add an ordinal date"""
         @wraps(function)
@@ -133,17 +131,31 @@ class ManipData():
         return cls.sous_series
 
     @classmethod
-    def de_trend(cls, series, period, p_value, date_name, date_ordinal_name, default_data):
-        """Remove the trend from the series by different with the last value. First value is set to 0 to avoid error"""
+    def de_trend(cls, series, date_name, date_ordinal_name, default_data, period =1, p_value = .05):
+        """Remove the trend from the series by differentating the current serie
+
+        First value is set to 0 to avoid error (of the differentiated serie)
+
+        Parameters
+        ---------
+        `period` : int
+            Number of periods used for differencing. Default : first difference
+
+        Return
+        ------
+        `series_diff` : Pandas Dataframe
+            The stationary series
+
+        """
 
         series_diff = series.copy()
         series_diff.drop([date_name, date_ordinal_name], axis=1, inplace=True)
-        series_diff = series_diff.diff(periods=period)  # differentiate with previous row
-        series_diff.loc[:(period - 1), :] = 0
-        series_diff.insert(0, date_name, series[date_name])
+        series_diff = series_diff.diff(periods=period)  # differencing with previous row
+        series_diff.loc[:(period - 1), :] = 0 #Make first row equal to 0
+        series_diff.insert(0, date_name, series[date_name]) #re-insert the peiod columns
         series_diff[date_ordinal_name] = series[date_ordinal_name]
         if adfuller(series_diff[default_data])[1] > p_value:
-            raise Exception("The differentiated series is not stationary")
+            raise Exception("The series is not stationary")
         return series_diff
 
     @classmethod
