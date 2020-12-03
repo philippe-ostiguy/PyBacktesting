@@ -116,6 +116,8 @@ series_.info()
 | 4 | Adj Close | 28176 non-null | float64        |
 
 
+### ---- 3 Cleaning the data ----
+
 In [manip_data.py](https://github.com/philos123/PyBacktesting/blob/master/manip_data.py), we drop the nan value, if any (none) and remove the data when the market is closed with `series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))`
 
 ```
@@ -137,6 +139,7 @@ We can see that it removed 172 data.
 | 4 | Adj Close | 28024 non-null | float64        |
 
 
+### ---- 4 Exploring the data (EDA) ----
 The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). We can see the split on chart below.
 
 ```
@@ -189,6 +192,8 @@ plt.show()
 ```
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/stationary_series.png)
+
+### ---- 5 Establishing a baseline ----
 
 AT THE END
 What we would like to improve : - test on other market, using retracements
