@@ -34,7 +34,7 @@ For questions or comments, please feel free to reach out on [LinkedIn](https://w
 
 ## Part 1 - DEFINE
 
-### ---- 1 Define the problem ----
+### ---- 1 Defining the problem ----
 
 The goal of this project is to model the Elliott Wave Theory to forecast the financial markets. Once we have the model and know the parameters, we optimize it using a machine learning technique called genetic algorithm and test in a different period (Walk forward optimization). The fitness function we're using for optimization and testing is the Sharpe ratio. 
 
@@ -48,7 +48,7 @@ Since the optimization space of a trading strategy can be complex, genetic algor
 
 ## Part 2 - DISCOVER
 
-### ---- 2 Load the data ----
+### ---- 2 Loading the data ----
 
 The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). 
 
