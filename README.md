@@ -195,5 +195,8 @@ plt.show()
 
 ### ---- 5 Establishing a baseline ----
 
+
+
+More on that in the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 AT THE END
 What we would like to improve : - test on other market, using retracements
