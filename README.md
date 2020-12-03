@@ -13,6 +13,8 @@ For each training period, the Sharpe ratio was above 3, which is excellent. For 
 
 One of the issue with the model during the testing periods is that generated few trades (11 for the first testing period and 10 for second testing period). This may be due to the fact that the model is highly optimized (overfit). We could also test the same model on different assets and different timeframes.
 
+The library is divided so that it is possible to modify the trading strategy by creating modules in the different packages (indicators, optimize, trading_rules). For example, the current rule for trying to enter the market is when a trend is detected (r2 and Mann-Kendall). We could create a new module that tries to enter the market when we are 2 standard deviations from the average price of the last 100 days (in the trading_rules package).
+
 To find more details about this project, scroll down
 
 To see the list of the hyperparameters and parameters to optimize, go to this [file](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
@@ -160,7 +162,33 @@ The blue represents the 2 training periods and the green represents the 2 testin
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/period_split.png)
 
+If someone would like to do standard time series analysis like ARIMA (not the case here), we would have to check if the serie is stationary. The [Augmented Dickey–Fuller test](https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test) does that
 
+```
+from statsmodels.tsa.stattools import adfuller
+
+series_diff = self.series.copy()
+if adfuller(series_diff[self.default_data])[1] > self.p_value:
+    raise Exception("The series is not stationary")
+
+```
+
+If the serie is not stationary and it's only a matter of "trend", first differencing is in general fine to make a financial time series stationary. It there is seasonality, other manipulations may be required
+
+```
+import matplotlib.pyplot as plt
+
+series_diff = self.series.copy()
+series_diff.drop([self.date_name, self.date_ordinal_name], axis=1, inplace=True)
+series_diff = series_diff.diff(periods=self.period)  # differentiate with previous row
+series_diff.loc[:(self.period - 1), :] = 0 #Make first row equal to 0
+series_diff.insert(0, self.date_name, self.series[self.date_name]) #re-insert the period columns
+
+plt.plot(self.series_test[self.date_name], self.series_test[self.default_data])
+plt.show()
+```
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/stationary_series.png)
 
 AT THE END
 What we would like to improve : - test on other market, using retracements
