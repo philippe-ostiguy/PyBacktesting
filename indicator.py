@@ -69,11 +69,11 @@ class Indicator(InitOp):
         super().__call__()
         rg = lr.RegressionSlopeStrenght(self.series,self)
         mk_ = mk.MannKendall(self.series,self)
-        self.indicator = {'slope': rg, 'r_square': rg, 'mk': mk_}
+        self.indicator = {'r_square': rg, 'mk': mk_}
         self.point_data=0
-        self.slope_key=list(self.indicator.keys())[0]
-        self.r_square_key=list(self.indicator.keys())[1]
-        self.mk_key = list(self.indicator.keys())[2]
+        #self.slope_key=list(self.indicator.keys())[0]
+        self.r_square_key=list(self.indicator.keys())[0]
+        self.mk_key = list(self.indicator.keys())[1]
 
         self.point_data = 0
         nb_columns=len(self.series.columns)

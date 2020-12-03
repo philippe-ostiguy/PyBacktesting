@@ -126,7 +126,7 @@ class Initialize():
         self.is_fx = True
         self.asset = "EURUSD"
         self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
-        self.end_date = datetime.strptime('2020-04-15', "%Y-%m-%d")
+        self.end_date = datetime.strptime('2016-02-15', "%Y-%m-%d")
 
         self.is_walkfoward = False
         self.training_name_ = '_training'
@@ -206,7 +206,7 @@ class Initialize():
         `self.r_square_level` : float
             R square level required to trigger a signal. Can be .6 , .7, .8 and .9.
         `self.min_data` : int
-            Number of minimum required between each signal in the same direction. 100,200 or 300
+            Number of minimum required between each signal in the same direction to get another signal 100,200 or 300
 
         Entry
         `self.enter_dict` : dict

@@ -39,13 +39,13 @@ class Charting():
         cls.indicator = indicator
         cls.indicator_dict = {}
         count = len(cls.indicator)
-        cls.divider = .24
+        cls.divider = .25
         cls.height_chart = cls.divider * (count)
 
     @classmethod
     def chart_rsquare(cls, r_square_name, r_square_level=.8):
         """
-        Marks the signals on a chart when r2 is higher than a certain level
+        Marks the signals on a chart when r2 is above a certain level
         """
 
         # When r2 is higher than desired level, we have a mark on chart
@@ -61,8 +61,8 @@ class Charting():
 
             # Main axe
             fig = plt.figure()
-            fig.set_size_inches((40, 32))
-            candle = fig.add_axes((0, cls.height_chart, 1, 0.25))
+            fig.set_size_inches(40, 32)
+            candle = fig.add_axes(0, cls.height_chart, 1, 0.33)
 
             count = 1
             for key, _ in cls.indicator.items():
@@ -73,11 +73,9 @@ class Charting():
             candle.plot(cls.x_axis, cls.y_axis, markevery=cls.mark_, marker="o", data=series_)
             for key, _ in cls.indicator.items():
                 cls.indicator_dict[key].plot(cls.x_axis, key, data=cls.series)
-            plt.savefig('test.png')
 
         _plot(cls.series)
-        if not (cls.series[cls.y_axis] == cls.series[cls.y_axis]).all():
-            _plot(cls.series)
+
 
     @classmethod
     def chart_marker(cls, marker_signal, marker_, color_mark, **marker):

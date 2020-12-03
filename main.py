@@ -41,10 +41,10 @@ class Main(Optimize):
         self.cht_ = cht.Charting(self.series, self.date_name,
                                  self.default_data, **self.indicator)
 
-        t = 5
+
     def chart_signal(self):
         """Marks signal on chart (no entry, only when the indicators trigger a signal)"""
-        self.cht_.chart_rsquare(list(self.indicator.keys())[1],r_square_level=self.r_square_level)
+        self.cht_.chart_rsquare(list(self.indicator.keys())[0],r_square_level=self.r_square_level)
 
     def chart_trigger(self):
         """Marks entry and exit level on chart"""
