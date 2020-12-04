@@ -34,9 +34,9 @@ For questions or comments, please feel free to reach out on [LinkedIn](https://w
 7- A summary of the projects, results, findings and area that could be improved or explored in the future<br />
 
 
-## Part 1 - DEFINE
+## Part 1 - DEFINING
 
-### ---- 1 Defining the problem ----
+### ---- Defining the problem ----
 
 The goal of this project is to model the Elliott Wave Theory to forecast the financial markets. Once we have the model and know the parameters, we optimize it using a machine learning technique called genetic algorithm and test in a different period (Walk forward optimization). The fitness function we're using for optimization and testing is the Sharpe ratio. 
 
@@ -50,7 +50,7 @@ Since the optimization space of a trading strategy can be complex, genetic algor
 
 ## Part 2 - DISCOVER
 
-### ---- 2 Loading the data ----
+### ---- Loading the data ----
 
 The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). 
 
@@ -116,7 +116,7 @@ series_.info()
 | 4 | Adj Close | 28176 non-null | float64        |
 
 
-### ---- 3 Cleaning the data ----
+### ---- Cleaning the data ----
 
 In [manip_data.py](https://github.com/philos123/PyBacktesting/blob/master/manip_data.py), we drop the nan value, if any (none) and remove the data when the market is closed with `series_.drop_duplicates(keep=False,subset=list(dup_col.keys()))`
 
@@ -139,7 +139,7 @@ We can see that it removed 172 data.
 | 4 | Adj Close | 28024 non-null | float64        |
 
 
-### ---- 4 Exploring the data (EDA) ----
+### ---- Exploring the data (EDA) ----
 The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). We can see the split on chart below.
 
 ```
@@ -193,7 +193,7 @@ plt.show()
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/stationary_series.png)
 
-### ---- 5 Establishing a baseline ----
+### ---- Establishing a baseline ----
 
 To make it simple and as a first version, this strategy is meant to try to enter the market when a trend is found. Note that we might be violating the assumption that there is no autocorrelation and that the error terms should follow a normal distribution, but for for the sake of simplicity, we'll assume the absence of serial correlation and that the error terms follow a normal distribution. Also, the statistical tests are used to determine if there is a trend, not to forecast the financial market. A ways around this would be to make the serie stationary.
 
@@ -235,7 +235,11 @@ Then using `self.largest_extension()`, it sets the largest setback, which the di
 
 When the largest setback is set, it will try to enter the market with the function `self.try_entry()` in the module [entry_fibo](https://github.com/philos123/PyBacktesting/blob/master/entry/entry_fibo.py)
 
-Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information
+Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information. 
+
+Below is an example of 2 entries (buy) and 2 exits (sell). The first one has a profit and the other onw has a lost :
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Entry_exit.png)
 
 There a different values that can be used for the Elliott Wave Theory strategy. Again, please refer to the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized. We used the default value in this module to evaluate the preformance of the trading strategy. The metric used to evalute the preformance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy. There are other useful metrics to assess the performance of the trading strategy [here](https://github.com/philos123/PyBacktesting/blob/master/pnl.py)
 
@@ -289,7 +293,26 @@ Below we can see the result for the 4 different periods before optimization.
 
 The only period where the strategy performed well was from 2019-07-15 to 2020-04-15 with a Sharpe ratio of 1.998.
 
-### ---- 6 Hypothesize solution ----
+## Part 3 - DEVELOPING
+
+### ---- Creating models ----
+
+There are several ways to optimize a trading strategy, more on that [here](https://miltonfmr.com/how-to-develop-test-and-optimize-a-trading-strategy-complete-guide/). One would be a brute-force algorithm which would test all the possible candidates. The main disadvantage is when there are several candidates, it can require a lot of memory and processing time.
+
+One good solution here is the genetic algorithm is a random-based classical evolutionary algorithm based on Charles Darwin's theory of natural evolution. The process is very simple. 
+
+1- Generate the initial population
+
+
+Compute fitness
+REPEAT
+
+Selection
+Crossover
+Mutation
+Compute fitness
+
+
 
 AT THE END
 
