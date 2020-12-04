@@ -301,10 +301,18 @@ There are several ways to optimize a trading strategy, more on that [here](https
 
 One good solution here is the genetic algorithm is a random-based classical evolutionary algorithm based on Charles Darwin's theory of natural evolution. The process is very simple. 
 
-1- Generate the initial population
-A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes.
+#### Generate the initial population
+A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes. In general, each gene is represented by a binary value. In our case, each gene is a paramater that we want to optimize and can take the possible value that we define in `initialize.py`.
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Population_.png)
+
+In general, we want the size of the population to be 1.5 to 2 times the number of genes. In our case, we have 16 parameters to optimize and the size of the population is 25 chromosomes.
+
+
+
+To be consider for the next generation, each chromosome (individual) must generate at least 10 trades during the training period, otherwise it's rejected. Another chromosome is then generated in such case.
+
+
 
 
 Compute fitness
@@ -314,6 +322,7 @@ Selection
 Crossover
 Mutation
 Compute fitness
+
 
 
 
