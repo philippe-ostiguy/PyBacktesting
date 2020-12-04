@@ -1,4 +1,5 @@
-![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-int
+igence.png)
 
 # [WIP] Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
@@ -205,6 +206,33 @@ Example below with dots on chart when the r^2 is above 0.7 and Mann-Kendall is -
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Trading_rules.png)
 
+Whenever we have a trend confirmation, the program tries to enter in the market using the Elliott Wave Theory in the module [entry_fibo](https://github.com/philos123/PyBacktesting/blob/master/entry/entry_fibo.py). First, the method finds local minimum and maximum in the current trend with function `self.local_extremum_()`. It checks if the values for a number of points on each side (`window`) are greater or lesser and then determine the local extremum. Assessing a local extremum on a financial time series can be tricky, but this method gives satisfactory results.
+
+```
+from scipy.signal import argrelextrema
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+cls.series=cls.series.loc[start_point:end_point,cls.default_col]
+cls.series=pd.DataFrame({cls.default_col: cls.series})
+
+cls.series[min_] = cls.series.iloc[argrelextrema(cls.series.values, np.less_equal,
+                                                  order=window)[0]][cls.default_col]
+cls.series[max_] = cls.series.iloc[argrelextrema(cls.series.values, np.greater_equal,
+                                                  order=window)[0]][cls.default_col]
+cls.series[index_] = cls.series.index
+plt.scatter(cls.series.index, cls.series[min_], c='r')
+plt.scatter(cls.series.index, cls.series[max_], c='g')
+
+plt.plot(cls.series.index, cls.series[cls.default_col])
+plt.ion()
+plt.show()
+        
+```
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Local_extremum.png)
+
+Then using `self.largest_extension()`, it finds the largest setback which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market..
 
 More on that in the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). This file contains all the parameters that can be optimized using a genetic algorithm and their default value.
 
