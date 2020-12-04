@@ -237,9 +237,19 @@ When the largest setback is set, it will try to enter the market with the functi
 
 Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information
 
-There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
+There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
+
+The metric used to evalute the performance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy.
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Sharep_ratio.gif)
+
+
+S<sub>a</sub> =	Sharpe ratio
+E = expected value
+R<sub>a</sub> =	asset return
+R<sub>b</sub> =	risk free return
+σ<sub>a</sub> = standard deviation of the asset excess return
+
 
 Using the default values 
 
