@@ -299,15 +299,17 @@ The only period where the strategy performed well was from 2019-07-15 to 2020-04
 
 There are several ways to optimize a trading strategy, more on that [here](https://miltonfmr.com/how-to-develop-test-and-optimize-a-trading-strategy-complete-guide/). One would be a brute-force algorithm which would test all the possible candidates. The main disadvantage is when there are several candidates, it can require a lot of memory and processing time.
 
-One good solution here is the genetic algorithm is a random-based classical evolutionary algorithm based on Charles Darwin's theory of natural evolution. The process is very simple. 
+One good solution here is the genetic algorithm is a random-based classical evolutionary algorithm based on Charles Darwin's theory of natural evolution. The process is very simple (code [here](https://github.com/philos123/PyBacktesting/blob/master/optimize/genetic_algorithm.py))
 
-#### Generate the initial population
+#### 1- Generate the initial population
 A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes. In general, each gene is represented by a binary value. In our case, each gene is a paramater that we want to optimize and can take the possible value that we define in `initialize.py`.
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Population_.png)
 
 In general, we want the size of the population to be 1.5 to 2 times the number of genes. In our case, we have 16 parameters to optimize and the size of the population is 25 chromosomes.
 
+#### 2- Compute fitness
+We then evaluate the performance of each chromosome (individual) using the Sharpe ratio. It gives a score to each individual
 
 
 To be consider for the next generation, each chromosome (individual) must generate at least 10 trades during the training period, otherwise it's rejected. Another chromosome is then generated in such case.
