@@ -1,4 +1,4 @@
-![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intigence.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
 
 # [WIP] Using the Elliott Wave Theory to forecast the financial markets and optimize with a genetic algorithm
 
@@ -235,7 +235,7 @@ Then using `self.largest_extension()`, it sets the largest setback, which the di
 
 When the largest setback is set, it will try to enter the market with the function `self.try_entry()` in the module [entry_fibo](https://github.com/philos123/PyBacktesting/blob/master/entry/entry_fibo.py)
 
-Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module]((https://github.com/philos123/PyBacktesting/blob/master/entry/exit_fibo.py) for more information
+Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information
 
 which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market.
 
