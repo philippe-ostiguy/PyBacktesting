@@ -237,12 +237,9 @@ When the largest setback is set, it will try to enter the market with the functi
 
 Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information
 
-There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
-
-The metric (objective function) used to evalute the performance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy.
+There a different values that can be used for the Elliott Wave Theory strategy. Again, please refer to the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized. We used the default value in this module to evaluate the preformance of the trading strategy. The metric used to evalute the preformance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy. There are other useful metrics to assess the performance of the trading strategy [here](https://github.com/philos123/PyBacktesting/blob/master/pnl.py)
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Sharep_ratio.gif)
-
 
 S<sub>a</sub> :	Sharpe ratio <br>
 E : expected value <br>
@@ -250,8 +247,49 @@ R<sub>a</sub> :	asset return <br>
 R<sub>b</sub> :	risk free return <br>
 σ<sub>a</sub> : standard deviation of the asset excess return <br>
 
+Below we can see the result for the 4 different periods before optimization.
 
-Using the default values 
+| Date range from       | 2015-10-15 to 2017-04-15 |
+|-----------------------|--------------------------|
+| Annualized return     | -0.028538168293147037    |
+| Annualized volatility | 0.001714442062259805     |
+| Sharpe ratio          | -16.645746695884778      |
+| Maximum drawdown      | -0.00586379729741346     |
+| % win                 | 0.13636363636363635      |
+| nb_trade              | 22                       |
+
+| Date range from       | 2017-04-15 to 2018-01-15 |
+|-----------------------|--------------------------|
+| Annualized return     | -0.016042731033677482    |
+| Annualized volatility | 0.0029188486883811172    |
+| Sharpe ratio          | -5.496253059481227       |
+| Maximum drawdown      | -0.0031105801006658536   |
+| % win                 | 0.1                      |
+| nb_trade              | 10                       |
+
+| Date range from       | 2018-01-15 to 2019-07-15 |
+|-----------------------|--------------------------|
+| Annualized return     | -0.02083109080647605     |
+| Annualized volatility | 0.0021923888737862       |
+| Sharpe ratio          | -9.501549225845725       |
+| Maximum drawdown      | -0.0042445599845946265   |
+| % win                 | 0.20689655172413793      |
+| nb_trade              | 29                       |
+
+
+| Date range from       | 2019-07-15 to 2020-04-15 |
+|-----------------------|--------------------------|
+| Annualized return     | 0.009637932127751991     |
+| Annualized volatility | 0.004822189306914451     |
+| Sharpe ratio          | 1.9986631619651127       |
+| Maximum drawdown      | -0.0047235958781114      |
+| % win                 | 0.35714285714285715      |
+| nb_trade              | 14                       |
+
+
+The only period where the strategy performed well was from 2019-07-15 to 2020-04-15 with a Sharpe ratio of 1.998.
+
+### ---- 6 Hypothesize solution ----
 
 AT THE END
 
