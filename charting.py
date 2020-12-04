@@ -61,8 +61,8 @@ class Charting():
 
             # Main axe
             fig = plt.figure()
-            fig.set_size_inches(40, 32)
-            candle = fig.add_axes(0, cls.height_chart, 1, 0.33)
+            fig.set_size_inches((40, 32))
+            candle = fig.add_axes((0, cls.height_chart, 1, 0.5))
 
             count = 1
             for key, _ in cls.indicator.items():
@@ -75,6 +75,7 @@ class Charting():
                 cls.indicator_dict[key].plot(cls.x_axis, key, data=cls.series)
 
         _plot(cls.series)
+        t = 5
 
 
     @classmethod

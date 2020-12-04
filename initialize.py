@@ -126,7 +126,7 @@ class Initialize():
         self.is_fx = True
         self.asset = "EURUSD"
         self.start_date = datetime.strptime('2015-10-15', "%Y-%m-%d")
-        self.end_date = datetime.strptime('2016-02-15', "%Y-%m-%d")
+        self.end_date = datetime.strptime('2016-12-10', "%Y-%m-%d")
 
         self.is_walkfoward = False
         self.training_name_ = '_training'
