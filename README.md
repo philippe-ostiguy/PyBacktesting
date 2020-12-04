@@ -309,13 +309,16 @@ A population is composed of chromosomes or indidivuals (each individual is a sol
 In general, we want the size of the population to be 1.5 to 2 times the number of genes. In our case, we have 16 parameters to optimize and the size of the population is 25 chromosomes.
 
 #### 2- Compute fitness
-We then evaluate the performance of each chromosome (individual) using the Sharpe ratio. It gives a score to each individual
-
+We then evaluate the performance of each chromosome (individual) using the Sharpe ratio. It gives a score to each individual.
 
 To be consider for the next generation, each chromosome (individual) must generate at least 10 trades during the training period, otherwise it's rejected. Another chromosome is then generated in such case.
 
+#### 3- Selection
+We select the fitess candidates so that they can pass their genes to the next generations. Two pairs of indidivuals (parents) are selected based on their Sharpe ratio value (fitness score). Individuals with higher Sharpe ratio have more chance to be selected for the next generations. We use the roulette wheel selection for selecting potential indivuals for the next generation. This method gives a probability of choosing an individual proportionally to his fitness value. 
 
+[](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
 
+#### 3- Selection
 
 Compute fitness
 REPEAT
