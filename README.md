@@ -316,7 +316,7 @@ To be consider for the next generation, each chromosome (individual) must genera
 #### 3- Selection
 We select the fitess candidates so that they can pass their genes to the next generations. Two pairs of indidivuals (parents) are selected based on their Sharpe ratio value (fitness score). Individuals with higher Sharpe ratio have more chance to be selected for the next generations. We use the roulette wheel selection for selecting potential indivuals for the next generation. This method gives a probability of choosing an individual proportionally to his fitness value. 
 
-[](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
 
 #### 3- Selection
 
