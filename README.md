@@ -232,7 +232,11 @@ plt.show()
 ```
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Local_extremum.png)
 
-Then using `self.largest_extension()`, it finds the largest setback, which the difference between local maximum and the previous local minimum for a downward trend and the difference between the local maximum and and the next local minimum for an upward trend. In the case above, 
+Then using `self.largest_extension()`, it sets the largest setback, which the difference between local maximum and the previous local minimum for a downward trend and the difference between the local maximum and and the next local minimum for an upward trend. In the above example, the largest setback in the downward trend would be the difference between the value at the index 148 (1.11292) minus the index at the index 139 (1.10818) for a result of 0.0047. This value play a key role for the entry and the exit level.
+
+When the largest setback is set, it will try to enter the market with the function `self.try_entry()` in the module [entry_fibo](https://github.com/philos123/PyBacktesting/blob/master/entry/entry_fibo.py)
+
+Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module]((https://github.com/philos123/PyBacktesting/blob/master/entry/exit_fibo.py) for more information
 
 which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market.
 
