@@ -239,8 +239,7 @@ Then if the system is able to enter in the market, it will exit wheter if a stop
 
 There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}&space;S_{a}&space;=&space;Sharpe&space;ratio&space;E&space;=&space;expected&space;value&space;R_{a}&space;=&space;asset&space;return&space;R_{b}&space;=&space;risk&space;free&space;return&space;\sigma_{a}&space;=&space;standard&space;deviation&space;of&space;the&space;asset&space;excess&space;return" target="_blank"><img src="https://latex.codecogs.com/gif.latex?S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}&space;S_{a}&space;=&space;Sharpe&space;ratio&space;E&space;=&space;expected&space;value&space;R_{a}&space;=&space;asset&space;return&space;R_{b}&space;=&space;risk&space;free&space;return&space;\sigma_{a}&space;=&space;standard&space;deviation&space;of&space;the&space;asset&space;excess&space;return" title="S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}} S_{a} = Sharpe ratio E = expected value R_{a} = asset return R_{b} = risk free return \sigma_{a} = standard deviation of the asset excess return" /></a>
-
+S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}} S_{a} = Sharpe ratio E = expected value R_{a} = asset return R_{b} = risk free return \sigma_{a} = standard deviation of the asset excess return
 Using the default values 
 
 AT THE END
