@@ -232,7 +232,9 @@ plt.show()
 ```
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Local_extremum.png)
 
-Then using `self.largest_extension()`, it finds the largest setback which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market..
+Then using `self.largest_extension()`, it finds the largest setback, which the difference between local maximum and the previous local minimum for a downward trend and the difference between the local maximum and and the next local minimum for an upward trend. In the case above, 
+
+which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market.
 
 More on that in the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). This file contains all the parameters that can be optimized using a genetic algorithm and their default value.
 
