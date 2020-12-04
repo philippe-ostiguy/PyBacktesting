@@ -239,7 +239,7 @@ Then if the system is able to enter in the market, it will exit wheter if a stop
 
 There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-S_{a} = Sharpe ratio E 
+
 
 Using the default values 
 
