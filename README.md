@@ -239,7 +239,8 @@ Then if the system is able to enter in the market, it will exit wheter if a stop
 
 There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}} S_{a} = Sharpe ratio E = expected value R_{a} = asset return R_{b} = risk free return \sigma_{a} = standard deviation of the asset excess return
+S_{a} = Sharpe ratio E 
+
 Using the default values 
 
 AT THE END
