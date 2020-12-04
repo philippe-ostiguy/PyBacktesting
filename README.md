@@ -239,16 +239,16 @@ Then if the system is able to enter in the market, it will exit wheter if a stop
 
 There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-The metric used to evalute the performance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy.
+The metric (objective function) used to evalute the performance of the trading strategy is the Sharpe ratio. It's the most common metric used to evaluate a trading strategy.
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Sharep_ratio.gif)
 
 
-S<sub>a</sub> =	Sharpe ratio
-E = expected value
-R<sub>a</sub> =	asset return
-R<sub>b</sub> =	risk free return
-σ<sub>a</sub> = standard deviation of the asset excess return
+S<sub>a</sub> :	Sharpe ratio <br>
+E : expected value <br>
+R<sub>a</sub> :	asset return <br>
+R<sub>b</sub> :	risk free return <br>
+σ<sub>a</sub> : standard deviation of the asset excess return <br>
 
 
 Using the default values 
