@@ -304,7 +304,7 @@ One good solution here is the genetic algorithm is a random-based classical evol
 1- Generate the initial population
 A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes.
 
-{"A?":"B","a":5,"d":"B","h":"www.canva.com","c":"DADir9CUQJE","i":"45eZxNLEOy2_EGH7h60NBQ","b":1607114958241,"A":[{"A?":"I","A":159.82770016763791,"B":239.3647002474654,"D":326.40000000000003,"C":326.40000000000003,"a":{"A":false,"B":{"A":{"A":"MAEADoegWs8","B":1},"B":{"D":326.40000000000003,"C":326.40000000000003}}}}],"B":1056,"C":816}
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Population.png)
 
 
 Compute fitness
