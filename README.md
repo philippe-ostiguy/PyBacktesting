@@ -239,7 +239,7 @@ Then if the system is able to enter in the market, it will exit wheter if a stop
 
 There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-
+<a href="https://www.codecogs.com/eqnedit.php?latex=\large&space;S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\large&space;S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}" title="\large S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}" /></a>
 
 Using the default values 
 
