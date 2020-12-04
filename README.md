@@ -237,9 +237,11 @@ When the largest setback is set, it will try to enter the market with the functi
 
 Then if the system is able to enter in the market, it will exit wheter if a stop loss is trigger or the profit level is reached using the again the logic with the largest setback (and using the Elliott Wave Theory). Please refer to this [module](https://github.com/philos123/PyBacktesting/blob/master/exit/exit_fibo.py) for more information
 
-which is stored in the attribute `self.largest_extension_`. This function also store the largest setback in term of time in `self.largest_time`. Then in method `self.try_entry()`, the system will try to enter the market.
+There a different values that can be used for the Elliott Wave Theory. Again, please refer to the module [initialize.py]](https://github.com/philos123/PyBacktesting/blob/master/initialize.py) to see all the parameters that can be optimized using a genetic algorithm and their default values.
 
-More on that in the module [initialize.py](https://github.com/philos123/PyBacktesting/blob/master/initialize.py). This file contains all the parameters that can be optimized using a genetic algorithm and their default value.
+<a href="https://www.codecogs.com/eqnedit.php?latex=S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}&space;S_{a}&space;=&space;Sharpe&space;ratio&space;E&space;=&space;expected&space;value&space;R_{a}&space;=&space;asset&space;return&space;R_{b}&space;=&space;risk&space;free&space;return&space;\sigma_{a}&space;=&space;standard&space;deviation&space;of&space;the&space;asset&space;excess&space;return" target="_blank"><img src="https://latex.codecogs.com/gif.latex?S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}}&space;S_{a}&space;=&space;Sharpe&space;ratio&space;E&space;=&space;expected&space;value&space;R_{a}&space;=&space;asset&space;return&space;R_{b}&space;=&space;risk&space;free&space;return&space;\sigma_{a}&space;=&space;standard&space;deviation&space;of&space;the&space;asset&space;excess&space;return" title="S_{a}=\frac{E\left[R_{a}-R_{b}\right]}{\sigma_{a}} S_{a} = Sharpe ratio E = expected value R_{a} = asset return R_{b} = risk free return \sigma_{a} = standard deviation of the asset excess return" /></a>
+
+Using the default values 
 
 AT THE END
 
