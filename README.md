@@ -304,7 +304,7 @@ One good solution here is the genetic algorithm is a random-based classical evol
 #### 1- Generate the initial population
 A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes. In general, each gene is represented by a binary value. In our case, each gene is a paramater that we want to optimize and can take the possible value that we define in `initialize.py`.
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Population_.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Population__.png)
 
 In general, we want the size of the population to be 1.5 to 2 times the number of genes. In our case, we have 16 parameters to optimize and the size of the population is 25 chromosomes.
 
