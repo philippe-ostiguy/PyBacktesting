@@ -304,7 +304,7 @@ One good solution here is the genetic algorithm is a random-based classical evol
 #### 1- Generate the initial population
 A population is composed of chromosomes or indidivuals (each individual is a solution to the problem we want to solve) and each chromosome is characterized by a set of parameters we want to optimize known as genes. In general, each gene is represented by a binary value. In our case, each gene is a paramater that we want to optimize and can take the possible value that we define in `initialize.py`.
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Population__.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Population.png)
 
 In general, we want the size of the population to be 1.5 to 2 times the number of genes. In our case, we have 16 parameters to optimize and the size of the population is 25 chromosomes.
 
@@ -316,20 +316,20 @@ To be consider for the next generation, each chromosome (individual) must genera
 #### 3- Selection
 We select the best candidates so that they can pass their genes to the next generations (creating children). Two pairs of indidivuals (parents) are selected based on their Sharpe ratio value (fitness score). Individuals with higher Sharpe ratio have more chance to be selected for the next generations. We use the roulette wheel selection for selecting potential indivuals for the next generation. This method gives a probability of choosing an individual proportionally to his fitness value. 
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection_.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
 
 #### 4- Genetic operators
 We then create the new population using genetic operators. The first one is to copy the chromosomes to the next generation with a probability of 30%. 
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/copy_generation.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/copy_generation_.png)
 
 The second genetic operator is the crossover. It is the most significant genetic operator as it creates new offspring by exchanging genes among the best parents (previous generation). It has a 65% probability of happening.
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Crossover.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Crossover_.png)
 
 The last one is mutation which flips (mutates) a gene from the best parents. It's an operator which prevent to get stuck too early in a local extrema. The probability is not too high to prevent the risk that an individual was close to a solution (from previous generation). It has a 5% probability of happening.
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/mutation.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/mutation_.png)
 
 
 Compute fitness
