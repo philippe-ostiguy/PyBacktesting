@@ -25,15 +25,6 @@ To find out more about [me](https://github.com/philos123)
 
 For questions or comments, please feel free to reach out on [LinkedIn](https://www.linkedin.com/in/philippe-ostiguy/?locale=en_US)
 
-1- A clear explanation of the problem your're trying to solve and why it's important<br />
-2- A summary of your data cleaning and exploration. including visualizations<br />
-3- How you created a baseline model<br />
-4- Your logic for selecting models to test, tuning models and measuring their efficacy (Share Ratio in this case)<br />
-5- The results that you got for each model and making predictions, including vizualisations here<br />
-6- Your approach to training the final model and making predictions<br />
-7- A summary of the projects, results, findings and area that could be improved or explored in the future<br />
-
-
 ## Part 1 - DEFINING
 
 ### ---- Defining the problem ----
@@ -331,15 +322,56 @@ The last one is mutation which flips (mutates) a gene from the best parents. It'
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/mutation_.png)
 
+### 5- Repeat
+We repeat step 2 to 4 for 25 generations. It's important to set a proper size of generations as a too small generatio won't give a good coverage of the search space and too large is time-consuming. 
 
-Compute fitness
-REPEAT
+Another possibility would be to stop the cycle when the sharpe ratio is equal to or greater than 3. In this experiment, the algorithm runs for 25 generations.
 
-Selection
-Crossover
-Mutation
-Compute fitness
+### ---- Testing models ----
 
+The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). 
+
+For each training period, the Sharpe ratio was above 3, which is excellent. For the testing period, the results were mixed. For the first testing period, the Sharpe ratio was 1.63, which is really good. For the second testing period, the Sharpe ratio -13.99 with 0 winning trades.
+
+#### Training period no 1
+| Date range from       | 2015-10-15 to 2017-04-15 |
+|-----------------------|--------------------------|
+| Annualized return     | 0.03579816749483067      |
+| Annualized volatility | 0.00996732375915114      |
+| Sharpe ratio          | 3.591552593238869        |
+| Maximum drawdown      | -0.00997144631486068     |
+| % win                 | 0.36363636363636365      |
+| nb_trade              | 22                       |
+
+#### Testing period no 1
+| Date range from       | 2017-04-15 to 2018-01-15 |
+|-----------------------|--------------------------|
+| Annualized return     | 0.014095773085682        |
+| Annualized volatility | 0.008626558234907        |
+| Sharpe ratio          | 1.63399732568252         |
+| Maximum drawdown      | -0.005521301258917       |
+| % win                 | 0.363636363636364        |
+| nb_trade              | 11                       |
+
+#### Training period no 2
+| Date range from       | 2018-01-15 to 2019-07-15 |
+|-----------------------|--------------------------|
+| Annualized return     | 0.009447731588671        |
+| Annualized volatility | 0.00287683168216         |
+| Sharpe ratio          | 3.28407520233458         |
+| Maximum drawdown      | -0.000809793667447       |
+| % win                 | 0.074074074074074        |
+| nb_trade              | 27                       |
+
+#### Testing period no 2
+| Date range from       | 2019-07-15 to 2020-04-15 |
+|-----------------------|--------------------------|
+| Annualized return     | -0.006083679046796       |
+| Annualized volatility | 0.000434670065322        |
+| Sharpe ratio          | -13.9960846907784        |
+| Maximum drawdown      | -0.001343642756988       |
+| % win                 | 0                        |
+| nb_trade              | 10                       |
 
 
 
