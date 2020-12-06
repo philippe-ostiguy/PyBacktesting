@@ -333,6 +333,7 @@ The experiment was carried out on the EUR/USD currency pair on hourly basis data
 
 For each training period, the Sharpe ratio was above 3, which is excellent. For the testing period, the results were mixed. For the first testing period, the Sharpe ratio was 1.63, which is really good. For the second testing period, the Sharpe ratio -13.99 with 0 winning trades.
 
+
 #### Training period no 1
 | Date range from       | 2015-10-15 to 2017-04-15 |
 |-----------------------|--------------------------|
@@ -342,6 +343,7 @@ For each training period, the Sharpe ratio was above 3, which is excellent. For 
 | Maximum drawdown      | -0.00997144631486068     |
 | % win                 | 0.36363636363636365      |
 | nb_trade              | 22                       |
+
 
 #### Testing period no 1
 | Date range from       | 2017-04-15 to 2018-01-15 |
@@ -353,6 +355,7 @@ For each training period, the Sharpe ratio was above 3, which is excellent. For 
 | % win                 | 0.363636363636364        |
 | nb_trade              | 11                       |
 
+
 #### Training period no 2
 | Date range from       | 2018-01-15 to 2019-07-15 |
 |-----------------------|--------------------------|
@@ -362,6 +365,7 @@ For each training period, the Sharpe ratio was above 3, which is excellent. For 
 | Maximum drawdown      | -0.000809793667447       |
 | % win                 | 0.074074074074074        |
 | nb_trade              | 27                       |
+
 
 #### Testing period no 2
 | Date range from       | 2019-07-15 to 2020-04-15 |
@@ -375,6 +379,8 @@ For each training period, the Sharpe ratio was above 3, which is excellent. For 
 
 
 
-AT THE END
+### ---- Summarizing ----
 
-What we would like to improve : - test on other market, using retracements
+One of the issue with the model during the testing periods is that it generated few trades (11 for the first testing period and 10 for second testing period). This may be due to the fact that the model is highly optimized (overfit). We could also test the same model on different assets and different timeframes.
+
+Also, this a a basic model of the Elliott Wave Theory. We could also enter the market with Fibonacci retracements and exit the market using Fibonacci extensions.
