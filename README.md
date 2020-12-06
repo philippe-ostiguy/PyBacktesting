@@ -314,11 +314,23 @@ We then evaluate the performance of each chromosome (individual) using the Sharp
 To be consider for the next generation, each chromosome (individual) must generate at least 10 trades during the training period, otherwise it's rejected. Another chromosome is then generated in such case.
 
 #### 3- Selection
-We select the fitess candidates so that they can pass their genes to the next generations. Two pairs of indidivuals (parents) are selected based on their Sharpe ratio value (fitness score). Individuals with higher Sharpe ratio have more chance to be selected for the next generations. We use the roulette wheel selection for selecting potential indivuals for the next generation. This method gives a probability of choosing an individual proportionally to his fitness value. 
+We select the best candidates so that they can pass their genes to the next generations (creating children). Two pairs of indidivuals (parents) are selected based on their Sharpe ratio value (fitness score). Individuals with higher Sharpe ratio have more chance to be selected for the next generations. We use the roulette wheel selection for selecting potential indivuals for the next generation. This method gives a probability of choosing an individual proportionally to his fitness value. 
 
-![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection_.png)
 
 #### 4- Genetic operators
+We then create the new population using genetic operators. The first one is to copy the chromosomes to the next generation with a probability of 30%. 
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/copy_generation.png)
+
+The second genetic operator is the crossover. It is the most significant genetic operator as it creates new offspring by exchanging genes among the best parents (previous generation). It has a 65% probability of happening.
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/Crossover.png)
+
+The last one is mutation which flips (mutates) a gene from the best parents. It's an operator which prevent to get stuck too early in a local extrema. The probability is not too high to prevent the risk that an individual was close to a solution (from previous generation). It has a 5% probability of happening.
+
+![](https://github.com/philos123/PyBacktesting/blob/master/images/mutation.png)
+
 
 Compute fitness
 REPEAT
