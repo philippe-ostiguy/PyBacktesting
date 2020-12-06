@@ -273,7 +273,7 @@ class EntFibo():
         """
         Method that try entering in the market
 
-        Function that will try to enter in the market :
+        Function that will try to enter the market :
                 Until the system hit the desired extension and/or retracement. At the moment, only using extension (the
                 largest), which is `self.largest_extension_`. We can decide the proportion of the largest
                 extension we want the system to use in module `initialize.py` within dictionary `self.enter_dict{}`

@@ -44,7 +44,10 @@ class MathOp():
 
     @classmethod
     def local_extremum(cls,start_point,end_point,window = 6,min_= 'min',max_='max',index_ = 'index'):
-        """ Function to find local extremum (min and max) on a Dataframe
+        """ Function to find local extremum (min and max) on a Dataframe.
+
+        It checks if the values for a number of points on each side (`window`) are greater or lesser and then
+        determine the local extremum.
 
         Parameters
         ----------
@@ -53,7 +56,8 @@ class MathOp():
         end_point : int
             the last data (index) to check in the Dataframe
         window : int
-            the number of the data the method check before and after to determine the local extremum (default is 6)
+            the number of the data the method check before and after to determine the local extremum. Default is 6.
+            Recommended values are between 5 and 7.
         min_ : str
             Name given to min data column
         max_ : str

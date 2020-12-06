@@ -31,7 +31,7 @@ import indicators.regression.mann_kendall as mk
 import charting as cht
 import pandas as pd
 from optimize_ import Optimize
-from math_op import MathOp as mo
+from manip_data import ManipData as md
 
 class Main(Optimize):
 
@@ -49,8 +49,8 @@ class Main(Optimize):
     def chart_trigger(self):
         """Marks entry and exit level on chart"""
 
-        mark_up = mo.pd_tolist(self.trades_track, self.entry_row)
-        mark_down = mo.pd_tolist(self.trades_track, self.exit_row)
+        mark_up = md.pd_tolist(self.trades_track, self.entry_row)
+        mark_down = md.pd_tolist(self.trades_track, self.exit_row)
         marks_ = {'marker_entry': {self.marker_: '^', self.color_mark: 'g', self.marker_signal: mark_up},
                 'marker_exit': {self.marker_: 'v', self.color_mark: 'r', self.marker_signal: mark_down}}
 
@@ -58,9 +58,8 @@ class Main(Optimize):
 
 if __name__ == '__main__':
     main_ = Main()
-
-
-    main_.chart_signal()
-    t= 5
+    #main_.chart_signal()
     main_.chart_trigger()
+    t= 5
+
 
