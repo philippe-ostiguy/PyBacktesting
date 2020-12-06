@@ -318,7 +318,7 @@ We select the fitess candidates so that they can pass their genes to the next ge
 
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/Selection.png)
 
-#### 3- Selection
+#### 4- Genetic operators
 
 Compute fitness
 REPEAT
