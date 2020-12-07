@@ -5,13 +5,13 @@
 
 Hi! 
 
-My name is Philippe. The goal of this project is to model the Elliott Wave Theory to forecast the financial markets. Once we have the model and know the parameters, we optimize it using a machine learning technique called genetic algorithm and test in a different period (Walk forward optimization). The fitness function we're using for optimization and testing is the Sharpe ratio. 
+My name is Philippe. The goal of this project is to model the Elliott Wave Theory to forecast the financial markets. Once we have the model and know the parameters, we optimize it using a machine learning technique called genetic algorithm. Then we test it using Walk forward optimization. The fitness function we're using for optimization and testing is the Sharpe ratio. 
 
-The experiment was carried out on the EUR/USD currency pair on hourly basis data. The time period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were each 18 months each (2015-10-15 to 2017-04-15 and 2018-01-15 to 2019-07-15) and the testing periods were 9 months each  (2017-04-15 to 2018-01-15 and 2019-07-15 to 2020-04-15). 
+The experiment was carried out on the EUR/USD currency pair on a hourly basis. The period was from 2015/10 to 2020/04 (including 2 training and 2 testing periods). The training periods were 18 months each (from 2015-10-15 to 2017-04-15 and from 2018-01-15 to 2019-07-15) and the testing periods were 9 months each (from 2017-04-15 to 2018-01-15 and from 2019-07-15 to 2020-04-15). 
 
-For each training period, the Sharpe ratio was above 3, which is excellent. For the testing period, the results were mixed. For the first testing period, the Sharpe ratio was 1.63, which is really good. For the second testing period, the Sharpe ratio -13.99 with 0 winning trades.
+The Sharpe ratio was above 3 for each training period (which is excellent). The results were mixed for the training periods. The Sharpe ratio was 1.63 for the first training period (which is really good) and -13.99 for the second period with 0 winning trades (which is really bad).
 
-One of the issue with the model during the testing periods is that generated few trades (11 for the first testing period and 10 for second testing period). This may be due to the fact that the model is highly optimized (overfit). We could also test the same model on different assets and different timeframes.
+One of the issue with the model during the testing periods is that it generated few trades (11 for the first testing period and 10 for second testing period). This may be due to an over optimized model which caused overfitting. We could also test the same model on different assets and different timeframes.
 
 The library is divided so that it is possible to modify the trading strategy by creating modules in the different packages (indicators, optimize, trading_rules). For example, the current rule for trying to enter the market is when a trend is detected (r2 and Mann-Kendall). We could create a new module that tries to enter the market when we are 2 standard deviations from the average price of the last 100 days (in the trading_rules package).
 
