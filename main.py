@@ -61,5 +61,3 @@ if __name__ == '__main__':
     #main_.chart_signal()
     main_.chart_trigger()
     t= 5
-
-
