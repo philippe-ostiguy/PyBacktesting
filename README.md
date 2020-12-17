@@ -17,6 +17,44 @@ The library is built so that it is possible to modify the trading strategy by cr
 
 To find more details about this project, scroll down
 
+The project structure : 
+
+```
+├── EURUSD.csv                                  <- Data
+├── LICENSE.txt                                 <- License
+├── README.md                                   <- ReadMe doc
+├── __init__.py                 
+├── charting.py                                 <- Charting modules
+├── date_manip.py                               <- Module to manipulate date
+├── entry                                       <- Package that tries to enter the market (with different modules)
+│   ├── __init__.py
+│   └── entry_fibo.py                           <- Module that tries to enter the market using the Fibonacci technique
+├── exit                                        <- Package that tries to exit the market (with different modules)
+│   ├── __init__.py
+│   └── exit_fibo.py                            <- Module that tries to enter the market using the Fibonacci technique
+├── indicator.py                                <- Return the values of our indicators of our choice
+├── indicators                                  <- Package that evaluates the indicators
+│   ├── __init__.py
+│   └── regression                              
+│       ├── __init__.py
+│       ├── linear_regression.py                <- Module that evaluates the slope and r_square of a serie
+│       └── mann_kendall.py                     <- Module that assess the Mann-Kendall test
+├── init_operations.py                          <- Module that resets the necessary values
+├── initialize.py                               <- Module that declares hyperparamaters and parameters to optimize
+├── main.py                                     <- Main module that executes the program
+├── manip_data.py                               <- Helper module to manipulate csv and pandas Dataframe
+├── math_op.py                                  <- Module support for mathematical operations
+├── optimize                                    <- Package with optimization techniques
+│   ├── __init__.py
+│   └── genetic_algorithm.py                    <- Module that uses a genetic algorithm to optimize
+├── optimize_.py                                <- Module that runs the optimization process if desired                
+├── pnl.py                                      <- Module to assess the trading strategy performance
+└── trading_rules                               <- Package with possible trading rules
+    ├── __init__.py
+    └── r_square_tr.py                          <- Module that detects buy and sell signals with r_square and Mann Kendall test
+
+```
+
 To see the list of hyperparameters and parameters to optimize, go to this [file](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 
 Each .py file has its docstring, so make sure to check it out to understand the details. 
@@ -32,8 +70,6 @@ For questions or comments, please feel free to reach out on [LinkedIn](https://w
 The goal of this project is to model the Elliott Wave Theory to forecast the financial markets. Once we have the model and know the parameters, we optimize it using a machine learning technique called genetic algorithm and test in a different period (Walk forward optimization). The fitness function used for optimization and testing is the Sharpe ratio. 
 
 There is no real technique at the moment to model the Elliott Wave Theory as it is difficult to model and the modeling is highly subjective. To understand the concept of Elliott Wave Theory, refer to this [post](https://www.investopedia.com/articles/technical/111401.asp).
-
-![](https://github.com/philos123/PyBacktesting/blob/master/images/El_wave.jpg)
 
 Since the optimization space of a trading strategy can be complex, genetic algorithms are an efficient machine learning technique to find a good approximation of the optimal solution. It mimics the biological process of evolution. 
 
