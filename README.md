@@ -22,20 +22,20 @@ The project structure :
 ```
 ├── EURUSD.csv                                  <- Data
 ├── LICENSE.txt                                 <- License
-├── README.md                                   <- Read me doc
+├── README.md                                   <- ReadMe doc
 ├── __init__.py                 
 ├── charting.py                                 <- Charting modules
 ├── date_manip.py                               <- Module to manipulate date
 ├── entry                                       <- Package that tries to enter the market (with different modules)
 │   ├── __init__.py
-│   └── entry_fibo.py
+│   └── entry_fibo.py                           <- Module that tries to enter the market using the Fibonacci technique
 ├── exit                                        <- Package that tries to exit the market (with different modules)
 │   ├── __init__.py
-│   └── exit_fibo.py
-├── indicator.py                                <- Return the values of the indicator of our choice through the desired timeframe and interval   
-├── indicators                                  <- Package that evaluates indicators
+│   └── exit_fibo.py                            <- Module that tries to enter the market using the Fibonacci technique
+├── indicator.py                                <- Return the values of our indicators of our choice
+├── indicators                                  <- Package that evaluates the indicators
 │   ├── __init__.py
-│   └── regression
+│   └── regression                              
 │       ├── __init__.py
 │       ├── linear_regression.py                <- Module that evaluates the slope and r_square of a serie
 │       └── mann_kendall.py                     <- Module that assess the Mann-Kendall test
