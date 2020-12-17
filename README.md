@@ -51,7 +51,7 @@ The project structure :
 ├── pnl.py                                      <- Module to assess the trading strategy performance
 └── trading_rules                               <- Package with possible trading rules
     ├── __init__.py
-    └── r_square_tr.py                          <- Module that detect buy and sell signal with r_square and mk (Mann Kendall)
+    └── r_square_tr.py                          <- Module that detects buy and sell signals with r_square and Mann Kendall test
 
 ```
 
