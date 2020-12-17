@@ -20,42 +20,38 @@ To find more details about this project, scroll down
 The project structure : 
 
 ```
-├── EURUSD.csv
-├── LICENSE.txt
-├── MSFT.csv
-├── README.md
-├── Test.py
-├── __init__.py
-├── charting.py
-├── date_manip.py
-├── entry
+├── EURUSD.csv                                  <- Data
+├── LICENSE.txt                                 <- License
+├── README.md                                   <- Read me doc
+├── __init__.py                 
+├── charting.py                                 <- Charting modules
+├── date_manip.py                               <- Module to manipulate date
+├── entry                                       <- Package that tries to enter the market (with different modules)
 │   ├── __init__.py
 │   └── entry_fibo.py
-├── exit
+├── exit                                        <- Package that tries to exit the market (with different modules)
 │   ├── __init__.py
 │   └── exit_fibo.py
-├── indicator.py
-├── indicators
+├── indicator.py                                <- Return the values of the indicator of our choice through the desired timeframe and interval   
+├── indicators                                  <- Package that evaluates indicators
 │   ├── __init__.py
 │   └── regression
 │       ├── __init__.py
-│       │   ├── linear_regression.cpython-37.pyc
-│       │   └── mann_kendall.cpython-37.pyc
-│       ├── linear_regression.py
-│       └── mann_kendall.py
-├── init_operations.py
-├── initialize.py
-├── main.py
-├── manip_data.py
-├── math_op.py
-├── optimize
+│       ├── linear_regression.py                <- Module that evaluates the slope and r_square of a serie
+│       └── mann_kendall.py                     <- Module that assess the Mann-Kendall test
+├── init_operations.py                          <- Module that resets the necessary values
+├── initialize.py                               <- Module that declares hyperparamaters and parameters to optimize
+├── main.py                                     <- Main module that executes the program
+├── manip_data.py                               <- Helper module to manipulate csv and pandas Dataframe
+├── math_op.py                                  <- Module support for mathematical operations
+├── optimize                                    <- Package with optimization techniques
 │   ├── __init__.py
-│   └── genetic_algorithm.py
-├── optimize_.py
-├── pnl.py
-└── trading_rules
+│   └── genetic_algorithm.py                    <- Module that uses a genetic algorithm to optimize
+├── optimize_.py                                <- Module that runs the optimization process if desired                
+├── pnl.py                                      <- Module to assess the trading strategy performance
+└── trading_rules                               <- Package with possible trading rules
     ├── __init__.py
-    └── r_square_tr.py
+    └── r_square_tr.py                          <- Module that detect buy and sell signal with r_square and mk (Mann Kendall)
 
 ```
 
