@@ -17,6 +17,48 @@ The library is built so that it is possible to modify the trading strategy by cr
 
 To find more details about this project, scroll down
 
+The project structure : 
+
+```
+├── EURUSD.csv
+├── LICENSE.txt
+├── MSFT.csv
+├── README.md
+├── Test.py
+├── __init__.py
+├── charting.py
+├── date_manip.py
+├── entry
+│   ├── __init__.py
+│   └── entry_fibo.py
+├── exit
+│   ├── __init__.py
+│   └── exit_fibo.py
+├── indicator.py
+├── indicators
+│   ├── __init__.py
+│   └── regression
+│       ├── __init__.py
+│       │   ├── linear_regression.cpython-37.pyc
+│       │   └── mann_kendall.cpython-37.pyc
+│       ├── linear_regression.py
+│       └── mann_kendall.py
+├── init_operations.py
+├── initialize.py
+├── main.py
+├── manip_data.py
+├── math_op.py
+├── optimize
+│   ├── __init__.py
+│   └── genetic_algorithm.py
+├── optimize_.py
+├── pnl.py
+└── trading_rules
+    ├── __init__.py
+    └── r_square_tr.py
+
+```
+
 To see the list of hyperparameters and parameters to optimize, go to this [file](https://github.com/philos123/PyBacktesting/blob/master/initialize.py)
 
 Each .py file has its docstring, so make sure to check it out to understand the details. 
