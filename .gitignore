@@ -1,2 +1,2 @@
-**/__pycache__/
-**/data_manip/
+.ipynb_checkpoints_pycache__/
+.data_manip/
