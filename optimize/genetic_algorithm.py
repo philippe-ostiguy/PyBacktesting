@@ -24,7 +24,7 @@
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 ###############################################################################
 
-""" Module to create a genetic algorithm """
+""" Module to uses a genetic algorithm to optimize the program"""
 from pnl import PnL
 import numpy as np
 from initialize import Initialize

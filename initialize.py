@@ -24,7 +24,7 @@
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 ###############################################################################
 
-"""Module to declare hyperparamaters and parameters to to optimize"""
+"""Module that declares hyperparamaters and parameters to optimize"""
 
 from dateutil.relativedelta import relativedelta
 from date_manip import DateManip as dm

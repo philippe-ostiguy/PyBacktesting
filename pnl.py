@@ -24,7 +24,7 @@
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 ###############################################################################
 
-"""Module to calculate the trading strategy results"""
+"""Module to assess the trading strategy performance"""
 
 import trading_rules as tr
 import numpy as np

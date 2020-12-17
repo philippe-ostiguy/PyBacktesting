@@ -25,7 +25,7 @@
 ###############################################################################
 
 """
-Module for mathematical operation support
+Module support for mathematical operations
 """
 from scipy.signal import argrelextrema
 import matplotlib.pyplot as plt

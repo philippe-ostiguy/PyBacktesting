@@ -24,7 +24,7 @@
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 ###############################################################################
 
-"""Module to run the program - use optimization tools if desired"""
+"""Module that runs the optimization process if desired"""
 
 from pnl import PnL
 from manip_data import ManipData as md
