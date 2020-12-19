@@ -22,9 +22,9 @@ The project structure :
 ```
 ├── EURUSD.csv                                  <- Data
 ├── LICENSE.txt                                 <- License
-├── README.md                                   <- ReadMe doc
+├── README.md                                   <- ReadMe document
 ├── __init__.py                 
-├── charting.py                                 <- Charting modules
+├── charting.py                                 <- Charting module
 ├── date_manip.py                               <- Module to manipulate date
 ├── entry                                       <- Package that tries to enter the market (with different modules)
 │   ├── __init__.py
