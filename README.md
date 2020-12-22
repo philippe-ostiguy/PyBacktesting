@@ -1,6 +1,6 @@
 ![](https://github.com/philos123/PyBacktesting/blob/master/images/artificial-intelligence.png)
 
-# Using Elliott Wave Theory to forecast the financial markets and optimize with genetic algorithms
+# Optimizing the Elliott Wave Theory using genetic algorithms to forecast the financial markets
 
 
 Hi! 
