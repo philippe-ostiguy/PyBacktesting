@@ -32,6 +32,7 @@ from manip_data import ManipData as md
 import pandas as pd
 from datetime import datetime
 import random
+import os
 
 class Initialize():
     """Module to initialize the values.
@@ -119,9 +120,8 @@ class Initialize():
 
         """
 
-        self.directory = '/Users/philippeostiguy/Desktop/Trading/Programmation_python/genetic_programming/Trading/'
-        self.dir_output = '/Users/philippeostiguy/Desktop/Trading/' \
-                          'Programmation_python/genetic_programming/Trading/results/'
+        self.directory = os.path.dirname(os.path.realpath(__file__)) + '/'
+        self.dir_output = self.directory + 'results/'
         self.name_out = 'results'
         self.is_fx = True
         self.asset = "EURUSD"
